@@ -1,0 +1,5 @@
+name: DeltaCore
+version: ${project.version}
+main: me.bazzadev.deltacore.DeltaCore
+api-version: 1.15.2
+authors: [BazzaDEV]
