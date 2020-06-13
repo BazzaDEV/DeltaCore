@@ -1,0 +1,4 @@
+connection-string: ''
+database: ''
+collections:
+  player-data: ''

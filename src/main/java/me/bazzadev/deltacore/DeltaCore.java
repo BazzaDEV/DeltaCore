@@ -2,37 +2,56 @@ package me.bazzadev.deltacore;
 
 import me.bazzadev.deltacore.afk.AFKCommand;
 import me.bazzadev.deltacore.afk.AFKManager;
-import me.bazzadev.deltacore.config.PlayerDataConfig;
-import me.bazzadev.deltacore.config.events.SetupConfigOnJoin;
+import me.bazzadev.deltacore.config.MongoDBConfig;
+import me.bazzadev.deltacore.config.events.SetupPlayerDataOnJoin;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
 import me.bazzadev.deltacore.inventory.commands.ClearInventoryCommand;
 import me.bazzadev.deltacore.inventory.commands.LoadInventoryCommand;
 import me.bazzadev.deltacore.inventory.commands.SaveInventoryCommand;
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
 import me.bazzadev.deltacore.staffmode.commands.StaffModeCommand;
+import me.bazzadev.deltacore.utilities.PlayerDataManager;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class DeltaCore extends JavaPlugin {
 
-    private final PlayerDataConfig playerDataConfig = new PlayerDataConfig(this);
+    private final MongoDBConfig mongoDBConfig = new MongoDBConfig(this);
+    private final PlayerDataManager playerDataManager = new PlayerDataManager(mongoDBConfig);
 
-    private final PlayerInventoryManager playerInventoryManager = new PlayerInventoryManager(playerDataConfig);
-    private final StaffModeManager staffModeManager = new StaffModeManager(playerDataConfig, playerInventoryManager);
-    private final AFKManager afkManager = new AFKManager(playerDataConfig);
+    private final PlayerInventoryManager playerInventoryManager = new PlayerInventoryManager(playerDataManager);
+    private final StaffModeManager staffModeManager = new StaffModeManager(playerDataManager, playerInventoryManager);
+    private final AFKManager afkManager = new AFKManager(playerDataManager);
+
+
 
 
     @Override
     public void onEnable() {
 
         createConfigs();
+
         registerCommands();
         registerEvents();
+
+        playerDataManager.initialize();
 
     }
 
     @Override
     public void onDisable() {
         saveConfigs();
+    }
+
+
+
+    public void createConfigs() {
+        mongoDBConfig.create();
+    }
+
+    public void saveConfigs() {
+        mongoDBConfig.save();
+
     }
 
     public void registerCommands() {
@@ -47,16 +66,7 @@ public final class DeltaCore extends JavaPlugin {
     }
 
     public void registerEvents() {
-        getServer().getPluginManager().registerEvents(new SetupConfigOnJoin(playerDataConfig), this);
-    }
-
-    public void createConfigs() {
-        playerDataConfig.create();
-    }
-
-    public void saveConfigs() {
-        playerDataConfig.save();
-
+        getServer().getPluginManager().registerEvents(new SetupPlayerDataOnJoin(playerDataManager), this);
     }
 
 }

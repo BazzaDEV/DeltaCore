@@ -1,29 +1,34 @@
 package me.bazzadev.deltacore.afk;
 
-import me.bazzadev.deltacore.config.PlayerDataConfig;
+import com.mongodb.client.model.Filters;
+import me.bazzadev.deltacore.utilities.PlayerDataManager;
+import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import static com.mongodb.client.model.Updates.set;
+
 public class AFKManager {
 
-    private final PlayerDataConfig playerDataConfig;
-    private String pathToAFKStatus;
+    private final PlayerDataManager playerDataManager;
 
     private Player player;
     private String playerName;
+    private String playerUUIDString;
 
 
-    public AFKManager(PlayerDataConfig playerDataConfig) {
-        this.playerDataConfig = playerDataConfig;
+    public AFKManager(PlayerDataManager playerDataManager) {
+        this.playerDataManager = playerDataManager;
     }
 
     public void toggle(Player player) {
 
         this.player = player;
-        pathToAFKStatus = player.getUniqueId().toString() + ".afk";
         playerName = player.getName();
+        playerUUIDString = player.getUniqueId().toString();
 
-        if ( playerDataConfig.get().getBoolean(pathToAFKStatus) ) {
+
+        if ( getStatus(player) ) {
             disable();
         } else {
             enable();
@@ -33,8 +38,9 @@ public class AFKManager {
 
     public void enable() {
 
-        playerDataConfig.get().set(pathToAFKStatus, true);
-        playerDataConfig.save();
+        playerDataManager.getDatabaseCollection().updateOne(
+                Filters.eq("uuid", playerUUIDString),
+                set("status.afk", true));
 
         player.setPlayerListName(ChatColor.GRAY + playerName);
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&fAFK&8] &7You are now AFK."));
@@ -43,8 +49,9 @@ public class AFKManager {
 
     public void disable() {
 
-        playerDataConfig.get().set(pathToAFKStatus, false);
-        playerDataConfig.save();
+        playerDataManager.getDatabaseCollection().updateOne(
+                Filters.eq("uuid", playerUUIDString),
+                set("status.afk", false));
 
         player.setPlayerListName(ChatColor.RESET + playerName);
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&fAFK&8] &7You are no longer AFK."));
@@ -52,7 +59,12 @@ public class AFKManager {
     }
 
     public boolean getStatus(Player player) {
-        return playerDataConfig.get().getBoolean(player.getUniqueId().toString() + ".afk");
+
+        Document filter = new Document("uuid", playerUUIDString);
+        Document playerData = playerDataManager.getDatabaseCollection().find(filter).first();
+        Document statusData = (Document) playerData.get("status");
+
+        return statusData.getBoolean("afk");
     }
 
 }

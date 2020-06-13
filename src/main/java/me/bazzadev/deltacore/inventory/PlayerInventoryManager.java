@@ -1,48 +1,60 @@
 package me.bazzadev.deltacore.inventory;
 
-import me.bazzadev.deltacore.config.PlayerDataConfig;
+import com.mongodb.client.model.Filters;
+import me.bazzadev.deltacore.utilities.PlayerDataManager;
+import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.io.IOException;
-import java.util.UUID;
 
+import static com.mongodb.client.model.Updates.combine;
+import static com.mongodb.client.model.Updates.set;
 import static me.bazzadev.deltacore.utilities.InventoryUtil.itemStackArrayFromBase64;
 import static me.bazzadev.deltacore.utilities.InventoryUtil.playerInventoryToBase64;
 
 public class PlayerInventoryManager {
 
-    private final PlayerDataConfig playerDataConfig;
+    private final PlayerDataManager playerDataManager;
 
-    public PlayerInventoryManager(PlayerDataConfig playerDataConfig) {
-        this.playerDataConfig = playerDataConfig;
+    public PlayerInventoryManager(PlayerDataManager playerDataManager) {
+
+        this.playerDataManager = playerDataManager;
     }
 
     public void saveContents(Player player) {
 
         PlayerInventory playerInv = player.getInventory();
+        String playerUUIDString = player.getUniqueId().toString();
 
         String[] playerInventoryToBase64 = playerInventoryToBase64(playerInv);
-        String pathtoInv = (player.getUniqueId().toString()) + ".inventory" + ".inv";
-        String pathtoArmor = (player.getUniqueId().toString()) + ".inventory" + ".armor";
 
-        playerDataConfig.get().set(pathtoInv, playerInventoryToBase64[0]);
-        playerDataConfig.get().set(pathtoArmor, playerInventoryToBase64[1]);
+        String pathToInv = "inventory.inv";
+        String pathToArmor = "inventory.armor";
 
-        playerDataConfig.save();
+        playerDataManager.getDatabaseCollection().updateOne(
+                Filters.eq("uuid", playerUUIDString),
+                combine(set(pathToInv, playerInventoryToBase64[0]),
+                        set(pathToArmor, playerInventoryToBase64[1])));
 
     }
 
     public void loadContents(Player player) {
 
-        String pathtoInv = (player.getUniqueId().toString()) + ".inventory" + ".inv";
-        String pathtoArmor = (player.getUniqueId().toString()) + ".inventory" + ".armor";
+        String playerUUIDString = player.getUniqueId().toString();
+
+        Document filter = new Document("uuid", playerUUIDString);
+        Document playerData = playerDataManager.getDatabaseCollection().find(filter).first();
+        Document inventory = (Document) playerData.get("inventory");
+
+        String invBase64 = inventory.getString("inv");
+        String armorBase64 = inventory.getString("armor");
 
         try {
 
-            ItemStack[] inv = itemStackArrayFromBase64( playerDataConfig.get().getString(pathtoInv) );
-            ItemStack[] armor = itemStackArrayFromBase64( playerDataConfig.get().getString(pathtoArmor) );
+            ItemStack[] inv = itemStackArrayFromBase64(invBase64);
+            ItemStack[] armor = itemStackArrayFromBase64(armorBase64);
 
             player.getInventory().setContents(inv);
             player.getInventory().setArmorContents(armor);
@@ -51,8 +63,6 @@ public class PlayerInventoryManager {
             player.sendMessage("An error occurred.");
         }
 
-
-
-    }
+        }
 
 }
