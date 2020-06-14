@@ -21,7 +21,7 @@ public class CoordsCommand implements CommandExecutor {
                 int y = player.getLocation().getBlockY();
                 int z = player.getLocation().getBlockZ();
 
-                Bukkit.broadcastMessage(ChatColor.GREEN + playerName + ChatColor.DARK_GRAY + ChatColor.BOLD + " >> " + ChatColor.GRAY + ChatColor.UNDERLINE + "X:" + ChatColor.WHITE + " " + x + " " + ChatColor.GRAY + ChatColor.UNDERLINE + "Z:" + ChatColor.WHITE + " " + z + " " + ChatColor.DARK_GRAY + "(" + ChatColor.GRAY + "Y:" + ChatColor.WHITE + " " + y + ChatColor.DARK_GRAY + ")");
+                Bukkit.broadcastMessage(ChatColor.GREEN + playerName + ChatColor.DARK_GRAY + ChatColor.BOLD + " >> " + ChatColor.GRAY + ChatColor.UNDERLINE + "X:" + ChatColor.WHITE + " " + x + " " + ChatColor.GRAY + "Y:" + ChatColor.WHITE + " " + y + " " + ChatColor.GRAY + ChatColor.UNDERLINE + "Z:" + ChatColor.WHITE + " " + z);
 
             } else {
                 sender.sendMessage("You can only execute this command in-game.");
