@@ -18,7 +18,7 @@ public class ClearInventoryCommand implements CommandExecutor {
 
                 Player player = (Player) sender;
 
-                if (player.hasPermission("staffmode.clearinv.self")) {
+                if (player.hasPermission("deltacore.clearinv.self")) {
                     player.getInventory().clear();
 
                 } else {

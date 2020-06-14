@@ -4,6 +4,12 @@ main: me.bazzadev.deltacore.DeltaCore
 api-version: 1.15
 authors: [BazzaDEV]
 commands:
+  heal:
+    description: Heals the player.
+    usage: /heal [player]
+  coords:
+    description: Puts the player's coordinates in chat.
+    usage: /coords
   saveinv:
     description: Save inventory.
     usage: /saveinv [player]

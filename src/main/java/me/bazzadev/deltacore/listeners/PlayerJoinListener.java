@@ -1,9 +1,10 @@
-package me.bazzadev.deltacore.config.events;
+package me.bazzadev.deltacore.listeners;
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
 
 import org.bson.Document;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,11 +12,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import static com.mongodb.client.model.Updates.set;
 
-public class SetupPlayerDataOnJoin implements Listener {
+public class PlayerJoinListener implements Listener {
 
     private final PlayerDataManager playerDataManager;
 
-    public SetupPlayerDataOnJoin(PlayerDataManager playerDataManager) {
+    private final String joinPrefix = ChatColor.translateAlternateColorCodes('&', "&8[&a+&8] ");
+
+    public PlayerJoinListener(PlayerDataManager playerDataManager) {
         this.playerDataManager = playerDataManager;
     }
 
@@ -25,6 +28,8 @@ public class SetupPlayerDataOnJoin implements Listener {
         Player player = event.getPlayer();
         String playerName = player.getName();
         String playerUUIDString = player.getUniqueId().toString();
+
+        event.setJoinMessage(joinPrefix + ChatColor.GOLD + playerName + " has joined the server.");
 
         if ( playerDataManager.getDatabaseCollection().countDocuments(new Document("uuid", playerUUIDString)) == 0) {
             playerDataManager.initializePlayer(player);

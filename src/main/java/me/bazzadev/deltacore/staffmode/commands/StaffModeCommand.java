@@ -24,7 +24,7 @@ public class StaffModeCommand implements CommandExecutor {
 
             Player player = (Player) sender;
 
-            if (player.hasPermission("staffmode.toggle.self")) {
+            if (player.hasPermission("deltacore.staffmode")) {
                 staffModeManager.toggle(player);
 
             } else {

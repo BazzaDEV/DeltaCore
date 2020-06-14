@@ -25,7 +25,7 @@ public class SaveInventoryCommand implements CommandExecutor {
 
                 Player player = (Player) sender;
 
-                if (player.hasPermission("staffmode.saveinv.self")) {
+                if (player.hasPermission("deltacore.saveinv.self")) {
                     playerInventoryManager.saveContents(player);
 
                 } else {

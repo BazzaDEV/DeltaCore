@@ -25,7 +25,7 @@ public class LoadInventoryCommand implements CommandExecutor {
 
                 Player player = (Player) sender;
 
-                if (player.hasPermission("staffmode.loadinv.self")) {
+                if (player.hasPermission("deltacore.loadinv.self")) {
                     playerInventoryManager.loadContents(player);
 
                 } else {
