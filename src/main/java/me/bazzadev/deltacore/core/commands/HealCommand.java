@@ -19,6 +19,8 @@ public class HealCommand implements CommandExecutor {
 
                     player.setHealth(20);
                     player.setFoodLevel(20);
+                    player.setExhaustion(0);
+                    player.setSaturation(13);
 
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7You have been &ahealed &7and &efed&7."));
 
