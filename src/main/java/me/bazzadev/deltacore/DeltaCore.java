@@ -4,6 +4,7 @@ import me.bazzadev.deltacore.afk.AFKCommand;
 import me.bazzadev.deltacore.afk.AFKManager;
 import me.bazzadev.deltacore.config.MongoDBConfig;
 import me.bazzadev.deltacore.core.commands.CoordsCommand;
+import me.bazzadev.deltacore.core.commands.GamemodeCommand;
 import me.bazzadev.deltacore.core.commands.HealCommand;
 import me.bazzadev.deltacore.listeners.PlayerJoinListener;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
@@ -61,6 +62,10 @@ public final class DeltaCore extends JavaPlugin {
 
         this.getCommand("coords").setExecutor(new CoordsCommand());
         this.getCommand("heal").setExecutor(new HealCommand());
+
+        this.getCommand("gms").setExecutor(new GamemodeCommand());
+        this.getCommand("gmc").setExecutor(new GamemodeCommand());
+        this.getCommand("gma").setExecutor(new GamemodeCommand());
 
         this.getCommand("loadinv").setExecutor(new LoadInventoryCommand(playerInventoryManager));
         this.getCommand("saveinv").setExecutor(new SaveInventoryCommand(playerInventoryManager));

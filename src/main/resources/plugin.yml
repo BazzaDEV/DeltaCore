@@ -25,3 +25,12 @@ commands:
   afk:
     description: Toggles AFK status.
     usage: /afk [player]
+  gms:
+    description: Sets the player's gamemode to survival.
+    usage: /gms [player]
+  gma:
+    description: Sets the player's gamemode to adventure.
+    usage: /gma [player]
+  gmc:
+    description: Sets the player's gamemode to creative.
+    usage: /gmc [player]
