@@ -13,12 +13,15 @@ commands:
   saveinv:
     description: Save inventory.
     usage: /saveinv [player]
+    aliases: [saveinventory]
   loadinv:
     description: Load inventory.
     usage: /loadinv [player]
+    aliases: [loadinventory]
   clearinv:
     description: Clear inventory.
     usage: /clearinv [player]
+    aliases: [clearinventory]
   staffmode:
     description: Toggles staff mode for the player.
     usage: /staffmode
