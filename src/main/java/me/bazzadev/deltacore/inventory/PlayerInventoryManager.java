@@ -2,6 +2,7 @@ package me.bazzadev.deltacore.inventory;
 
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,9 +20,9 @@ public class PlayerInventoryManager {
     private final PlayerDataManager playerDataManager;
 
     public PlayerInventoryManager(PlayerDataManager playerDataManager) {
-
         this.playerDataManager = playerDataManager;
     }
+
 
     public void saveContents(Player player) {
 
@@ -60,7 +61,7 @@ public class PlayerInventoryManager {
             player.getInventory().setArmorContents(armor);
 
         } catch (IOException e) {
-            player.sendMessage("An error occurred.");
+            player.sendMessage(Vars.PLUGIN_PREFIX + "An error occurred.");
         }
 
         }

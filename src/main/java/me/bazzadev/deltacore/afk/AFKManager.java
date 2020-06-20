@@ -2,6 +2,7 @@ package me.bazzadev.deltacore.afk;
 
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -43,7 +44,7 @@ public class AFKManager {
                 set("status.afk", true));
 
         player.setPlayerListName(ChatColor.GRAY + playerName);
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&fAFK&8] &7You are now AFK."));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7You are now AFK."));
 
     }
 
@@ -54,7 +55,7 @@ public class AFKManager {
                 set("status.afk", false));
 
         player.setPlayerListName(ChatColor.RESET + playerName);
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&fAFK&8] &7You are no longer AFK."));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&',Vars.PLUGIN_PREFIX + "&7You are no longer AFK."));
 
     }
 

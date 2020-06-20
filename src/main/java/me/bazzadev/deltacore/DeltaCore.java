@@ -6,6 +6,7 @@ import me.bazzadev.deltacore.config.MongoDBConfig;
 import me.bazzadev.deltacore.core.commands.CoordsCommand;
 import me.bazzadev.deltacore.core.commands.GamemodeCommand;
 import me.bazzadev.deltacore.core.commands.HealCommand;
+import me.bazzadev.deltacore.listeners.PlayerCommandPreProcessListener;
 import me.bazzadev.deltacore.listeners.PlayerJoinListener;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
 import me.bazzadev.deltacore.inventory.commands.ClearInventoryCommand;
@@ -79,6 +80,7 @@ public final class DeltaCore extends JavaPlugin {
     public void registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerCommandPreProcessListener(), this);
     }
 
 }

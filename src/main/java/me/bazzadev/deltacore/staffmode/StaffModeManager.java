@@ -3,6 +3,7 @@ package me.bazzadev.deltacore.staffmode;
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -47,7 +48,7 @@ public class StaffModeManager {
         player.getInventory().clear();
         player.setGameMode(GameMode.CREATIVE);
 
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7You have &aentered &7Staff Mode."));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7You have &aentered &7Staff Mode."));
 
     }
 
@@ -61,7 +62,7 @@ public class StaffModeManager {
         playerInventoryManager.loadContents(player);
         player.setGameMode(GameMode.SURVIVAL);
 
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7You have &cleft &7Staff Mode."));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7You have &cleft &7Staff Mode."));
 
     }
 

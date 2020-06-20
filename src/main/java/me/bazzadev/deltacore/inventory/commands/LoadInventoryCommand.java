@@ -1,6 +1,7 @@
 package me.bazzadev.deltacore.inventory.commands;
 
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,9 +28,10 @@ public class LoadInventoryCommand implements CommandExecutor {
 
                 if (player.hasPermission("deltacore.loadinv.self")) {
                     playerInventoryManager.loadContents(player);
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7Your inventory has been &arestored&7."));
 
                 } else {
-                    player.sendMessage(ChatColor.RED + "No permission, bud.");
+                    player.sendMessage(Vars.NO_PERMISSION);
                 }
 
                 return true;

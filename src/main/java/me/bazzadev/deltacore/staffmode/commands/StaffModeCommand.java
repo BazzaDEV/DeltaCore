@@ -1,6 +1,7 @@
 package me.bazzadev.deltacore.staffmode.commands;
 
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,7 +29,7 @@ public class StaffModeCommand implements CommandExecutor {
                 staffModeManager.toggle(player);
 
             } else {
-                player.sendMessage(ChatColor.RED + "No permission, bud.");
+                player.sendMessage(Vars.NO_PERMISSION);
             }
 
             return true;

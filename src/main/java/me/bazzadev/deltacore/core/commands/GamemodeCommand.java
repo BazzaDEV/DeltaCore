@@ -1,5 +1,6 @@
 package me.bazzadev.deltacore.core.commands;
 
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -26,7 +27,7 @@ public class GamemodeCommand implements CommandExecutor {
                         changeGamemode(player, GameMode.SURVIVAL);
 
                     } else {
-                        player.sendMessage(ChatColor.RED + "No permission, bud.");
+                        player.sendMessage(Vars.NO_PERMISSION);
                     }
                 } else if (args.length == 1) {
                     //player is setting someone else's gamemode
@@ -35,10 +36,10 @@ public class GamemodeCommand implements CommandExecutor {
                         if (target != null) {
                             changeGamemode(target, GameMode.SURVIVAL);
                         } else {
-                            player.sendMessage(ChatColor.RED + "The specified player does not exist. Try again.");
+                            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
                         }
                     } else {
-                        player.sendMessage(ChatColor.RED + "No permission, bud.");
+                        player.sendMessage(Vars.NO_PERMISSION);
                     }
                 }
 
@@ -54,7 +55,7 @@ public class GamemodeCommand implements CommandExecutor {
                     if (target != null) {
                         changeGamemode(target, GameMode.SURVIVAL);
                     } else {
-                        sender.sendMessage(ChatColor.RED + "The specified player does not exist. Try again.");
+                        sender.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
                     }
                 }
 
@@ -76,7 +77,7 @@ public class GamemodeCommand implements CommandExecutor {
                         changeGamemode(player, GameMode.CREATIVE);
 
                     } else {
-                        player.sendMessage(ChatColor.RED + "No permission, bud.");
+                        player.sendMessage(Vars.NO_PERMISSION);
                     }
                 } else if (args.length == 1) {
                     //player is setting someone else's gamemode
@@ -85,10 +86,10 @@ public class GamemodeCommand implements CommandExecutor {
                         if (target != null) {
                             changeGamemode(target, GameMode.CREATIVE);
                         } else {
-                            player.sendMessage(ChatColor.RED + "The specified player does not exist. Try again.");
+                            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
                         }
                     } else {
-                        player.sendMessage(ChatColor.RED + "No permission, bud.");
+                        player.sendMessage(Vars.NO_PERMISSION);
                     }
                 }
 
@@ -104,7 +105,7 @@ public class GamemodeCommand implements CommandExecutor {
                     if (target != null) {
                         changeGamemode(target, GameMode.CREATIVE);
                     } else {
-                        sender.sendMessage(ChatColor.RED + "The specified player does not exist. Try again.");
+                        sender.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
                     }
                 }
 
@@ -126,7 +127,7 @@ public class GamemodeCommand implements CommandExecutor {
                         changeGamemode(player, GameMode.ADVENTURE);
 
                     } else {
-                        player.sendMessage(ChatColor.RED + "No permission, bud.");
+                        player.sendMessage(Vars.NO_PERMISSION);
                     }
                 } else if (args.length == 1) {
                     //player is setting someone else's gamemode
@@ -135,10 +136,10 @@ public class GamemodeCommand implements CommandExecutor {
                         if (target != null) {
                             changeGamemode(target, GameMode.ADVENTURE);
                         } else {
-                            player.sendMessage(ChatColor.RED + "The specified player does not exist. Try again.");
+                            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
                         }
                     } else {
-                        player.sendMessage(ChatColor.RED + "No permission, bud.");
+                        player.sendMessage(Vars.NO_PERMISSION);
                     }
                 }
 
@@ -154,7 +155,7 @@ public class GamemodeCommand implements CommandExecutor {
                     if (target != null) {
                         changeGamemode(target, GameMode.ADVENTURE);
                     } else {
-                        sender.sendMessage(ChatColor.RED + "The specified player does not exist. Try again.");
+                        sender.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
                     }
                 }
 
@@ -170,11 +171,11 @@ public class GamemodeCommand implements CommandExecutor {
     private void changeGamemode(Player player, GameMode gameMode) {
 
         if (player.getGameMode() == gameMode) {
-            player.sendMessage(ChatColor.LIGHT_PURPLE + "Hey, you're already in this gamemode!");
+            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.LIGHT_PURPLE + "Hey, you're already in this gamemode!");
 
         } else {
             player.setGameMode(gameMode);
-            player.sendMessage(ChatColor.GRAY + "You're now in " + ChatColor.LIGHT_PURPLE + gameMode.toString().toLowerCase() + ChatColor.GRAY + ".");
+            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.GRAY + "You're now in " + ChatColor.LIGHT_PURPLE + gameMode.toString().toLowerCase() + ChatColor.GRAY + ".");
         }
 
     }

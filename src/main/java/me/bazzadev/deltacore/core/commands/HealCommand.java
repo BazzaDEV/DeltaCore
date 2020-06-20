@@ -1,5 +1,6 @@
 package me.bazzadev.deltacore.core.commands;
 
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,10 +23,10 @@ public class HealCommand implements CommandExecutor {
                     player.setExhaustion(0);
                     player.setSaturation(13);
 
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7You have been &ahealed &7and &efed&7."));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX +  "&7You have been &ahealed &7and &efed&7."));
 
                 } else {
-                    player.sendMessage(ChatColor.RED + "No permission, bud.");
+                    player.sendMessage(Vars.NO_PERMISSION);
                 }
 
                 return true;

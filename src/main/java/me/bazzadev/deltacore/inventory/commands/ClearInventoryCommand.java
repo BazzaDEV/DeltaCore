@@ -1,5 +1,6 @@
 package me.bazzadev.deltacore.inventory.commands;
 
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,9 +21,10 @@ public class ClearInventoryCommand implements CommandExecutor {
 
                 if (player.hasPermission("deltacore.clearinv.self")) {
                     player.getInventory().clear();
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7Your inventory has been &fcleared&7."));
 
                 } else {
-                    player.sendMessage(ChatColor.RED + "No permission, bud.");
+                    player.sendMessage(Vars.NO_PERMISSION);
                 }
 
                 return true;
