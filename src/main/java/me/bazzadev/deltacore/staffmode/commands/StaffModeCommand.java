@@ -2,7 +2,6 @@ package me.bazzadev.deltacore.staffmode.commands;
 
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
 import me.bazzadev.deltacore.utilities.Vars;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
