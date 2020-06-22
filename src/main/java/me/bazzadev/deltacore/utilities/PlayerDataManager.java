@@ -20,7 +20,7 @@ public class PlayerDataManager {
 
     private MongoClient mongoClient;
     private MongoDatabase database;
-    private MongoCollection<Document> col;
+    private static MongoCollection<Document> col;
 
     public void initialize() {
         mongoClient = MongoClients.create(mongoDBConfig.get().getString("connection-string"));
@@ -28,7 +28,7 @@ public class PlayerDataManager {
         col = database.getCollection(mongoDBConfig.get().getString("collections.player-data"));
     }
 
-    public MongoCollection<Document> getDatabaseCollection() {
+    public static MongoCollection<Document> getDatabaseCollection() {
         return col;
     }
 

@@ -3,6 +3,7 @@ version: ${project.version}
 main: me.bazzadev.deltacore.DeltaCore
 api-version: 1.15
 authors: [BazzaDEV]
+depend: [Vault]
 commands:
   heal:
     description: Heals the player.

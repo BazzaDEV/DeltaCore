@@ -11,16 +11,9 @@ import static com.mongodb.client.model.Updates.set;
 
 public class AFKManager {
 
-    private final PlayerDataManager playerDataManager;
-
     private Player player;
     private String playerName;
     private String playerUUIDString;
-
-
-    public AFKManager(PlayerDataManager playerDataManager) {
-        this.playerDataManager = playerDataManager;
-    }
 
     public void toggle(Player player) {
 
@@ -39,7 +32,7 @@ public class AFKManager {
 
     public void enable() {
 
-        playerDataManager.getDatabaseCollection().updateOne(
+        PlayerDataManager.getDatabaseCollection().updateOne(
                 Filters.eq("uuid", playerUUIDString),
                 set("status.afk", true));
 
@@ -50,7 +43,7 @@ public class AFKManager {
 
     public void disable() {
 
-        playerDataManager.getDatabaseCollection().updateOne(
+        PlayerDataManager.getDatabaseCollection().updateOne(
                 Filters.eq("uuid", playerUUIDString),
                 set("status.afk", false));
 
@@ -59,10 +52,12 @@ public class AFKManager {
 
     }
 
-    public boolean getStatus(Player player) {
+    public static boolean getStatus(Player player) {
+
+        String playerUUIDString = player.getUniqueId().toString();
 
         Document filter = new Document("uuid", playerUUIDString);
-        Document playerData = playerDataManager.getDatabaseCollection().find(filter).first();
+        Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
         Document statusData = (Document) playerData.get("status");
 
         return statusData.getBoolean("afk");

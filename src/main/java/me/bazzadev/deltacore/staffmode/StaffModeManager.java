@@ -13,14 +13,12 @@ import static com.mongodb.client.model.Updates.set;
 
 public class StaffModeManager {
 
-    private final PlayerDataManager playerDataManager;
     private final PlayerInventoryManager playerInventoryManager;
 
     private Player player;
     private String playerUUIDString;
 
-    public StaffModeManager(PlayerDataManager playerDataManager, PlayerInventoryManager playerInventoryManager) {
-        this.playerDataManager = playerDataManager;
+    public StaffModeManager(PlayerInventoryManager playerInventoryManager) {
         this.playerInventoryManager = playerInventoryManager;
     }
 
@@ -40,7 +38,7 @@ public class StaffModeManager {
 
     public void enable() {
 
-        playerDataManager.getDatabaseCollection().updateOne(
+        PlayerDataManager.getDatabaseCollection().updateOne(
                 Filters.eq("uuid", playerUUIDString),
                 set("status.staffmode", true));
 
@@ -48,13 +46,16 @@ public class StaffModeManager {
         player.getInventory().clear();
         player.setGameMode(GameMode.CREATIVE);
 
+        setupStaffInventory();
+
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7You have &aentered &7Staff Mode."));
+
 
     }
 
     public void disable() {
 
-        playerDataManager.getDatabaseCollection().updateOne(
+        PlayerDataManager.getDatabaseCollection().updateOne(
                 Filters.eq("uuid", playerUUIDString),
                 set("status.staffmode", false));
 
@@ -66,14 +67,20 @@ public class StaffModeManager {
 
     }
 
-    public boolean getStatus(Player player) {
+    public static boolean getStatus(Player player) {
+
+        String playerUUIDString = player.getUniqueId().toString();
 
         Document filter = new Document("uuid", playerUUIDString);
-        Document playerData = playerDataManager.getDatabaseCollection().find(filter).first();
+        Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
         Document statusData = (Document) playerData.get("status");
 
         return statusData.getBoolean("staffmode");
 
+    }
+
+    private void setupStaffInventory() {
+        player.getInventory().setItem(0, StaffModeItems.viewPlayerList);
     }
 
 
