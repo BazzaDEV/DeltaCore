@@ -11,6 +11,7 @@ import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
 import me.bazzadev.deltacore.inventory.commands.ClearInventoryCommand;
 import me.bazzadev.deltacore.inventory.commands.LoadInventoryCommand;
 import me.bazzadev.deltacore.inventory.commands.SaveInventoryCommand;
+import me.bazzadev.deltacore.staffmode.StaffGUIManager;
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
 import me.bazzadev.deltacore.staffmode.commands.StaffModeCommand;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
@@ -32,18 +33,22 @@ public final class DeltaCore extends JavaPlugin {
     private static Chat chat = null;
     private static Permission perms = null;
 
+    private StaffGUIManager staffGUIManager;
+
     @Override
     public void onEnable() {
 
         createConfigs();
 
-        registerCommands();
-        registerEvents();
-
         setupChat();
         setupPermissions();
 
         playerDataManager.initialize();
+
+        staffGUIManager = new StaffGUIManager();
+
+        registerCommands();
+        registerEvents();
 
     }
 
@@ -84,10 +89,14 @@ public final class DeltaCore extends JavaPlugin {
     public void registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(), this);
+
         getServer().getPluginManager().registerEvents(new PlayerCommandPreProcessListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
+
+        getServer().getPluginManager().registerEvents(new PlayerInteractListener(staffGUIManager), this);
         getServer().getPluginManager().registerEvents(new PlayerDropItemListener(), this);
-        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
+
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(staffGUIManager), this);
+        getServer().getPluginManager().registerEvents(new OpenInventoryListener(staffGUIManager, this), this);
     }
 
     private boolean setupChat() {

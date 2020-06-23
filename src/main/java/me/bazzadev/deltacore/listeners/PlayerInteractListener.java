@@ -1,6 +1,6 @@
 package me.bazzadev.deltacore.listeners;
 
-import me.bazzadev.deltacore.staffmode.StaffModeInventory;
+import me.bazzadev.deltacore.staffmode.StaffGUIManager;
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
 import me.bazzadev.deltacore.utilities.ColorUtil;
 import me.bazzadev.deltacore.utilities.Vars;
@@ -15,6 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import static me.bazzadev.deltacore.staffmode.StaffModeItems.viewPlayerList;
 
 public class PlayerInteractListener implements Listener {
+
+    private final StaffGUIManager staffGUIManager;
+
+    public PlayerInteractListener(StaffGUIManager staffGUIManager) {
+        this.staffGUIManager = staffGUIManager;
+    }
 
     @EventHandler
     public void onItemClickEvent(PlayerInteractEvent event) {
@@ -34,6 +40,6 @@ public class PlayerInteractListener implements Listener {
         }
 
         event.setCancelled(true);
-        event.getPlayer().openInventory(new StaffModeInventory().createGUI());
+        event.getPlayer().openInventory(staffGUIManager.getMainGUI());
     }
 }

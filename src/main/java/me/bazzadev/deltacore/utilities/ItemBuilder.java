@@ -9,6 +9,7 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -21,7 +22,7 @@ import org.bukkit.inventory.meta.SkullMeta;
  * @author NonameSL
  */
 public class ItemBuilder {
-    private ItemStack is;
+    private final ItemStack is;
     /**
      * Create a new ItemBuilder from scratch.
      * @param m The material to create the ItemBuilder with.
@@ -155,7 +156,7 @@ public class ItemBuilder {
     }
     /**
      * Remove a lore line.
-     * @param lore The lore to remove.
+     * @param line The lore to remove.
      */
     public ItemBuilder removeLoreLine(String line){
         ItemMeta im = is.getItemMeta();
@@ -214,9 +215,16 @@ public class ItemBuilder {
             LeatherArmorMeta im = (LeatherArmorMeta)is.getItemMeta();
             im.setColor(color);
             is.setItemMeta(im);
-        }catch(ClassCastException expected){}
+        }catch(ClassCastException ignored){}
         return this;
     }
+
+    public ItemBuilder removeNBTTag(ItemFlag itemFlag) {
+        is.addItemFlags(itemFlag);
+        return this;
+    }
+
+
     /**
      * Retrieves the itemstack from the ItemBuilder.
      * @return The itemstack created/modified by the ItemBuilder instance.

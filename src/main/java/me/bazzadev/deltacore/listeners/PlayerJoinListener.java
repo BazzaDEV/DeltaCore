@@ -31,14 +31,14 @@ public class PlayerJoinListener implements Listener {
 
         event.setJoinMessage(joinPrefix + ChatColor.GOLD + playerName + " has joined the server.");
 
-        if ( playerDataManager.getDatabaseCollection().countDocuments(new Document("uuid", playerUUIDString)) == 0) {
+        if ( PlayerDataManager.getDatabaseCollection().countDocuments(new Document("uuid", playerUUIDString)) == 0) {
             playerDataManager.initializePlayer(player);
         } else {
             Document filter = new Document("uuid", playerUUIDString);
-            Document playerData = playerDataManager.getDatabaseCollection().find(filter).first();
+            Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
 
             if ( !(playerData.getString("IGN").equalsIgnoreCase(playerName)) ) {
-                playerDataManager.getDatabaseCollection().updateOne(
+                PlayerDataManager.getDatabaseCollection().updateOne(
                         Filters.eq(filter),
                         set("IGN", playerName));
             }

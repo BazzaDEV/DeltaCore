@@ -2,12 +2,14 @@ package me.bazzadev.deltacore.utilities;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import me.bazzadev.deltacore.DeltaCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import java.lang.reflect.Field;
@@ -26,6 +28,17 @@ import org.apache.commons.codec.binary.Base64;
  * @author Dean B on 12/28/2016.
  */
 public class SkullCreator {
+
+    public static ItemStack getHeadWithPlayerData(Player player) {
+        return new ItemBuilder(SkullCreator.getPlayerHead(player))
+                .setName(ColorUtil.translate(DeltaCore.getChat().getPlayerPrefix(player) + player.getName()))
+                .addLoreLine(ColorUtil.translate("&7UUID: &8" + player.getUniqueId().toString()))
+                .addLoreLine(ColorUtil.translate("&7Rank: " + DeltaCore.getChat().getPrimaryGroup(player)))
+                .addLoreLine(ColorUtil.translate("&7AFK? " + ColorUtil.coloredAFKStatus(player)))
+                .addLoreLine(ColorUtil.translate("&7Currently in: " + ColorUtil.coloredWorld(player)))
+                .removeNBTTag(ItemFlag.HIDE_ATTRIBUTES)
+                .toItemStack();
+    }
 
     // Constants
     public static final ItemStack CRYSTAL_BALL = itemFromUrl("https://textures.minecraft.net/texture/2cf0ccf5a5f97097262e773bbf65c4d7d9a39938015bf00de4918620f034f9b0");
