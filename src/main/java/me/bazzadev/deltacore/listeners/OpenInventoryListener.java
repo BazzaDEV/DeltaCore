@@ -25,7 +25,7 @@ public class OpenInventoryListener implements Listener {
         if (event.getInventory().equals(staffGUIManager.getMainGUI())) {
             if (!staffGUIManager.getUpdate() && staffGUIManager.getMainGUI().getViewers().size() > 0) {
                 staffGUIManager.setUpdate(true);
-                System.out.println("started task");
+                // System.out.println("started task");
                 BukkitTask task = new UpdateInventoryItemsTask(staffGUIManager).runTaskTimerAsynchronously(plugin, 0, 10);
             }
         }

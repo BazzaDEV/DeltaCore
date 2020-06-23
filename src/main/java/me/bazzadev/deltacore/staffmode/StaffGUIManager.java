@@ -55,13 +55,13 @@ public class StaffGUIManager {
 
         UUID uuid = forPlayer.getUniqueId();
 
-        if (playerActionsMap.containsKey(uuid)) {
-            player.openInventory(playerActionsMap.get(uuid).getBukkitInventory());
-            player.sendMessage("got inv from hashmap");
-        } else {
-            player.sendMessage("inv not in hashmap, creating now");
+        if (!playerActionsMap.containsKey(uuid)) {
+            // player.sendMessage("inv not in hashmap, creating now");
             playerActionsMap.put(uuid, new PlayerActionsInventory(forPlayer));
         }
+
+        // player.sendMessage("got inv from hashmap");
+        player.openInventory(playerActionsMap.get(uuid).getBukkitInventory());
 
     }
 
@@ -70,11 +70,11 @@ public class StaffGUIManager {
         Player forPlayer = Bukkit.getPlayer(forUUID);
 
         if (!playerActionsMap.containsKey(forUUID)) {
-            player.sendMessage("inv not in hashmap, creating now");
+            // player.sendMessage("inv not in hashmap, creating now");
             playerActionsMap.put(forUUID, new PlayerActionsInventory(forPlayer));
         }
 
-        player.sendMessage("got inv from hashmap");
+        // player.sendMessage("got inv from hashmap");
         player.openInventory(playerActionsMap.get(forUUID).getBukkitInventory());
 
     }
