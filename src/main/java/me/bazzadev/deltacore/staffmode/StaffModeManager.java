@@ -87,7 +87,7 @@ public class StaffModeManager {
 
         player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have &cleft &7Staff Mode."));
 
-        player.sendMessage(ChatUtil.color("&dWould you like to be teleported back to your original location?"));
+
 
         TextComponent yes = new TextComponent(ChatUtil.color("&8[&a&l✔&8] &aYes"));
         TextComponent no = new TextComponent(ChatUtil.color("&8[&c&l✘&8] &cNo"));
@@ -101,11 +101,10 @@ public class StaffModeManager {
         toSend.addExtra("  ");
         toSend.addExtra(no);
 
-        ChatUtil.sendEmptyLines(1, player);
+        ChatUtil.sendEmptyLines(100, player);
 
+        player.sendMessage(ChatUtil.color("&dWould you like to be teleported back to your original location?"));
         player.spigot().sendMessage(toSend);
-
-        ChatUtil.sendEmptyLines(3, player);
 
     }
 

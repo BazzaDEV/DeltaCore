@@ -5,7 +5,6 @@ import me.bazzadev.deltacore.utilities.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -17,12 +16,16 @@ public class StaffGUIManager {
 
     private final Inventory mainGUI;
     private boolean isBeingViewed;
+    private boolean doHardRefresh;
     public static final String MAINGUI_INV_TITLE = ChatUtil.color("&dSM &7&l>> &fOnline Players");
 
     public StaffGUIManager() {
+
         mainGUI = Bukkit.createInventory(null, 27, MAINGUI_INV_TITLE);
         initializePlayerHeads();
+
         isBeingViewed = false;
+        doHardRefresh = false;
 
     }
 
@@ -38,6 +41,15 @@ public class StaffGUIManager {
         initializePlayerHeads();
     }
 
+    public void hardRefresh() {
+
+        mainGUI.clear();
+        refresh();
+
+        doHardRefresh = false;
+
+    }
+
 
     public Inventory getMainGUI() {
         return mainGUI;
@@ -51,7 +63,9 @@ public class StaffGUIManager {
         isBeingViewed = value;
     }
 
-
+    public boolean getDoHardRefresh() {
+        return doHardRefresh;
+    }
 
     public void openPlayerActionsGUI(Player player, Player forPlayer) {
 
@@ -81,12 +95,13 @@ public class StaffGUIManager {
 
     }
 
-    public void removePlayerFromCache(Player player, ItemStack head) {
+    public void removePlayerFromCache(Player player) {
 
         UUID uuid = player.getUniqueId();
         playerActionsMap.remove(uuid);
 
-        mainGUI.remove(head);
+        doHardRefresh = true;
+
     }
 
 

@@ -7,6 +7,7 @@ import me.bazzadev.deltacore.core.commands.CoordsCommand;
 import me.bazzadev.deltacore.core.commands.GamemodeCommand;
 import me.bazzadev.deltacore.core.commands.HealCommand;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
+import me.bazzadev.deltacore.inventory.commands.ClearInventoryCommand;
 import me.bazzadev.deltacore.inventory.commands.RestoreInventoryFromDeathCommand;
 import me.bazzadev.deltacore.listeners.*;
 import me.bazzadev.deltacore.staffmode.StaffGUIManager;
@@ -76,7 +77,7 @@ public final class DeltaCore extends JavaPlugin {
 
 //        this.getCommand("loadinv").setExecutor(new LoadInventoryCommand(playerInventoryManager));
 //        this.getCommand("saveinv").setExecutor(new SaveInventoryCommand(playerInventoryManager));
-//        this.getCommand("clearinv").setExecutor(new ClearInventoryCommand());
+        this.getCommand("clearinv").setExecutor(new ClearInventoryCommand());
         this.getCommand("restoreinv").setExecutor(new RestoreInventoryFromDeathCommand(playerInventoryManager));
 
         this.getCommand("staffmode").setExecutor(new StaffModeCommand(staffModeManager));

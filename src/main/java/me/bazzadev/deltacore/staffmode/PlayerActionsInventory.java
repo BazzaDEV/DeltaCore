@@ -27,16 +27,20 @@ public class PlayerActionsInventory {
     public static final String INV_TITLE = ChatUtil.color("&fPlayer: ");
 
     public PlayerActionsInventory(Player player) {
+
         this.player = player;
         inv = Bukkit.createInventory(null, 45, ChatUtil.color(INV_TITLE + ChatUtil.playerNameWithPrefix(player)));
         initializeItems();
+
     }
 
     private void initializeItems() {
+
         inv.setItem(SLOT_PLAYER_HEAD, SkullCreator.getHeadWithPlayerData(player));
         inv.setItem(SLOT_GO_BACK, Vars.GO_BACK);
         inv.setItem(SLOT_VIEW_INVENTORY, new ItemBuilder(Material.CHEST)
                                         .setName(ChatUtil.color("&eView Inventory"))
+                                        .addLoreLine(ChatUtil.color("&4&lALERT: &7This has been temporarily &c&lDISABLED&7."))
                                         .toItemStack());
         inv.setItem(SLOT_PUNISHMENTS, new ItemBuilder(Material.TNT)
                                         .setName(ChatUtil.color("&cPunishments"))
@@ -55,9 +59,11 @@ public class PlayerActionsInventory {
     }
 
     public static Player getPlayerFromGUIHead(Player player) {
+
         ItemStack targetHead = player.getOpenInventory().getTopInventory().getItem(PlayerActionsInventory.SLOT_PLAYER_HEAD);
         UUID targetUUID = UUID.fromString(ChatColor.stripColor(targetHead.getLore().get(0)).replace("UUID: ", "").trim());
         return Bukkit.getPlayer(targetUUID);
+
     }
 
 }

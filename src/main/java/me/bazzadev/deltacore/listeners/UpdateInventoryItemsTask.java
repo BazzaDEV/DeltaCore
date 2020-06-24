@@ -18,9 +18,11 @@ public class UpdateInventoryItemsTask extends BukkitRunnable {
             staffGUIManager.setUpdate(false);
             // System.out.println("cancelled task");
             cancel();
+        } else if (staffGUIManager.getDoHardRefresh()) {
+            staffGUIManager.hardRefresh();
+            // System.out.println("refreshed");
         } else {
             staffGUIManager.refresh();
-            // System.out.println("refreshed");
         }
 
     }

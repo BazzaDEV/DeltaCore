@@ -1,7 +1,6 @@
 package me.bazzadev.deltacore.listeners;
 
 import me.bazzadev.deltacore.staffmode.StaffGUIManager;
-import me.bazzadev.deltacore.utilities.SkullCreator;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +25,7 @@ public class PlayerLeaveListener implements Listener {
 
         event.setQuitMessage(leavePrefix + ChatColor.GOLD + playerName + " has left the server.");
 
-        staffGUIManager.removePlayerFromCache(player, SkullCreator.getHeadWithPlayerData(player));
+        staffGUIManager.removePlayerFromCache(player);
 
     }
 
