@@ -6,16 +6,13 @@ import me.bazzadev.deltacore.config.MongoDBConfig;
 import me.bazzadev.deltacore.core.commands.CoordsCommand;
 import me.bazzadev.deltacore.core.commands.GamemodeCommand;
 import me.bazzadev.deltacore.core.commands.HealCommand;
-import me.bazzadev.deltacore.listeners.*;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
-import me.bazzadev.deltacore.inventory.commands.ClearInventoryCommand;
-import me.bazzadev.deltacore.inventory.commands.LoadInventoryCommand;
-import me.bazzadev.deltacore.inventory.commands.SaveInventoryCommand;
+import me.bazzadev.deltacore.inventory.commands.RestoreInventoryFromDeathCommand;
+import me.bazzadev.deltacore.listeners.*;
 import me.bazzadev.deltacore.staffmode.StaffGUIManager;
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
 import me.bazzadev.deltacore.staffmode.commands.StaffModeCommand;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
-
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -77,9 +74,10 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("gmc").setExecutor(new GamemodeCommand());
         this.getCommand("gma").setExecutor(new GamemodeCommand());
 
-        this.getCommand("loadinv").setExecutor(new LoadInventoryCommand(playerInventoryManager));
-        this.getCommand("saveinv").setExecutor(new SaveInventoryCommand(playerInventoryManager));
-        this.getCommand("clearinv").setExecutor(new ClearInventoryCommand());
+//        this.getCommand("loadinv").setExecutor(new LoadInventoryCommand(playerInventoryManager));
+//        this.getCommand("saveinv").setExecutor(new SaveInventoryCommand(playerInventoryManager));
+//        this.getCommand("clearinv").setExecutor(new ClearInventoryCommand());
+        this.getCommand("restoreinv").setExecutor(new RestoreInventoryFromDeathCommand(playerInventoryManager));
 
         this.getCommand("staffmode").setExecutor(new StaffModeCommand(staffModeManager));
 
@@ -88,7 +86,8 @@ public final class DeltaCore extends JavaPlugin {
 
     public void registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager), this);
-        getServer().getPluginManager().registerEvents(new PlayerLeaveListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerLeaveListener(staffGUIManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(playerInventoryManager), this);
 
         getServer().getPluginManager().registerEvents(new PlayerCommandPreProcessListener(), this);
 

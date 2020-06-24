@@ -1,9 +1,8 @@
 package me.bazzadev.deltacore.listeners;
+
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
-
 import org.bson.Document;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,6 +32,7 @@ public class PlayerJoinListener implements Listener {
 
         if ( PlayerDataManager.getDatabaseCollection().countDocuments(new Document("uuid", playerUUIDString)) == 0) {
             playerDataManager.initializePlayer(player);
+
         } else {
             Document filter = new Document("uuid", playerUUIDString);
             Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
@@ -42,6 +42,7 @@ public class PlayerJoinListener implements Listener {
                         Filters.eq(filter),
                         set("IGN", playerName));
             }
+
         }
 
     }

@@ -24,30 +24,34 @@ public class PlayerInventoryManager {
     }
 
 
-    public void saveContents(Player player) {
+    public void saveContents(Player player, String basePath) {
 
         PlayerInventory playerInv = player.getInventory();
         String playerUUIDString = player.getUniqueId().toString();
 
         String[] playerInventoryToBase64 = playerInventoryToBase64(playerInv);
 
-        String pathToInv = "inventory.inv";
-        String pathToArmor = "inventory.armor";
-
         PlayerDataManager.getDatabaseCollection().updateOne(
                 Filters.eq("uuid", playerUUIDString),
-                combine(set(pathToInv, playerInventoryToBase64[0]),
-                        set(pathToArmor, playerInventoryToBase64[1])));
+                combine(set(basePath + ".inv", playerInventoryToBase64[0]),
+                        set(basePath + ".armor", playerInventoryToBase64[1])));
 
     }
 
-    public void loadContents(Player player) {
+    public void loadContents(Player player, String[] basePath) {
 
         String playerUUIDString = player.getUniqueId().toString();
 
         Document filter = new Document("uuid", playerUUIDString);
         Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
-        Document inventory = (Document) playerData.get("inventory");
+
+        Document inventory = playerData;
+
+        for (int i=0; i < basePath.length; i++) {
+
+            inventory = (Document) inventory.get(basePath[i]);
+
+        }
 
         String invBase64 = inventory.getString("inv");
         String armorBase64 = inventory.getString("armor");

@@ -31,11 +31,11 @@ public class SkullCreator {
 
     public static ItemStack getHeadWithPlayerData(Player player) {
         return new ItemBuilder(SkullCreator.getPlayerHead(player))
-                .setName(ColorUtil.translate(DeltaCore.getChat().getPlayerPrefix(player) + player.getName()))
-                .addLoreLine(ColorUtil.translate("&7UUID: &8" + player.getUniqueId().toString()))
-                .addLoreLine(ColorUtil.translate("&7Rank: " + DeltaCore.getChat().getPrimaryGroup(player)))
-                .addLoreLine(ColorUtil.translate("&7AFK? " + ColorUtil.coloredAFKStatus(player)))
-                .addLoreLine(ColorUtil.translate("&7Currently in: " + ColorUtil.coloredWorld(player)))
+                .setName(ChatUtil.color(DeltaCore.getChat().getPlayerPrefix(player) + player.getName()))
+                .addLoreLine(ChatUtil.color("&7UUID: &8" + player.getUniqueId().toString()))
+                .addLoreLine(ChatUtil.color("&7Rank: " + DeltaCore.getChat().getPrimaryGroup(player)))
+                .addLoreLine(ChatUtil.color("&7AFK? " + ChatUtil.coloredAFKStatus(player)))
+                .addLoreLine(ChatUtil.color("&7Currently in: " + ChatUtil.coloredWorld(player)))
                 .removeNBTTag(ItemFlag.HIDE_ATTRIBUTES)
                 .toItemStack();
     }

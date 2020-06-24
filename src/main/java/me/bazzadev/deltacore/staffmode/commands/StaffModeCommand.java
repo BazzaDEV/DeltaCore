@@ -1,7 +1,11 @@
 package me.bazzadev.deltacore.staffmode.commands;
 
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
+import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,23 +22,50 @@ public class StaffModeCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] strings) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if (command.getName().equalsIgnoreCase("staffmode") && sender instanceof Player) {
+        if (command.getName().equalsIgnoreCase("staffmode")) {
 
-            Player player = (Player) sender;
+            if (sender instanceof Player) {
 
-            if (player.hasPermission("deltacore.staffmode")) {
-                staffModeManager.toggle(player);
+                Player player = (Player) sender;
 
-            } else {
-                player.sendMessage(Vars.NO_PERMISSION);
+                if (player.hasPermission("deltacore.staffmode")) {
+                    if (args.length==0) {
+
+                        staffModeManager.toggle(player);
+                        return true;
+
+                    } else if (args[0].equalsIgnoreCase("tppos")) {
+
+                        Player p = Bukkit.getPlayer(args[1]);
+
+                        World world = Bukkit.getWorld(args[2]);
+                        double x = Double.parseDouble(args[3]);
+                        double y = Double.parseDouble(args[4]);
+                        double z = Double.parseDouble(args[5]);
+
+                        Location location = new Location(world, x, y, z);
+
+                        p.teleport(location);
+
+                        ChatUtil.sendEmptyLines(100, player);
+                        p.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported back to your original location."));
+
+                        return true;
+                    }
+
+                } else {
+                    player.sendMessage(Vars.NO_PERMISSION);
+                }
+
+                return true;
+
             }
-
-            return true;
 
         }
 
         return false;
     }
+
 }

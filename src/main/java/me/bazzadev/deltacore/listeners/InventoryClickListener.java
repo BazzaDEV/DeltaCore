@@ -2,8 +2,8 @@ package me.bazzadev.deltacore.listeners;
 
 import me.bazzadev.deltacore.staffmode.PlayerActionsInventory;
 import me.bazzadev.deltacore.staffmode.StaffGUIManager;
+import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,20 +29,29 @@ public class InventoryClickListener implements Listener {
         if (itemClicked == null || itemClicked.getType() == Material.AIR) return;
 
         Player player = (Player) event.getWhoClicked();
+        Player targetPlayer;
 
         if (event.getView().getTitle().startsWith(PlayerActionsInventory.INV_TITLE)) {
+
             event.setCancelled(true);
+
             if (itemClicked.equals(Vars.GO_BACK)) {
                 player.openInventory(staffGUIManager.getMainGUI());
+
             } else if (itemClicked.getType().equals(Material.CHEST)) {
-                ItemStack targetHead = player.getOpenInventory().getTopInventory().getItem(PlayerActionsInventory.SLOT_PLAYER_HEAD);
-                UUID targetUUID = UUID.fromString(ChatColor.stripColor(targetHead.getLore().get(0)).replace("UUID: ", "").trim());
-                Player targetPlayer = Bukkit.getPlayer(targetUUID);
+                targetPlayer = PlayerActionsInventory.getPlayerFromGUIHead(player);
                 player.openInventory(targetPlayer.getInventory());
+
+            } else if (itemClicked.getType().equals(Material.ENDER_PEARL)) {
+                targetPlayer = PlayerActionsInventory.getPlayerFromGUIHead(player);
+                player.teleportAsync(targetPlayer.getLocation());
+                player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to " + ChatUtil.playerNameWithPrefix(player) + "&7's location."));
+
             }
 
-        } else if (event.getView().getTitle().equals(StaffGUIManager.INV_TITLE)) {
+        } else if (event.getView().getTitle().equals(StaffGUIManager.MAINGUI_INV_TITLE)) {
             event.setCancelled(true);
+
             String targetUUIDString = ChatColor.stripColor(itemClicked.getLore().get(0)).replace("UUID: ", "").trim();
             UUID targetUUID = UUID.fromString(targetUUIDString);
             staffGUIManager.openPlayerActionsGUI(player, targetUUID);

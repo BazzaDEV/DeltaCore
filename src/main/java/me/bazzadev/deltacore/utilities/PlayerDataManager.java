@@ -23,9 +23,15 @@ public class PlayerDataManager {
     private static MongoCollection<Document> col;
 
     public void initialize() {
-        mongoClient = MongoClients.create(mongoDBConfig.get().getString("connection-string"));
-        database = mongoClient.getDatabase(mongoDBConfig.get().getString("database"));
-        col = database.getCollection(mongoDBConfig.get().getString("collections.player-data"));
+
+        try {
+            mongoClient = MongoClients.create(mongoDBConfig.get().getString("connection-string"));
+            database = mongoClient.getDatabase(mongoDBConfig.get().getString("database"));
+            col = database.getCollection(mongoDBConfig.get().getString("collections.player-data"));
+        } catch (NullPointerException e) {
+            System.out.println("You need to enter your MongoDB credentials in plugins/DeltaCore/mongodb.yml");
+        }
+
     }
 
     public static MongoCollection<Document> getDatabaseCollection() {
@@ -41,12 +47,30 @@ public class PlayerDataManager {
                                            .append("status",
                                                    new Document("afk", false)
                                                         .append("staffmode", false))
-                                           .append("inventory",
-                                                   new Document("inv", playerInventoryToBase64[0])
-                                                        .append("armor", playerInventoryToBase64[1]));
-
+                                           .append("staffmode-data",
+                                                   new Document("originallocation",
+                                                           new Document("World", player.getLocation().getWorld().getName())
+                                                                .append("X", player.getLocation().getBlockX())
+                                                                .append("Y", player.getLocation().getBlockY())
+                                                                .append("Z", player.getLocation().getBlockZ()))
+                                                   .append("survival-inventory",
+                                                           new Document("inv", playerInventoryToBase64[0])
+                                                                   .append("armor", playerInventoryToBase64[1])))
+                                           .append("last-death",
+                                                   new Document("inventory",
+                                                           new Document("inv", playerInventoryToBase64[0])
+                                                                   .append("armor", playerInventoryToBase64[1])));
 
         col.insertOne(playerData);
 
     }
+
+    public Document getPlayerDocument(Player player) {
+
+        String playerUUIDString = player.getUniqueId().toString();
+        Document filter = new Document("uuid", playerUUIDString);
+
+        return col.find(filter).first();
+    }
+
 }

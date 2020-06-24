@@ -2,7 +2,7 @@ package me.bazzadev.deltacore.listeners;
 
 import me.bazzadev.deltacore.staffmode.StaffGUIManager;
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
-import me.bazzadev.deltacore.utilities.ColorUtil;
+import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class PlayerInteractListener implements Listener {
         if (!itemUsed.getItemMeta().equals(viewPlayerList.getItemMeta())) return;
 
         if (event.getAction()== Action.LEFT_CLICK_AIR || event.getAction()==Action.LEFT_CLICK_BLOCK) {
-            player.sendMessage(ColorUtil.translate(Vars.PLUGIN_PREFIX + "&cTry right-clicking to access the menu."));
+            player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&cTry right-clicking to access the menu."));
             return;
         }
 
