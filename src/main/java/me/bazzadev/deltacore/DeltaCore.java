@@ -1,5 +1,8 @@
 package me.bazzadev.deltacore;
 
+import co.aikar.taskchain.BukkitTaskChainFactory;
+import co.aikar.taskchain.TaskChain;
+import co.aikar.taskchain.TaskChainFactory;
 import me.bazzadev.deltacore.afk.AFKCommand;
 import me.bazzadev.deltacore.afk.AFKManager;
 import me.bazzadev.deltacore.config.MongoDBConfig;
@@ -8,7 +11,9 @@ import me.bazzadev.deltacore.core.commands.GamemodeCommand;
 import me.bazzadev.deltacore.core.commands.HealCommand;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
 import me.bazzadev.deltacore.inventory.commands.ClearInventoryCommand;
+import me.bazzadev.deltacore.inventory.commands.LoadInventoryCommand;
 import me.bazzadev.deltacore.inventory.commands.RestoreInventoryFromDeathCommand;
+import me.bazzadev.deltacore.inventory.commands.SaveInventoryCommand;
 import me.bazzadev.deltacore.listeners.*;
 import me.bazzadev.deltacore.staffmode.StaffGUIManager;
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
@@ -33,6 +38,14 @@ public final class DeltaCore extends JavaPlugin {
 
     private StaffGUIManager staffGUIManager;
 
+    private static TaskChainFactory taskChainFactory;
+    public static <T> TaskChain<T> newChain() {
+        return taskChainFactory.newChain();
+    }
+    public static <T> TaskChain<T> newSharedChain(String name) {
+        return taskChainFactory.newSharedChain(name);
+    }
+
     @Override
     public void onEnable() {
 
@@ -47,6 +60,8 @@ public final class DeltaCore extends JavaPlugin {
 
         registerCommands();
         registerEvents();
+
+        taskChainFactory = BukkitTaskChainFactory.create(this);
 
     }
 
@@ -75,8 +90,8 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("gmc").setExecutor(new GamemodeCommand());
         this.getCommand("gma").setExecutor(new GamemodeCommand());
 
-//        this.getCommand("loadinv").setExecutor(new LoadInventoryCommand(playerInventoryManager));
-//        this.getCommand("saveinv").setExecutor(new SaveInventoryCommand(playerInventoryManager));
+        this.getCommand("loadinv").setExecutor(new LoadInventoryCommand(playerInventoryManager));
+        this.getCommand("saveinv").setExecutor(new SaveInventoryCommand(playerInventoryManager));
         this.getCommand("clearinv").setExecutor(new ClearInventoryCommand());
         this.getCommand("restoreinv").setExecutor(new RestoreInventoryFromDeathCommand(playerInventoryManager));
 

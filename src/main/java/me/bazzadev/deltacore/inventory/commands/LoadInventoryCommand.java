@@ -20,14 +20,14 @@ public class LoadInventoryCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        /*if (command.getName().equalsIgnoreCase("loadinv")) {
+        if (command.getName().equalsIgnoreCase("loadinv")) {
 
             if (sender instanceof Player) {
 
                 Player player = (Player) sender;
 
                 if (player.hasPermission("deltacore.loadinv.self")) {
-                    playerInventoryManager.loadContents(player, );
+                    playerInventoryManager.loadContents(player, PlayerInventoryManager.TEST_BASE_PATH_ARR);
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7Your inventory has been &arestored&7."));
 
                 } else {
@@ -39,7 +39,7 @@ public class LoadInventoryCommand implements CommandExecutor {
             }
 
 
-        }*/
+        }
 
         return false;
     }

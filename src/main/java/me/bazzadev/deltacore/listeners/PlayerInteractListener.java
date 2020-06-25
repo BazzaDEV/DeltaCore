@@ -27,8 +27,11 @@ public class PlayerInteractListener implements Listener {
 
         ItemStack itemUsed = event.getItem();
         Player player = event.getPlayer();
+        String invName = player.getOpenInventory().getTopInventory().toString();
 
         if (!StaffModeManager.getStatus(player)) return;
+
+        if (!invName.contains("CraftInventoryCrafting")) return;
 
         if (itemUsed == null || itemUsed.getType() == Material.AIR) return;
 

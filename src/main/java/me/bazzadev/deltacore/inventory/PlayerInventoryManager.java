@@ -1,6 +1,7 @@
 package me.bazzadev.deltacore.inventory;
 
 import com.mongodb.client.model.Filters;
+import me.bazzadev.deltacore.DeltaCore;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bson.Document;
@@ -17,6 +18,9 @@ import static me.bazzadev.deltacore.utilities.InventoryUtil.playerInventoryToBas
 
 public class PlayerInventoryManager {
 
+    public static final String TEST_BASE_PATH = "test.inventory";
+    public static final String[] TEST_BASE_PATH_ARR = { "test", "inventory" };
+
     private final PlayerDataManager playerDataManager;
 
     public PlayerInventoryManager(PlayerDataManager playerDataManager) {
@@ -31,10 +35,12 @@ public class PlayerInventoryManager {
 
         String[] playerInventoryToBase64 = playerInventoryToBase64(playerInv);
 
-        PlayerDataManager.getDatabaseCollection().updateOne(
-                Filters.eq("uuid", playerUUIDString),
-                combine(set(basePath + ".inv", playerInventoryToBase64[0]),
-                        set(basePath + ".armor", playerInventoryToBase64[1])));
+        DeltaCore.newChain()
+                .async(() -> PlayerDataManager.getDatabaseCollection().updateOne(
+                        Filters.eq("uuid", playerUUIDString),
+                        combine(set(basePath + ".inv", playerInventoryToBase64[0]),
+                                set(basePath + ".armor", playerInventoryToBase64[1]))))
+                .execute(() -> System.out.println("Successfully saved inventory contents for player " + player.getName()));
 
     }
 
@@ -43,7 +49,36 @@ public class PlayerInventoryManager {
         String playerUUIDString = player.getUniqueId().toString();
 
         Document filter = new Document("uuid", playerUUIDString);
-        Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
+
+        DeltaCore.newChain()
+                .asyncFirst(() -> {
+                    Document playerdata = PlayerDataManager.getDatabaseCollection().find(filter).first();
+                    Document inventory = fileFromPath(playerdata, basePath);
+
+                    String invBase64 = inventory.getString("inv");
+                    String armorBase64 = inventory.getString("armor");
+
+                    return new String[]{invBase64, armorBase64};
+                })
+                .syncLast((invContents) -> {
+                    try {
+
+                        ItemStack[] inv = itemStackArrayFromBase64(invContents[0]);
+                        ItemStack[] armor = itemStackArrayFromBase64(invContents[1]);
+
+                        player.getInventory().setContents(inv);
+                        player.getInventory().setArmorContents(armor);
+
+                    } catch (IOException e) {
+                        player.sendMessage(Vars.PLUGIN_PREFIX + "An error occurred.");
+                    }
+                })
+                .execute(() -> System.out.println("Successfully loaded inventory contents for player " + player.getName()));
+
+
+
+
+        /*Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
 
         Document inventory = playerData;
 
@@ -66,8 +101,22 @@ public class PlayerInventoryManager {
 
         } catch (IOException e) {
             player.sendMessage(Vars.PLUGIN_PREFIX + "An error occurred.");
-        }
+        }*/
+
+    }
+
+    public Document fileFromPath(Document playerData, String[] basePath) {
+
+        Document inventory = playerData;
+
+        for (int i=0; i < basePath.length; i++) {
+
+            inventory = (Document) inventory.get(basePath[i]);
 
         }
+
+        return inventory;
+
+    }
 
 }

@@ -51,7 +51,7 @@ public class InventoryClickListener implements Listener {
 
             } else if (itemClicked.getType().equals(Material.ENDER_PEARL)) {
                 targetPlayer = PlayerActionsInventory.getPlayerFromGUIHead(player);
-                player.teleportAsync(targetPlayer.getLocation());
+                player.teleport(targetPlayer.getLocation());
                 player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to " + ChatUtil.playerNameWithPrefix(targetPlayer) + "&7's location."));
 
             }
@@ -60,7 +60,7 @@ public class InventoryClickListener implements Listener {
 
             event.setCancelled(true);
 
-            String targetUUIDString = ChatColor.stripColor(itemClicked.getLore().get(0)).replace("UUID: ", "").trim();
+            String targetUUIDString = ChatColor.stripColor(itemClicked.getItemMeta().getLore().get(0)).replace("UUID: ", "").trim();
             UUID targetUUID = UUID.fromString(targetUUIDString);
             staffGUIManager.openPlayerActionsGUI(player, targetUUID);
 

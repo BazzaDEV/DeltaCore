@@ -61,7 +61,8 @@ public class PlayerActionsInventory {
     public static Player getPlayerFromGUIHead(Player player) {
 
         ItemStack targetHead = player.getOpenInventory().getTopInventory().getItem(PlayerActionsInventory.SLOT_PLAYER_HEAD);
-        UUID targetUUID = UUID.fromString(ChatColor.stripColor(targetHead.getLore().get(0)).replace("UUID: ", "").trim());
+
+        UUID targetUUID = UUID.fromString(ChatColor.stripColor(targetHead.getItemMeta().getLore().get(0)).replace("UUID: ", "").trim());
         return Bukkit.getPlayer(targetUUID);
 
     }

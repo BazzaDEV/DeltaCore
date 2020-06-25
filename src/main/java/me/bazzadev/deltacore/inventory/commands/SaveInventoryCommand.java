@@ -20,14 +20,14 @@ public class SaveInventoryCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        /*if (command.getName().equalsIgnoreCase("saveinv")) {
+        if (command.getName().equalsIgnoreCase("saveinv")) {
 
             if (sender instanceof Player) {
 
                 Player player = (Player) sender;
 
                 if (player.hasPermission("deltacore.saveinv.self")) {
-                    playerInventoryManager.saveContents(player, );
+                    playerInventoryManager.saveContents(player, PlayerInventoryManager.TEST_BASE_PATH);
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7Your inventory has been &bsaved&7."));
 
                 } else {
@@ -38,7 +38,7 @@ public class SaveInventoryCommand implements CommandExecutor {
 
             }
 
-        }*/
+        }
 
         return false;
     }
