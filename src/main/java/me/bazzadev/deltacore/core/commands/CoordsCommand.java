@@ -1,7 +1,8 @@
 package me.bazzadev.deltacore.core.commands;
 
+import me.bazzadev.deltacore.DeltaCore;
+import me.bazzadev.deltacore.utilities.ChatUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,7 @@ public class CoordsCommand implements CommandExecutor {
                 int y = player.getLocation().getBlockY();
                 int z = player.getLocation().getBlockZ();
 
-                Bukkit.broadcastMessage(ChatColor.GREEN + playerName + ChatColor.DARK_GRAY + ChatColor.BOLD + " >> " + ChatColor.GRAY + ChatColor.UNDERLINE + "X:" + ChatColor.WHITE + " " + x + " " + ChatColor.GRAY + "Y:" + ChatColor.WHITE + " " + y + " " + ChatColor.GRAY + ChatColor.UNDERLINE + "Z:" + ChatColor.WHITE + " " + z);
+                Bukkit.broadcastMessage(ChatUtil.color(DeltaCore.getChat().getPlayerPrefix(player) + playerName + " &8&l>> &7&nX:&r &f" + x + " &r&7Y: &f" + y + " &7&nZ:&r &f" + z + " &7(" + ChatUtil.coloredWorld(player) + "&7)"));
 
             } else {
                 sender.sendMessage("You can only execute this command in-game.");
