@@ -5,6 +5,10 @@ api-version: 1.15
 authors: [BazzaDEV]
 depend: [Vault]
 commands:
+  portalhelper:
+    description: Calculates the correct coordinates for nether placement.
+    usage: /portalhelper
+
   heal:
     description: Heals the player.
     usage: /heal [player]
