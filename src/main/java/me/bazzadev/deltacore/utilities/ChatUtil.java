@@ -33,12 +33,20 @@ public class ChatUtil {
 
     public static String coloredWorld(Player player) {
         World.Environment env = player.getWorld().getEnvironment();
-        if (env==World.Environment.NORMAL) {
-            return ChatUtil.color("&2Overworld");
-        } else if (env==World.Environment.NETHER) {
-            return ChatUtil.color("&4Nether");
+        return getColoredWorld(env);
+
+    }
+
+    public static String getColoredWorld(World.Environment environment) {
+        if (environment==World.Environment.NORMAL) {
+            return ChatUtil.color("&2The Overworld");
+        } else if (environment==World.Environment.NETHER) {
+            return ChatUtil.color("&4The Nether");
         } else {
             return ChatUtil.color("&5The End");
         }
+
+
     }
+
 }
