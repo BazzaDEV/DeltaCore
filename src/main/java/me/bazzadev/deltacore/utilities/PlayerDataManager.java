@@ -77,6 +77,9 @@ public class PlayerDataManager {
                 .execute();
 
 
+        // Same task as above, but does not run async obviously.
+
+
 //        Document playerData = new Document("uuid", player.getUniqueId().toString())
 //                                           .append("test",
 //                                                   new Document("inventory",

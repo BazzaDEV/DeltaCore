@@ -49,6 +49,8 @@ public final class DeltaCore extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        taskChainFactory = BukkitTaskChainFactory.create(this);
+
         createConfigs();
 
         setupChat();
@@ -60,8 +62,6 @@ public final class DeltaCore extends JavaPlugin {
 
         registerCommands();
         registerEvents();
-
-        taskChainFactory = BukkitTaskChainFactory.create(this);
 
     }
 

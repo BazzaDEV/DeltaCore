@@ -31,7 +31,7 @@ public class InventoryClickListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         Player targetPlayer;
 
-        if (player.getOpenInventory().getTitle().startsWith("Player")) {
+        if (player.getOpenInventory().getTitle().equals("Player")) {
 
             event.setCancelled(true);
             return;

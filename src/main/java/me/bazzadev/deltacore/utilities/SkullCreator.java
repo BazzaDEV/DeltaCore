@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
@@ -88,27 +90,29 @@ public class SkullCreator {
         return skull;
     }
 
+
     public static ItemStack getCustomHeadfromURL(String url) {
 
-        ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        if (url.isEmpty()) return head;
+
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+
         byte[] encodedData = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", url).getBytes());
+
         profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
-        Field profileField = null;
+
         try {
-            profileField = skullMeta.getClass().getDeclaredField("profile");
-        } catch (NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
+            Method mtd = skullMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
+            mtd.setAccessible(true);
+            mtd.invoke(skullMeta, profile);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+            ex.printStackTrace();
         }
-        profileField.setAccessible(true);
-        try {
-            profileField.set(skullMeta, profile);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        skull.setItemMeta(skullMeta);
-        return skull;
+
+        head.setItemMeta(skullMeta);
+        return head;
     }
 
 
