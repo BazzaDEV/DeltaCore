@@ -163,55 +163,6 @@ public class GamemodeCommand implements CommandExecutor {
 
             return true;
 
-        } else if (command.getName().equalsIgnoreCase("gmspec")) {
-
-            if (sender instanceof Player) {
-                //sender is a player on the server
-                Player player = (Player) sender;
-
-                // check if player is setting own gamemode or other player's gamemode
-                if (args.length == 0) {
-                    //player is setting own gamemode
-                    if (player.hasPermission("deltacore.gmspec")) {
-                        changeGamemode(player, GameMode.SPECTATOR);
-
-                    } else {
-                        player.sendMessage(Vars.NO_PERMISSION);
-                    }
-                } else if (args.length == 1) {
-                    //player is setting someone else's gamemode
-                    if (player.hasPermission("deltacore.gmspec.others")) {
-                        Player target = Bukkit.getPlayer(args[0]);
-                        if (target != null) {
-                            changeGamemode(target, GameMode.SPECTATOR);
-                        } else {
-                            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
-                        }
-                    } else {
-                        player.sendMessage(Vars.NO_PERMISSION);
-                    }
-                }
-
-            } else {
-                // Console is sending the command
-
-                if (args.length > 0) {
-                    // Console's trying to change its own gamemode
-                    sender.sendMessage(ChatColor.RED + "You can't change the console's gamemode, silly!");
-
-                } else if (args.length == 1) {
-                    Player target = Bukkit.getPlayer(args[0]);
-                    if (target != null) {
-                        changeGamemode(target, GameMode.SPECTATOR);
-                    } else {
-                        sender.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
-                    }
-                }
-
-            }
-
-            return true;
-
         }
 
         return false;

@@ -49,6 +49,3 @@ commands:
   gmc:
     description: Sets the player's gamemode to creative.
     usage: /gmc [player]
-  gmspec:
-    description: Sets the player's gamemode to spectator.
-      usage: /gmspec [player]
