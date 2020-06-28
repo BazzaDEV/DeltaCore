@@ -90,6 +90,7 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("gms").setExecutor(new GamemodeCommand());
         this.getCommand("gmc").setExecutor(new GamemodeCommand());
         this.getCommand("gma").setExecutor(new GamemodeCommand());
+        this.getCommand("gmspec").setExecutor(new GamemodeCommand());
 
         this.getCommand("loadinv").setExecutor(new LoadInventoryCommand(playerInventoryManager));
         this.getCommand("saveinv").setExecutor(new SaveInventoryCommand(playerInventoryManager));
