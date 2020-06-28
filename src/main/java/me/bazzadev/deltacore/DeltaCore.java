@@ -16,6 +16,8 @@ import me.bazzadev.deltacore.inventory.commands.LoadInventoryCommand;
 import me.bazzadev.deltacore.inventory.commands.RestoreInventoryFromDeathCommand;
 import me.bazzadev.deltacore.inventory.commands.SaveInventoryCommand;
 import me.bazzadev.deltacore.listeners.*;
+import me.bazzadev.deltacore.oneplayersleep.BossBarCountdown;
+import me.bazzadev.deltacore.oneplayersleep.SleepManager;
 import me.bazzadev.deltacore.staffmode.StaffGUIManager;
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
 import me.bazzadev.deltacore.staffmode.commands.StaffModeCommand;
@@ -33,6 +35,9 @@ public final class DeltaCore extends JavaPlugin {
     private final PlayerInventoryManager playerInventoryManager = new PlayerInventoryManager(playerDataManager);
     private final StaffModeManager staffModeManager = new StaffModeManager(playerInventoryManager);
     private final AFKManager afkManager = new AFKManager();
+
+    private final BossBarCountdown bossBarCountdown = new BossBarCountdown(this);
+    private final SleepManager sleepManager = new SleepManager(bossBarCountdown);
 
     private static Chat chat = null;
     private static Permission perms = null;
@@ -68,6 +73,7 @@ public final class DeltaCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
         saveConfigs();
     }
 
@@ -104,9 +110,10 @@ public final class DeltaCore extends JavaPlugin {
     }
 
     public void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager, bossBarCountdown), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(staffGUIManager), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(playerInventoryManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerSleepListener(sleepManager), this);
 
         getServer().getPluginManager().registerEvents(new PlayerCommandPreProcessListener(), this);
 
