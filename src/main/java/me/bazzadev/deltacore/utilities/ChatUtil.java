@@ -20,6 +20,10 @@ public class ChatUtil {
 
     }
 
+    public static String getPrefix(Player player) {
+        return DeltaCore.getChat().getPlayerPrefix(player);
+    }
+
     public static String playerNameWithPrefix(Player player) {
         return DeltaCore.getChat().getPlayerPrefix(player) + player.getName();
     }

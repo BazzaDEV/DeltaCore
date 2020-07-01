@@ -1,6 +1,7 @@
 package me.bazzadev.deltacore.afk;
 
 import com.mongodb.client.model.Filters;
+import com.nametagedit.plugin.NametagEdit;
 import me.bazzadev.deltacore.DeltaCore;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
@@ -32,7 +33,7 @@ public class AFKManager {
 
     }
 
-    public void enable() {
+    private void enable() {
 
         DeltaCore.newChain()
                 .asyncFirst(() -> PlayerDataManager.getDatabaseCollection().updateOne(
@@ -40,13 +41,14 @@ public class AFKManager {
                                         set("status.afk", true)))
                 .sync(() -> {
                     player.setPlayerListName(ChatColor.GRAY + playerName);
+                    NametagEdit.getApi().setPrefix(player, Vars.PLAYER_AFK_PREFIX);
                     player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are now AFK."));
                 })
                 .execute();
 
     }
 
-    public void disable() {
+    private void disable() {
 
         DeltaCore.newChain()
                 .asyncFirst(() -> PlayerDataManager.getDatabaseCollection().updateOne(
@@ -54,6 +56,7 @@ public class AFKManager {
                         set("status.afk", false)))
                 .sync(() -> {
                     player.setPlayerListName(ChatColor.RESET + playerName);
+                    NametagEdit.getApi().setPrefix(player, "");
                     player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are no longer AFK."));
                 })
                 .execute();

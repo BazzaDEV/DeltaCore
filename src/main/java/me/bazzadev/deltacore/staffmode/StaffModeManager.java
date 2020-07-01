@@ -1,6 +1,7 @@
 package me.bazzadev.deltacore.staffmode;
 
 import com.mongodb.client.model.Filters;
+import com.nametagedit.plugin.NametagEdit;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
@@ -44,25 +45,24 @@ public class StaffModeManager {
 
     }
 
-    public void enable() {
+    private void enable() {
 
         storeData();
-
         player.getInventory().clear();
         player.setGameMode(GameMode.CREATIVE);
-
         setupStaffInventory();
+        NametagEdit.getApi().setPrefix(player, Vars.PLAYER_STAFFMODE_PREFIX);
 
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7You have &aentered &7Staff Mode."));
 
 
     }
 
-    public void disable() {
+    private void disable() {
 
         loadData();
-
         player.setGameMode(GameMode.SURVIVAL);
+        NametagEdit.getApi().setPrefix(player, "");
 
         sendExitOptions();
     }
