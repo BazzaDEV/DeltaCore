@@ -6,10 +6,7 @@ import co.aikar.taskchain.TaskChainFactory;
 import me.bazzadev.deltacore.afk.AFKCommand;
 import me.bazzadev.deltacore.afk.AFKManager;
 import me.bazzadev.deltacore.config.MongoDBConfig;
-import me.bazzadev.deltacore.core.commands.CoordsCommand;
-import me.bazzadev.deltacore.core.commands.GamemodeCommand;
-import me.bazzadev.deltacore.core.commands.HealCommand;
-import me.bazzadev.deltacore.core.commands.PortalHelperCommand;
+import me.bazzadev.deltacore.core.commands.*;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
 import me.bazzadev.deltacore.inventory.commands.ClearInventoryCommand;
 import me.bazzadev.deltacore.inventory.commands.LoadInventoryCommand;
@@ -100,6 +97,7 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("staffmode").setExecutor(new StaffModeCommand(staffModeManager));
 
         this.getCommand("afk").setExecutor(new AFKCommand(afkManager));
+        this.getCommand("fly").setExecutor(new FlyCommand());
 
         this.getCommand("portalhelper").setExecutor(new PortalHelperCommand());
     }

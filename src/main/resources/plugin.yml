@@ -39,6 +39,9 @@ commands:
   afk:
     description: Toggles AFK status.
     usage: /afk [player]
+  fly:
+    description: Gives you levitation powers.
+    usage: /fly [player]
 
   gms:
     description: Sets the player's gamemode to survival.
