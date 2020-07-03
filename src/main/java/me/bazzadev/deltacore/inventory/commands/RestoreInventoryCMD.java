@@ -10,14 +10,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class RestoreInventoryFromDeathCommand implements CommandExecutor {
+public class RestoreInventoryCMD implements CommandExecutor {
 
     public static final String BASE_PATH = "last-death.inventory";
     public static final String[] BASE_PATH_ARR = { "last-death", "inventory" };
 
     private final PlayerInventoryManager playerInventoryManager;
 
-    public RestoreInventoryFromDeathCommand(PlayerInventoryManager playerInventoryManager) {
+    public RestoreInventoryCMD(PlayerInventoryManager playerInventoryManager) {
         this.playerInventoryManager = playerInventoryManager;
     }
 

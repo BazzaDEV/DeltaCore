@@ -8,14 +8,14 @@ import me.bazzadev.deltacore.afk.AFKManager;
 import me.bazzadev.deltacore.config.MongoDBConfig;
 import me.bazzadev.deltacore.core.commands.*;
 import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
-import me.bazzadev.deltacore.inventory.commands.ClearInventoryCommand;
-import me.bazzadev.deltacore.inventory.commands.LoadInventoryCommand;
-import me.bazzadev.deltacore.inventory.commands.RestoreInventoryFromDeathCommand;
-import me.bazzadev.deltacore.inventory.commands.SaveInventoryCommand;
+import me.bazzadev.deltacore.inventory.commands.ClearInventoryCMD;
+import me.bazzadev.deltacore.inventory.commands.LoadInventoryCMD;
+import me.bazzadev.deltacore.inventory.commands.RestoreInventoryCMD;
+import me.bazzadev.deltacore.inventory.commands.SaveInventoryCMD;
 import me.bazzadev.deltacore.listeners.*;
 import me.bazzadev.deltacore.staffmode.StaffGUIManager;
 import me.bazzadev.deltacore.staffmode.StaffModeManager;
-import me.bazzadev.deltacore.staffmode.commands.StaffModeCommand;
+import me.bazzadev.deltacore.staffmode.commands.StaffModeCMD;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
@@ -81,25 +81,25 @@ public final class DeltaCore extends JavaPlugin {
 
     public void registerCommands() {
 
-        this.getCommand("coords").setExecutor(new CoordsCommand());
-        this.getCommand("heal").setExecutor(new HealCommand());
+        this.getCommand("coords").setExecutor(new CoordsCMD());
+        this.getCommand("heal").setExecutor(new HealCMD());
 
-        this.getCommand("gms").setExecutor(new GamemodeCommand());
-        this.getCommand("gmc").setExecutor(new GamemodeCommand());
-        this.getCommand("gma").setExecutor(new GamemodeCommand());
-        this.getCommand("gmspec").setExecutor(new GamemodeCommand());
+        this.getCommand("gms").setExecutor(new GamemodeCMD());
+        this.getCommand("gmc").setExecutor(new GamemodeCMD());
+        this.getCommand("gma").setExecutor(new GamemodeCMD());
+        this.getCommand("gmspec").setExecutor(new GamemodeCMD());
 
-        this.getCommand("loadinv").setExecutor(new LoadInventoryCommand(playerInventoryManager));
-        this.getCommand("saveinv").setExecutor(new SaveInventoryCommand(playerInventoryManager));
-        this.getCommand("clearinv").setExecutor(new ClearInventoryCommand());
-        this.getCommand("restoreinv").setExecutor(new RestoreInventoryFromDeathCommand(playerInventoryManager));
+        this.getCommand("loadinv").setExecutor(new LoadInventoryCMD(playerInventoryManager));
+        this.getCommand("saveinv").setExecutor(new SaveInventoryCMD(playerInventoryManager));
+        this.getCommand("clearinv").setExecutor(new ClearInventoryCMD());
+        this.getCommand("restoreinv").setExecutor(new RestoreInventoryCMD(playerInventoryManager));
 
-        this.getCommand("staffmode").setExecutor(new StaffModeCommand(staffModeManager));
+        this.getCommand("staffmode").setExecutor(new StaffModeCMD(staffModeManager));
 
         this.getCommand("afk").setExecutor(new AFKCommand(afkManager));
-        this.getCommand("fly").setExecutor(new FlyCommand());
+        this.getCommand("fly").setExecutor(new FlyCMD());
 
-        this.getCommand("portalhelper").setExecutor(new PortalHelperCommand());
+        this.getCommand("portalhelper").setExecutor(new PortalHelperCMD());
     }
 
     public void registerEvents() {

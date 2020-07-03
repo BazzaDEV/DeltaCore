@@ -13,11 +13,11 @@ import org.bukkit.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
 
-public class StaffModeCommand implements CommandExecutor {
+public class StaffModeCMD implements CommandExecutor {
 
     private final StaffModeManager staffModeManager;
 
-    public StaffModeCommand (StaffModeManager staffModeManager) {
+    public StaffModeCMD(StaffModeManager staffModeManager) {
         this.staffModeManager = staffModeManager;
     }
 
