@@ -9,12 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
-public class FlyCommand implements CommandExecutor {
-
-    private final ArrayList<UUID> list = new ArrayList<>();
+public class FlyCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -78,14 +73,10 @@ public class FlyCommand implements CommandExecutor {
 
     private void toggleFly(Player target) {
 
-        UUID targetUUID = target.getUniqueId();
-
-        if (list.contains(targetUUID)) {
+        if (target.getAllowFlight()) {
 
             target.setAllowFlight(false);
             target.setFlying(false);
-
-            list.remove(targetUUID);
 
             target.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7Your flight status has been set to &cfalse&7."));
 
@@ -93,8 +84,6 @@ public class FlyCommand implements CommandExecutor {
 
             target.setAllowFlight(true);
             target.setFlying(true);
-
-            list.add(targetUUID);
 
             target.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7Your flight status has been set to &atrue&7."));
 
@@ -104,14 +93,10 @@ public class FlyCommand implements CommandExecutor {
 
     private void toggleFly(Player target, CommandSender sender) {
 
-        UUID targetUUID = target.getUniqueId();
-
-        if (list.contains(targetUUID)) {
+        if (target.getAllowFlight()) {
 
             target.setAllowFlight(false);
             target.setFlying(false);
-
-            list.remove(targetUUID);
 
             target.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7Your flight status has been set to &cfalse&7."));
 
@@ -121,8 +106,6 @@ public class FlyCommand implements CommandExecutor {
 
             target.setAllowFlight(true);
             target.setFlying(true);
-
-            list.add(targetUUID);
 
             target.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7Your flight status has been set to &atrue&7."));
 
