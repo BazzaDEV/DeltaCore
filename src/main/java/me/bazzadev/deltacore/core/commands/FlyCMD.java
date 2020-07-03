@@ -44,7 +44,6 @@ public class FlyCMD implements CommandExecutor {
                 if (args.length==0) {
                     // Console can't change their own flight status. Send error message with proper usage.
                     sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cConsole can't change their own flight status."));
-                    sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&7Proper usage: &f/fly &2<player>"));
 
                 } else if (args.length==1) {
                     // Console is setting a player's flight status
