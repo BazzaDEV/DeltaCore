@@ -3,19 +3,11 @@ package me.bazzadev.deltacore;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import me.bazzadev.deltacore.afk.AFKCommand;
-import me.bazzadev.deltacore.afk.AFKManager;
+import me.bazzadev.deltacore.commands.*;
 import me.bazzadev.deltacore.config.MongoDBConfig;
-import me.bazzadev.deltacore.core.commands.*;
-import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
-import me.bazzadev.deltacore.inventory.commands.ClearInventoryCMD;
-import me.bazzadev.deltacore.inventory.commands.LoadInventoryCMD;
-import me.bazzadev.deltacore.inventory.commands.RestoreInventoryCMD;
-import me.bazzadev.deltacore.inventory.commands.SaveInventoryCMD;
+import me.bazzadev.deltacore.config.PlayerDataConfig;
 import me.bazzadev.deltacore.listeners.*;
-import me.bazzadev.deltacore.staffmode.StaffGUIManager;
-import me.bazzadev.deltacore.staffmode.StaffModeManager;
-import me.bazzadev.deltacore.staffmode.commands.StaffModeCMD;
+import me.bazzadev.deltacore.managers.*;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
@@ -26,10 +18,12 @@ public final class DeltaCore extends JavaPlugin {
 
     private final MongoDBConfig mongoDBConfig = new MongoDBConfig(this);
     private final PlayerDataManager playerDataManager = new PlayerDataManager(mongoDBConfig);
+    private final PlayerDataConfig playerDataConfig = new PlayerDataConfig(this);
 
     private final PlayerInventoryManager playerInventoryManager = new PlayerInventoryManager(playerDataManager);
     private final StaffModeManager staffModeManager = new StaffModeManager(playerInventoryManager);
     private final AFKManager afkManager = new AFKManager();
+    private final VanishManager vanishManager = new VanishManager(this, playerDataConfig);
 
     private static Chat chat = null;
     private static Permission perms = null;
@@ -71,18 +65,22 @@ public final class DeltaCore extends JavaPlugin {
 
 
     public void createConfigs() {
+
+        playerDataConfig.create();
         mongoDBConfig.create();
     }
 
     public void saveConfigs() {
-        mongoDBConfig.save();
 
+        playerDataConfig.save();
+        mongoDBConfig.save();
     }
 
     public void registerCommands() {
 
         this.getCommand("coords").setExecutor(new CoordsCMD());
         this.getCommand("heal").setExecutor(new HealCMD());
+        this.getCommand("feed").setExecutor(new FeedCMD());
 
         this.getCommand("gms").setExecutor(new GamemodeCMD());
         this.getCommand("gmc").setExecutor(new GamemodeCMD());
@@ -96,8 +94,9 @@ public final class DeltaCore extends JavaPlugin {
 
         this.getCommand("staffmode").setExecutor(new StaffModeCMD(staffModeManager));
 
-        this.getCommand("afk").setExecutor(new AFKCommand(afkManager));
+        this.getCommand("afk").setExecutor(new AfkCMD(afkManager));
         this.getCommand("fly").setExecutor(new FlyCMD());
+        this.getCommand("vanish").setExecutor(new VanishCMD(vanishManager));
 
         this.getCommand("portalhelper").setExecutor(new PortalHelperCMD());
     }
