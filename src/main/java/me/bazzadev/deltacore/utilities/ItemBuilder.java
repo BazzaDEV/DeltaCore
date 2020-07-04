@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,28 +44,11 @@ public class ItemBuilder {
         is= new ItemStack(m, amount);
     }
     /**
-     * Create a new ItemBuilder from scratch.
-     * @param m The material of the item.
-     * @param amount The amount of the item.
-     * @param durability The durability of the item.
-     */
-    public ItemBuilder(Material m, int amount, byte durability){
-        is = new ItemStack(m, amount, durability);
-    }
-    /**
      * Clone the ItemBuilder into a new one.
      * @return The cloned instance.
      */
     public ItemBuilder clone(){
         return new ItemBuilder(is);
-    }
-    /**
-     * Change the durability of the item.
-     * @param dur The durability to set it to.
-     */
-    public ItemBuilder setDurability(short dur){
-        is.setDurability(dur);
-        return this;
     }
     /**
      * Set the displayname of the item.
@@ -96,18 +78,6 @@ public class ItemBuilder {
         return this;
     }
     /**
-     * Set the skull owner for the item. Works on skulls only.
-     * @param owner The name of the skull's owner.
-     */
-    public ItemBuilder setSkullOwner(String owner){
-        try{
-            SkullMeta im = (SkullMeta)is.getItemMeta();
-            im.setOwner(owner);
-            is.setItemMeta(im);
-        }catch(ClassCastException expected){}
-        return this;
-    }
-    /**
      * Add an enchant to the item.
      * @param ench The enchant to add
      * @param level The level
@@ -124,13 +94,6 @@ public class ItemBuilder {
      */
     public ItemBuilder addEnchantments(Map<Enchantment, Integer> enchantments){
         is.addEnchantments(enchantments);
-        return this;
-    }
-    /**
-     * Sets infinity durability on the item by setting the durability to Short.MAX_VALUE.
-     */
-    public ItemBuilder setInfinityDurability(){
-        is.setDurability(Short.MAX_VALUE);
         return this;
     }
     /**

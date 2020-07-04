@@ -111,7 +111,7 @@ public final class DeltaCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerInteractListener(staffGUIManager), this);
         getServer().getPluginManager().registerEvents(new PlayerDropItemListener(), this);
 
-        getServer().getPluginManager().registerEvents(new InventoryClickListener(staffGUIManager), this);
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(staffGUIManager, vanishManager), this);
         getServer().getPluginManager().registerEvents(new OpenInventoryListener(staffGUIManager, this), this);
     }
 
