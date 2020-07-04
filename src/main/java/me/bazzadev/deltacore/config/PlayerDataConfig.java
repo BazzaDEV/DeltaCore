@@ -28,6 +28,7 @@ public class PlayerDataConfig {
         }
 
         playerDataConfig = new YamlConfiguration();
+
         try {
             playerDataConfig.load(playerDataConfigFile);
         } catch (IOException | InvalidConfigurationException e) {

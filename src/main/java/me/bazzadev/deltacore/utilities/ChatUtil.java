@@ -1,7 +1,7 @@
 package me.bazzadev.deltacore.utilities;
 
 import me.bazzadev.deltacore.DeltaCore;
-import me.bazzadev.deltacore.afk.AFKManager;
+import me.bazzadev.deltacore.managers.AFKManager;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

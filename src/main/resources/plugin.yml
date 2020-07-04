@@ -12,6 +12,9 @@ commands:
   heal:
     description: Heals the player.
     usage: /heal [player]
+  feed:
+    description: Feed the player.
+    usage: /feed [player]
   coords:
     description: Puts the player's coordinates in chat.
     usage: /coords
@@ -42,6 +45,10 @@ commands:
   fly:
     description: Gives you levitation powers.
     usage: /fly [player]
+  vanish:
+    description: Toggles the player's visibility on the server.
+    usage: /vanish [player]
+    aliases: [v]
 
   gms:
     description: Sets the player's gamemode to survival.

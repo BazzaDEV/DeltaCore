@@ -1,4 +1,4 @@
-package me.bazzadev.deltacore.inventory;
+package me.bazzadev.deltacore.managers;
 
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.DeltaCore;

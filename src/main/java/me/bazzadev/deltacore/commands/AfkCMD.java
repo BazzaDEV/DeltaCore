@@ -1,5 +1,6 @@
-package me.bazzadev.deltacore.afk;
+package me.bazzadev.deltacore.commands;
 
+import me.bazzadev.deltacore.managers.AFKManager;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,11 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class AFKCommand implements CommandExecutor {
+public class AfkCMD implements CommandExecutor {
 
     private final AFKManager afkManager;
 
-    public AFKCommand(AFKManager afkManager) {
+    public AfkCMD(AFKManager afkManager) {
         this.afkManager = afkManager;
     }
 

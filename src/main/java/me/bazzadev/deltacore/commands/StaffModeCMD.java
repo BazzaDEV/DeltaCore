@@ -1,6 +1,6 @@
-package me.bazzadev.deltacore.staffmode.commands;
+package me.bazzadev.deltacore.commands;
 
-import me.bazzadev.deltacore.staffmode.StaffModeManager;
+import me.bazzadev.deltacore.managers.StaffModeManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.Bukkit;

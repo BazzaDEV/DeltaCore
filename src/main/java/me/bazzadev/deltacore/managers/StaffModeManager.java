@@ -1,8 +1,8 @@
-package me.bazzadev.deltacore.staffmode;
+package me.bazzadev.deltacore.managers;
 
 import com.mongodb.client.model.Filters;
 import com.nametagedit.plugin.NametagEdit;
-import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
+import me.bazzadev.deltacore.staffmode.StaffModeItems;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
 import me.bazzadev.deltacore.utilities.Vars;

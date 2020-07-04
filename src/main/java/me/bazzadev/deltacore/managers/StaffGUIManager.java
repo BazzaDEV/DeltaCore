@@ -1,5 +1,6 @@
-package me.bazzadev.deltacore.staffmode;
+package me.bazzadev.deltacore.managers;
 
+import me.bazzadev.deltacore.staffmode.PlayerActionsInventory;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.SkullCreator;
 import org.bukkit.Bukkit;

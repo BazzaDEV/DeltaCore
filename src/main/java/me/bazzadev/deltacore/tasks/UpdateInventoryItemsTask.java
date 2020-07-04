@@ -1,6 +1,6 @@
-package me.bazzadev.deltacore.listeners;
+package me.bazzadev.deltacore.tasks;
 
-import me.bazzadev.deltacore.staffmode.StaffGUIManager;
+import me.bazzadev.deltacore.managers.StaffGUIManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class UpdateInventoryItemsTask extends BukkitRunnable {

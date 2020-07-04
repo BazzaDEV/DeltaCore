@@ -1,4 +1,4 @@
-package me.bazzadev.deltacore.core.commands;
+package me.bazzadev.deltacore.commands;
 
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerUtil;

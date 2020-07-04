@@ -1,6 +1,6 @@
 package me.bazzadev.deltacore.listeners;
 
-import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
+import me.bazzadev.deltacore.managers.PlayerInventoryManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

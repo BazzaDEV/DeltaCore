@@ -1,6 +1,6 @@
 package me.bazzadev.deltacore.listeners;
 
-import me.bazzadev.deltacore.staffmode.StaffGUIManager;
+import me.bazzadev.deltacore.managers.StaffGUIManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

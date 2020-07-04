@@ -1,6 +1,6 @@
-package me.bazzadev.deltacore.inventory.commands;
+package me.bazzadev.deltacore.commands;
 
-import me.bazzadev.deltacore.inventory.PlayerInventoryManager;
+import me.bazzadev.deltacore.managers.PlayerInventoryManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.Bukkit;

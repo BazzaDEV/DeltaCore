@@ -1,7 +1,8 @@
 package me.bazzadev.deltacore.listeners;
 
 import me.bazzadev.deltacore.DeltaCore;
-import me.bazzadev.deltacore.staffmode.StaffGUIManager;
+import me.bazzadev.deltacore.managers.StaffGUIManager;
+import me.bazzadev.deltacore.tasks.UpdateInventoryItemsTask;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;

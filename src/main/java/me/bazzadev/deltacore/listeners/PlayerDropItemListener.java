@@ -1,6 +1,6 @@
 package me.bazzadev.deltacore.listeners;
 
-import me.bazzadev.deltacore.staffmode.StaffModeManager;
+import me.bazzadev.deltacore.managers.StaffModeManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
