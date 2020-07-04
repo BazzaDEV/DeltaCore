@@ -97,6 +97,7 @@ $RECYCLE.BIN/
 
 target/
 
+# Test server folder
 Test-Server/
 
 pom.xml.tag
