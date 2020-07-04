@@ -32,14 +32,19 @@ public class PlayerInteractListener implements Listener {
     public void onItemClickEvent(PlayerInteractEvent event) {
 
         Player player = event.getPlayer();
-        Block clickedBlock = event.getClickedBlock();
-        Material clickedType = clickedBlock.getType();
+
+        // Vanish Mode listener //
 
         if (VanishManager.isVanished(player)) {
 
+            Block clickedBlock = event.getClickedBlock();
+
+            assert clickedBlock != null;
+            Material clickedType = clickedBlock.getType();
+
             if (clickedType != Material.AIR) {
 
-                if (clickedType==Material.CHEST || clickedType==Material.TRAPPED_CHEST || clickedType==Material.SHULKER_BOX || clickedType==Material.ENDER_CHEST) {
+                if (clickedType==Material.CHEST || clickedType==Material.TRAPPED_CHEST || clickedBlock.getState() instanceof ShulkerBox || clickedType==Material.ENDER_CHEST) {
 
                     event.setCancelled(true);
                     Inventory inventory = null;
@@ -52,9 +57,9 @@ public class PlayerInteractListener implements Listener {
                         inventory.setContents(chest.getInventory().getContents());
 
                         player.openInventory(inventory);
-                        player.sendMessage(ChatUtil.color("&7Opening chest in &f&lSILENT MODE &7(can't edit contents)."));
+                        player.sendMessage(ChatUtil.color(Vars.VANISH_PREFIX + "&7Opening chest in &f&lSILENT MODE &7(can't edit contents)."));
 
-                    } else if (clickedType == Material.SHULKER_BOX) {
+                    } else if (clickedBlock.getState() instanceof ShulkerBox) {
 
                         ShulkerBox shulkerbox = (ShulkerBox) clickedBlock.getState();
 
@@ -62,16 +67,16 @@ public class PlayerInteractListener implements Listener {
                         inventory.setContents(shulkerbox.getInventory().getContents());
 
                         player.openInventory(inventory);
-                        player.sendMessage(ChatUtil.color("&7Opening shulker box in &f&lSILENT MODE &7(can't edit contents)."));
+                        player.sendMessage(ChatUtil.color(Vars.VANISH_PREFIX + "&7Opening shulker box in &f&lSILENT MODE &7(can't edit contents)."));
 
                     } else if (clickedType == Material.ENDER_CHEST) {
 
-                        player.sendMessage(ChatUtil.color("&7Can't open &dEnder Chests &7in vanish mode."));
+                        player.sendMessage(ChatUtil.color(Vars.VANISH_PREFIX + "&7Cannot directly open &dEnder Chests &7in vanish mode."));
+                        player.sendMessage(ChatUtil.color(Vars.VANISH_PREFIX + "&7Use the Staff Mode GUI instead."));
 
+                        player.openInventory(staffGUIManager.getMainGUI());
 
                     }
-
-                    return;
 
                 }
 
@@ -79,23 +84,36 @@ public class PlayerInteractListener implements Listener {
 
         }
 
-        ItemStack itemUsed = event.getItem();
-        String invName = player.getOpenInventory().getTopInventory().toString();
+        // Staff Mode listener //
 
-        if (!StaffModeManager.getStatus(player)) return;
+        if (StaffModeManager.getStatus(player)) {
 
-        if (!invName.contains("CraftInventoryCrafting")) return;
+            ItemStack itemUsed = event.getItem();
 
-        if (itemUsed == null || itemUsed.getType() == Material.AIR) return;
+            if (itemUsed==null) return;
 
-        if (!itemUsed.getItemMeta().equals(viewPlayerList.getItemMeta())) return;
+            if (event.getAction()==Action.RIGHT_CLICK_AIR || event.getAction()==Action.RIGHT_CLICK_BLOCK ) {
 
-        if (event.getAction()== Action.LEFT_CLICK_AIR || event.getAction()==Action.LEFT_CLICK_BLOCK) {
-            player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&cTry right-clicking to access the menu."));
-            return;
+                if (itemUsed.getItemMeta().equals(viewPlayerList.getItemMeta())) {
+                    // View Player List
+                    event.setCancelled(true);
+                    event.getPlayer().openInventory(staffGUIManager.getMainGUI());
+
+                }
+            }
+
+
+
         }
 
-        event.setCancelled(true);
-        event.getPlayer().openInventory(staffGUIManager.getMainGUI());
+        // Check if Player is looking at another player's inventory //
+
+        String invName = player.getOpenInventory().getTitle();
+
+        if (invName.equals("Player")) {
+            event.setCancelled(true);
+
+        }
+
     }
 }
