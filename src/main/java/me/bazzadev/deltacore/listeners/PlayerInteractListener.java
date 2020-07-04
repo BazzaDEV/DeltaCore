@@ -52,7 +52,7 @@ public class PlayerInteractListener implements Listener {
 
                         Chest chest = (Chest) clickedBlock.getState();
 
-                        inventory = Bukkit.createInventory(player, chest.getInventory().getSize());
+                        inventory = Bukkit.createInventory(player, chest.getInventory().getSize(), Vars.CHEST_SILENT_MODE_TITLE);
                         inventory.setContents(chest.getInventory().getContents());
 
                         player.openInventory(inventory);
@@ -62,7 +62,7 @@ public class PlayerInteractListener implements Listener {
 
                         ShulkerBox shulkerbox = (ShulkerBox) clickedBlock.getState();
 
-                        inventory = Bukkit.createInventory(player, shulkerbox.getInventory().getSize());
+                        inventory = Bukkit.createInventory(player, shulkerbox.getInventory().getSize(), Vars.SHULKER_BOX_SILENT_MODE_TITLE);
                         inventory.setContents(shulkerbox.getInventory().getContents());
 
                         player.openInventory(inventory);
