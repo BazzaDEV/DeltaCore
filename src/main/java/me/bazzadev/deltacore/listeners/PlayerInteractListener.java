@@ -99,20 +99,11 @@ public class PlayerInteractListener implements Listener {
                     event.getPlayer().openInventory(staffGUIManager.getMainGUI());
 
                 }
+
             }
-
-
-
-        }
-
-        // Check if Player is looking at another player's inventory //
-
-        String invName = player.getOpenInventory().getTitle();
-
-        if (invName.equals("Player")) {
-            event.setCancelled(true);
 
         }
 
     }
+
 }

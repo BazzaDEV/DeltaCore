@@ -81,8 +81,16 @@ public class InventoryClickListener implements Listener {
             UUID targetUUID = UUID.fromString(targetUUIDString);
             staffGUIManager.openPlayerActionsGUI(player, targetUUID);
 
+        } else if (event.getView().getTitle().equals(Vars.CHEST_SILENT_MODE_TITLE) || event.getView().getTitle().equals(Vars.SHULKER_BOX_SILENT_MODE_TITLE)) {
+            // Player is viewing a Chest or Shulker Box in SILENT MODE
+            event.setCancelled(true);
+
+        } else if (event.getView().getTitle().equals("Player")) {
+            // Player is viewing another player's inventory
+            event.setCancelled(true);
+
         }
 
-
     }
+
 }
