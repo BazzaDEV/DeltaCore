@@ -17,8 +17,9 @@ public class PlayerActionsInventory {
 
     public static final int SLOT_PLAYER_HEAD = 4;
     public static final int SLOT_VIEW_INVENTORY = 19;
-    public static final int SLOT_PUNISHMENTS = 20;
-    public static final int SLOT_TELEPORT_TO_PLAYER = 21;
+    public static final int SLOT_VIEW_ENDERCHEST = 20;
+    public static final int SLOT_PUNISHMENTS = 21;
+    public static final int SLOT_TELEPORT_TO_PLAYER = 22;
     public static final int SLOT_GO_BACK = 36;
 
     private final Inventory inv;
@@ -40,17 +41,22 @@ public class PlayerActionsInventory {
         inv.setItem(SLOT_GO_BACK, Vars.GO_BACK);
         inv.setItem(SLOT_VIEW_INVENTORY, new ItemBuilder(Material.CHEST)
                                         .setName(ChatUtil.color("&eView Inventory"))
-                                        .addLoreLine(ChatUtil.color("&4&lALERT: &7This has been temporarily &c&lDISABLED&7."))
+                                        .addLoreLine(ChatUtil.color("&7Click to view the player's inventory contents."))
+                                        .addLoreLine(ChatUtil.color("&7Support for viewing armor and off-hand item &a&lCOMING SOON&7!"))
+                                        .toItemStack());
+        inv.setItem(SLOT_VIEW_ENDERCHEST, new ItemBuilder(Material.ENDER_CHEST)
+                                        .setName(ChatUtil.color("&5View Ender Chest"))
+                                        .addLoreLine(ChatUtil.color("&7Click to view the player's ender chest contents."))
                                         .toItemStack());
         inv.setItem(SLOT_PUNISHMENTS, new ItemBuilder(Material.TNT)
                                         .setName(ChatUtil.color("&cPunishments"))
                                         .addLoreLine(ChatUtil.color("&7Click to view punishment options for this player."))
                                         .toItemStack());
         inv.setItem(SLOT_TELEPORT_TO_PLAYER, new ItemBuilder(Material.ENDER_PEARL)
-                .setName(ChatUtil.color("&bTeleport to Player"))
-                .addLoreLine(ChatUtil.color("&7Click to teleport to this player."))
-                .addLoreLine(ChatUtil.color("&7Vanished support &a&lCOMING SOON!"))
-                .toItemStack());
+                                        .setName(ChatUtil.color("&bTeleport to Player"))
+                                        .addLoreLine(ChatUtil.color("&7Click to teleport to this player."))
+                                        .addLoreLine(ChatUtil.color("&7You will be &d&lVANISHED &7automagically."))
+                                        .toItemStack());
 
     }
 
