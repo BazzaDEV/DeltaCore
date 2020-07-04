@@ -3,6 +3,7 @@ package me.bazzadev.deltacore.commands;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -72,7 +73,10 @@ public class FlyCMD implements CommandExecutor {
 
     private void toggleFly(Player target) {
 
-        if (target.getAllowFlight()) {
+        if (target.getGameMode()== GameMode.CREATIVE) {
+            target.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cYou're in creative - no need to toggle your flight status."));
+
+        } else if (target.getAllowFlight()) {
 
             target.setAllowFlight(false);
             target.setFlying(false);
