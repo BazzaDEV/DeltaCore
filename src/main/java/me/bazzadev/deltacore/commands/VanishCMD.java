@@ -1,6 +1,7 @@
 package me.bazzadev.deltacore.commands;
 
 import me.bazzadev.deltacore.managers.VanishManager;
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,10 +34,13 @@ public class VanishCMD implements CommandExecutor {
                         // Toggle player's own vanish status
                         vanishManager.toggle(player);
 
-                        return true;
+                    } else {
+                        // Player has no permission. Send no permission message.
+                        player.sendMessage(Vars.NO_PERMISSION);
 
                     }
 
+                    return true;
 
                 }
 
@@ -45,5 +49,6 @@ public class VanishCMD implements CommandExecutor {
         }
 
         return false;
+
     }
 }
