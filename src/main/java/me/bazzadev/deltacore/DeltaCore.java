@@ -64,19 +64,19 @@ public final class DeltaCore extends JavaPlugin {
 
 
 
-    public void createConfigs() {
+    private void createConfigs() {
 
         playerDataConfig.create();
         mongoDBConfig.create();
     }
 
-    public void saveConfigs() {
+    private void saveConfigs() {
 
         playerDataConfig.save();
         mongoDBConfig.save();
     }
 
-    public void registerCommands() {
+    private void registerCommands() {
 
         this.getCommand("coords").setExecutor(new CoordsCMD());
         this.getCommand("heal").setExecutor(new HealCMD());
@@ -101,7 +101,7 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("portalhelper").setExecutor(new PortalHelperCMD());
     }
 
-    public void registerEvents() {
+    private void registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(staffGUIManager), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(playerInventoryManager), this);
