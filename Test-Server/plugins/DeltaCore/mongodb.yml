@@ -1,0 +1,4 @@
+connection-string: mongodb+srv://BazzaDEV:6mFK2IXZ2wnU4cuH@bazzacluster-eochb.mongodb.net/<dbname>?retryWrites=true&w=majority
+database: bazzacore-testing
+collections:
+  player-data: player-data
