@@ -39,10 +39,9 @@ public class PlayerInteractListener implements Listener {
 
             Block clickedBlock = event.getClickedBlock();
 
-            assert clickedBlock != null;
-            Material clickedType = clickedBlock.getType();
+            if (clickedBlock!=null && clickedBlock.getType()!=Material.AIR) {
 
-            if (clickedType != Material.AIR) {
+                Material clickedType = clickedBlock.getType();
 
                 if (clickedType==Material.CHEST || clickedType==Material.TRAPPED_CHEST || clickedBlock.getState() instanceof ShulkerBox || clickedType==Material.ENDER_CHEST) {
 
