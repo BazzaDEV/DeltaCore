@@ -55,11 +55,15 @@ public final class DeltaCore extends JavaPlugin {
         registerCommands();
         registerEvents();
 
+        vanishManager.loadFromFile();
+
     }
 
     @Override
     public void onDisable() {
+
         saveConfigs();
+        vanishManager.saveToFile();
     }
 
 
@@ -102,7 +106,7 @@ public final class DeltaCore extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager, vanishManager), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(staffGUIManager), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(playerInventoryManager), this);
 

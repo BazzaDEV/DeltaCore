@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class VanishManager {
@@ -41,7 +42,22 @@ public class VanishManager {
     private void vanish(Player player) {
 
         UUID uuid = player.getUniqueId();
+
         vanishedPlayers.add(uuid);
+        hidePlayer(player);
+
+    }
+
+    private void unvanish(Player player) {
+
+        UUID uuid = player.getUniqueId();
+
+        vanishedPlayers.remove(uuid);
+        showPlayer(player);
+
+    }
+
+    public void hidePlayer(Player player) {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
@@ -51,19 +67,28 @@ public class VanishManager {
 
         }
 
-
     }
 
-    private void unvanish(Player player) {
-
-        UUID uuid = player.getUniqueId();
-        vanishedPlayers.remove(uuid);
+    public void showPlayer(Player player) {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
             if (p != player) {
+
                 p.showPlayer(plugin, player);
             }
+
+        }
+
+    }
+
+    public void vanishFromPlayer(Player player) {
+
+        for (UUID uuid : vanishedPlayers) {
+
+            Player vanishedPlayer = Bukkit.getPlayer(uuid);
+            player.hidePlayer(plugin, vanishedPlayer);
+
         }
 
     }
@@ -74,31 +99,36 @@ public class VanishManager {
 
     }
 
+    public void saveToFile() {
 
+        List<String> uuidList = new ArrayList<>();
 
+        vanishedPlayers.forEach(uuid -> {
 
-//    public void saveToFile() {
-//
-//        List<String> uuidList = new ArrayList<>();
-//
-//        vanishedPlayers.forEach(uuid -> {
-//            uuidList.add(uuid.toString());
-//        });
-//
-//        config.get().set("vanished-players", uuidList);
-//
-//    }
-//
-//    public void loadFromFile() {
-//
-//        List<String> uuidList = config.get().getStringList("vanished-players");
-//
-//        uuidList.forEach(uuidString -> {
-//
-//            Player player = Bukkit.getPlayer(UUID.fromString(uuidString));
-//
-//        });
-//
-//    }
+            uuidList.add(uuid.toString());
+
+        });
+
+        config.get().set("vanished-players", uuidList);
+        config.save();
+
+    }
+
+    public void loadFromFile() {
+
+        List<String> uuidList = config.get().getStringList("vanished-players");
+
+        uuidList.forEach(uuidString -> {
+
+            UUID uuid = UUID.fromString(uuidString);
+            Player player = Bukkit.getPlayer(uuid);
+
+            if (player!=null) {
+                vanish(player);
+            }
+
+        });
+
+    }
 
 }
