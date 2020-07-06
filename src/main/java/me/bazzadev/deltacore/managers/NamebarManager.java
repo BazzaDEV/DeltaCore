@@ -11,6 +11,12 @@ public class NamebarManager {
         StringBuilder newPrefix = new StringBuilder();
         boolean empty = true;
 
+        if (AFKManager.getStatus(player)) {
+            newPrefix.append("&8[&7AFK&8] &7");
+            NametagEdit.getApi().setPrefix(player, newPrefix.toString());
+            return;
+        }
+
         if (StaffModeManager.getStatus(player)) {
             newPrefix.append("&8[&bStaff&8]&r ");
             empty = false;

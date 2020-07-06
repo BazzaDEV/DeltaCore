@@ -6,12 +6,17 @@ import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bson.Document;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import static com.mongodb.client.model.Updates.set;
 
 public class AFKManager {
+
+    private final NamebarManager namebarManager;
+
+    public AFKManager(NamebarManager namebarManager) {
+        this.namebarManager = namebarManager;
+    }
 
     private Player player;
     private String playerName;
@@ -39,7 +44,7 @@ public class AFKManager {
                                         Filters.eq("uuid", playerUUIDString),
                                         set("status.afk", true)))
                 .sync(() -> {
-                    player.setPlayerListName(ChatColor.GRAY + playerName);
+                    namebarManager.updatePrefix(player);
                     player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are now AFK."));
                 })
                 .execute();
@@ -53,7 +58,7 @@ public class AFKManager {
                         Filters.eq("uuid", playerUUIDString),
                         set("status.afk", false)))
                 .sync(() -> {
-                    player.setPlayerListName(ChatColor.RESET + playerName);
+                    namebarManager.updatePrefix(player);
                     player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are no longer AFK."));
                 })
                 .execute();

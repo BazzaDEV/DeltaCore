@@ -24,7 +24,7 @@ public final class DeltaCore extends JavaPlugin {
 
     private final PlayerInventoryManager playerInventoryManager = new PlayerInventoryManager(playerDataManager);
     private final StaffModeManager staffModeManager = new StaffModeManager(playerInventoryManager, namebarManager);
-    private final AFKManager afkManager = new AFKManager();
+    private final AFKManager afkManager = new AFKManager(namebarManager);
     private final VanishManager vanishManager = new VanishManager(this, playerDataConfig, namebarManager);
 
     private static Chat chat = null;
