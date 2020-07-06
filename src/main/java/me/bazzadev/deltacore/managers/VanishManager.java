@@ -61,7 +61,7 @@ public class VanishManager {
 
     public void hidePlayer(Player player) {
 
-        namebarManager.updatePrefix(player);
+        namebarManager.update(player);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
@@ -73,9 +73,28 @@ public class VanishManager {
 
     }
 
+    public void hidePlayer(Player player, boolean skipPrefix) {
+
+        if (skipPrefix) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (p!=player && !(p.hasPermission("deltacore.vanish.bypass"))) {
+                    p.hidePlayer(plugin, player);
+                }
+            }
+
+        } else {
+            namebarManager.update(player);
+        }
+
+
+
+
+
+    }
+
     public void showPlayer(Player player) {
 
-        namebarManager.updatePrefix(player);
+        namebarManager.update(player);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
@@ -153,6 +172,11 @@ public class VanishManager {
 
             if (player!=null) {
                 vanish(player);
+
+            } else {
+                // This was added so that an offline vanished player gets re-vanished when they login after a reload.
+                // This also fixes the issue where NO vanished players get re-vanished after a restart.
+                vanishedPlayers.add(uuid);
             }
 
         });

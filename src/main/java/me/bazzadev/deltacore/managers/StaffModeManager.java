@@ -53,7 +53,7 @@ public class StaffModeManager {
         player.setGameMode(GameMode.CREATIVE);
         setupStaffInventory();
 
-        namebarManager.updatePrefix(player);
+        namebarManager.update(player);
 
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7You have &aentered &7Staff Mode."));
 
@@ -65,7 +65,7 @@ public class StaffModeManager {
         loadData();
         player.setGameMode(GameMode.SURVIVAL);
 
-        namebarManager.updatePrefix(player);
+        namebarManager.update(player);
 
         sendExitOptions();
     }

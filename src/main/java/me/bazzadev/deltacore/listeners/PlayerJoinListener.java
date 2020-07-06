@@ -69,7 +69,7 @@ public class PlayerJoinListener implements Listener {
         if (VanishManager.isVanished(player)) {
             // Player was vanished before they last disconnected.
             // Re-hide the player from other players.
-            vanishManager.hidePlayer(player);
+            vanishManager.hidePlayer(player, true);
 
             // Wait 20 ticks, then send player message regarding vanished status.
             DeltaCore.newChain()
@@ -82,7 +82,10 @@ public class PlayerJoinListener implements Listener {
 
         }
 
-        namebarManager.updatePrefix(player);
+        DeltaCore.newChain()
+                .delay(10)
+                .sync(() -> namebarManager.update(player))
+                .execute();
 
     }
 

@@ -44,7 +44,7 @@ public class AFKManager {
                                         Filters.eq("uuid", playerUUIDString),
                                         set("status.afk", true)))
                 .sync(() -> {
-                    namebarManager.updatePrefix(player);
+                    namebarManager.update(player);
                     player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are now AFK."));
                 })
                 .execute();
@@ -58,7 +58,7 @@ public class AFKManager {
                         Filters.eq("uuid", playerUUIDString),
                         set("status.afk", false)))
                 .sync(() -> {
-                    namebarManager.updatePrefix(player);
+                    namebarManager.update(player);
                     player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are no longer AFK."));
                 })
                 .execute();

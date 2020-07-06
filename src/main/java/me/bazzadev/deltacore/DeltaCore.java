@@ -57,10 +57,10 @@ public final class DeltaCore extends JavaPlugin {
         registerCommands();
         registerEvents();
 
-        DeltaCore.newChain()
-                .sync(vanishManager::loadFromFile)
-                .current(vanishManager::fix)
-                .execute();
+        newChain()
+            .sync(vanishManager::loadFromFile)
+            .current(vanishManager::fix)
+            .execute();
 
         namebarManager.updateAll();
 
