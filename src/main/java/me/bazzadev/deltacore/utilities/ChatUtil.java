@@ -2,6 +2,8 @@ package me.bazzadev.deltacore.utilities;
 
 import me.bazzadev.deltacore.DeltaCore;
 import me.bazzadev.deltacore.managers.AFKManager;
+import me.bazzadev.deltacore.managers.StaffModeManager;
+import me.bazzadev.deltacore.managers.VanishManager;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -30,6 +32,20 @@ public class ChatUtil {
 
     public static String coloredAFKStatus(Player player) {
         if (AFKManager.getStatus(player)) {
+            return ChatUtil.color("&a&l✔");
+        }
+        return ChatUtil.color("&c&l✘");
+    }
+
+    public static String coloredStaffModeStatus(Player player) {
+        if (StaffModeManager.getStatus(player)) {
+            return ChatUtil.color("&a&l✔");
+        }
+        return ChatUtil.color("&c&l✘");
+    }
+
+    public static String coloredVanishStatus(Player player) {
+        if (VanishManager.isVanished(player)) {
             return ChatUtil.color("&a&l✔");
         }
         return ChatUtil.color("&c&l✘");

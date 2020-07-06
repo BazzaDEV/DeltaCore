@@ -37,7 +37,11 @@ public class SkullCreator {
                 .setName(ChatUtil.color(DeltaCore.getChat().getPlayerPrefix(player) + player.getName()))
                 .addLoreLine(ChatUtil.color("&7UUID: &8" + player.getUniqueId().toString()))
                 .addLoreLine(ChatUtil.color("&7Rank: " + DeltaCore.getChat().getPrimaryGroup(player)))
-                .addLoreLine(ChatUtil.color("&7AFK? " + ChatUtil.coloredAFKStatus(player)))
+                .addLoreLine("")
+                .addLoreLine(ChatUtil.color("&7AFK: " + ChatUtil.coloredAFKStatus(player)))
+                .addLoreLine(ChatUtil.color("&7Staff Mode: " + ChatUtil.coloredStaffModeStatus(player)))
+                .addLoreLine(ChatUtil.color("&7Vanished: " + ChatUtil.coloredVanishStatus(player)))
+                .addLoreLine("")
                 .addLoreLine(ChatUtil.color("&7Currently in: " + ChatUtil.coloredWorld(player)))
                 .removeNBTTag(ItemFlag.HIDE_ATTRIBUTES)
                 .toItemStack();
