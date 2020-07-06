@@ -20,10 +20,12 @@ public final class DeltaCore extends JavaPlugin {
     private final PlayerDataManager playerDataManager = new PlayerDataManager(mongoDBConfig);
     private final PlayerDataConfig playerDataConfig = new PlayerDataConfig(this);
 
+    private final NamebarManager namebarManager = new NamebarManager();
+
     private final PlayerInventoryManager playerInventoryManager = new PlayerInventoryManager(playerDataManager);
-    private final StaffModeManager staffModeManager = new StaffModeManager(playerInventoryManager);
+    private final StaffModeManager staffModeManager = new StaffModeManager(playerInventoryManager, namebarManager);
     private final AFKManager afkManager = new AFKManager();
-    private final VanishManager vanishManager = new VanishManager(this, playerDataConfig);
+    private final VanishManager vanishManager = new VanishManager(this, playerDataConfig, namebarManager);
 
     private static Chat chat = null;
     private static Permission perms = null;
@@ -55,7 +57,12 @@ public final class DeltaCore extends JavaPlugin {
         registerCommands();
         registerEvents();
 
-        vanishManager.loadFromFile();
+        DeltaCore.newChain()
+                .sync(vanishManager::loadFromFile)
+                .current(vanishManager::fix)
+                .execute();
+
+        namebarManager.updateAll();
 
     }
 
@@ -106,7 +113,7 @@ public final class DeltaCore extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager, vanishManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager, vanishManager, namebarManager), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(staffGUIManager), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(playerInventoryManager), this);
 
