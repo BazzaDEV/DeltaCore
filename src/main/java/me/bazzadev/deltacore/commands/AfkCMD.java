@@ -1,8 +1,8 @@
 package me.bazzadev.deltacore.commands;
 
 import me.bazzadev.deltacore.managers.AFKManager;
+import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +28,7 @@ public class AfkCMD implements CommandExecutor {
                 afkManager.toggle(player);
 
             } else {
-                sender.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "Only players can go AFK.");
+                sender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "Only players can go AFK."));
                 return true;
             }
         }

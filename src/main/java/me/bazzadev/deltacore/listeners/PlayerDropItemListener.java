@@ -14,10 +14,12 @@ public class PlayerDropItemListener implements Listener {
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
 
-        if (!StaffModeManager.getStatus(player)) return;
-        if (!event.getItemDrop().getItemStack().equals(viewPlayerList)) return;
+        if (StaffModeManager.getStatus(player)) {
+            if (event.getItemDrop().getItemStack().equals(viewPlayerList)) {
+                event.setCancelled(true);
+            }
+        }
 
-        event.setCancelled(true);
     }
 
 }

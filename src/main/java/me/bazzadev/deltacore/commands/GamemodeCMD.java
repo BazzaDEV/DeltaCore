@@ -36,7 +36,7 @@ public class GamemodeCMD implements CommandExecutor {
                         if (target != null) {
                             changeGamemode(target, GameMode.SURVIVAL);
                         } else {
-                            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
+                            player.sendMessage(Vars.PLAYER_DNE);
                         }
                     } else {
                         player.sendMessage(Vars.NO_PERMISSION);
@@ -55,7 +55,7 @@ public class GamemodeCMD implements CommandExecutor {
                     if (target != null) {
                         changeGamemode(target, GameMode.SURVIVAL);
                     } else {
-                        sender.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
+                        sender.sendMessage(Vars.PLAYER_DNE);
                     }
                 }
 
@@ -86,7 +86,7 @@ public class GamemodeCMD implements CommandExecutor {
                         if (target != null) {
                             changeGamemode(target, GameMode.CREATIVE);
                         } else {
-                            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
+                            player.sendMessage(Vars.PLAYER_DNE);
                         }
                     } else {
                         player.sendMessage(Vars.NO_PERMISSION);
@@ -105,7 +105,7 @@ public class GamemodeCMD implements CommandExecutor {
                     if (target != null) {
                         changeGamemode(target, GameMode.CREATIVE);
                     } else {
-                        sender.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
+                        sender.sendMessage(Vars.PLAYER_DNE);
                     }
                 }
 
@@ -136,7 +136,7 @@ public class GamemodeCMD implements CommandExecutor {
                         if (target != null) {
                             changeGamemode(target, GameMode.ADVENTURE);
                         } else {
-                            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
+                            player.sendMessage(Vars.PLAYER_DNE);
                         }
                     } else {
                         player.sendMessage(Vars.NO_PERMISSION);
@@ -155,7 +155,7 @@ public class GamemodeCMD implements CommandExecutor {
                     if (target != null) {
                         changeGamemode(target, GameMode.ADVENTURE);
                     } else {
-                        sender.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
+                        sender.sendMessage(Vars.PLAYER_DNE);
                     }
                 }
 
@@ -185,7 +185,7 @@ public class GamemodeCMD implements CommandExecutor {
                         if (target != null) {
                             changeGamemode(target, GameMode.SPECTATOR);
                         } else {
-                            player.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
+                            player.sendMessage(Vars.PLAYER_DNE);
                         }
                     } else {
                         player.sendMessage(Vars.NO_PERMISSION);
@@ -204,7 +204,7 @@ public class GamemodeCMD implements CommandExecutor {
                     if (target != null) {
                         changeGamemode(target, GameMode.SPECTATOR);
                     } else {
-                        sender.sendMessage(Vars.PLUGIN_PREFIX + ChatColor.RED + "The specified player does not exist. Try again.");
+                        sender.sendMessage(Vars.PLAYER_DNE);
                     }
                 }
 

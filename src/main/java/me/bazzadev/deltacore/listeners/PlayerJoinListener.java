@@ -22,8 +22,6 @@ public class PlayerJoinListener implements Listener {
     private final VanishManager vanishManager;
     private final NamebarManager namebarManager;
 
-    private final String joinPrefix = ChatColor.translateAlternateColorCodes('&', "&8[&a+&8] ");
-
     public PlayerJoinListener(PlayerDataManager playerDataManager, VanishManager vanishManager, NamebarManager namebarManager) {
         this.playerDataManager = playerDataManager;
         this.vanishManager = vanishManager;
@@ -38,7 +36,7 @@ public class PlayerJoinListener implements Listener {
         String playerUUIDString = player.getUniqueId().toString();
 
         // Custom join message
-        event.setJoinMessage(joinPrefix + ChatColor.GOLD + playerName + " has joined the server.");
+        event.setJoinMessage(Vars.SERVER_JOIN_MESSAGE_PREFIX + ChatColor.GOLD + playerName + " has joined the server.");
 
         // Getting Database stuff setup
         if ( PlayerDataManager.getDatabaseCollection().countDocuments(new Document("uuid", playerUUIDString)) == 0) {
@@ -69,6 +67,7 @@ public class PlayerJoinListener implements Listener {
         if (VanishManager.isVanished(player)) {
             // Player was vanished before they last disconnected.
             // Re-hide the player from other players.
+            // Skip namebar update to prevent Bungeecord crashes. Will be set on next TaskChain.
             vanishManager.hidePlayer(player, true);
 
             // Wait 20 ticks, then send player message regarding vanished status.
@@ -82,6 +81,8 @@ public class PlayerJoinListener implements Listener {
 
         }
 
+        // Updating player's namebar.
+        // Runs on 10 tick delay to prevent issues with scoreboard and Bungeecord.
         DeltaCore.newChain()
                 .delay(10)
                 .sync(() -> namebarManager.update(player))
