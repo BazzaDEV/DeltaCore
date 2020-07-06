@@ -1,7 +1,6 @@
 package me.bazzadev.deltacore.managers;
 
 import com.mongodb.client.model.Filters;
-import com.nametagedit.plugin.NametagEdit;
 import me.bazzadev.deltacore.staffmode.StaffModeItems;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
@@ -20,6 +19,7 @@ import static com.mongodb.client.model.Updates.set;
 public class StaffModeManager {
 
     private final PlayerInventoryManager playerInventoryManager;
+    private final NamebarManager namebarManager;
 
     private static final String BASE_PATH = "staffmode-data.survival-inventory";
     private static final String[] BASE_PATH_ARR = { "staffmode-data", "survival-inventory" };
@@ -27,8 +27,9 @@ public class StaffModeManager {
     private Player player;
     private String playerUUIDString;
 
-    public StaffModeManager(PlayerInventoryManager playerInventoryManager) {
+    public StaffModeManager(PlayerInventoryManager playerInventoryManager, NamebarManager namebarManager) {
         this.playerInventoryManager = playerInventoryManager;
+        this.namebarManager = namebarManager;
     }
 
 
@@ -51,7 +52,8 @@ public class StaffModeManager {
         player.getInventory().clear();
         player.setGameMode(GameMode.CREATIVE);
         setupStaffInventory();
-        NametagEdit.getApi().setPrefix(player, Vars.PLAYER_STAFFMODE_PREFIX);
+
+        namebarManager.updatePrefix(player);
 
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7You have &aentered &7Staff Mode."));
 
@@ -62,7 +64,8 @@ public class StaffModeManager {
 
         loadData();
         player.setGameMode(GameMode.SURVIVAL);
-        NametagEdit.getApi().setPrefix(player, "");
+
+        namebarManager.updatePrefix(player);
 
         sendExitOptions();
     }

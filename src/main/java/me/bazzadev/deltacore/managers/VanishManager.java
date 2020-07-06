@@ -15,10 +15,12 @@ public class VanishManager {
 
     private final DeltaCore plugin;
     private final PlayerDataConfig config;
+    private final NamebarManager namebarManager;
 
-    public VanishManager(DeltaCore plugin, PlayerDataConfig config) {
+    public VanishManager(DeltaCore plugin, PlayerDataConfig config, NamebarManager namebarManager) {
         this.plugin = plugin;
         this.config = config;
+        this.namebarManager = namebarManager;
     }
 
     private static final ArrayList<UUID> vanishedPlayers = new ArrayList<>();
@@ -59,9 +61,11 @@ public class VanishManager {
 
     public void hidePlayer(Player player) {
 
+        namebarManager.updatePrefix(player);
+
         for (Player p : Bukkit.getOnlinePlayers()) {
 
-            if (p!=player) {
+            if (p!=player && !(p.hasPermission("deltacore.vanish.bypass"))) {
                 p.hidePlayer(plugin, player);
             }
 
@@ -70,6 +74,8 @@ public class VanishManager {
     }
 
     public void showPlayer(Player player) {
+
+        namebarManager.updatePrefix(player);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
@@ -84,12 +90,34 @@ public class VanishManager {
 
     public void vanishFromPlayer(Player player) {
 
-        for (UUID uuid : vanishedPlayers) {
+        if ( !(player.hasPermission("deltacore.vanish.bypass")) ) {
 
-            Player vanishedPlayer = Bukkit.getPlayer(uuid);
-            player.hidePlayer(plugin, vanishedPlayer);
+            for (UUID uuid : vanishedPlayers) {
+
+                Player vanishedPlayer = Bukkit.getPlayer(uuid);
+                player.hidePlayer(plugin, vanishedPlayer);
+
+            }
 
         }
+
+    }
+
+    public void fix() {
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+
+            if (p.hasPermission("deltacore.vanish.bypass")) {
+
+                vanishedPlayers.forEach((uuid -> {
+                    Player vanishedPlayer = Bukkit.getPlayer(uuid);
+                    p.showPlayer(plugin, vanishedPlayer);
+                }));
+
+            }
+        }
+
+
 
     }
 

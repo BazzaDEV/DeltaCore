@@ -2,6 +2,7 @@ package me.bazzadev.deltacore.listeners;
 
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.DeltaCore;
+import me.bazzadev.deltacore.managers.NamebarManager;
 import me.bazzadev.deltacore.managers.VanishManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerDataManager;
@@ -19,12 +20,14 @@ public class PlayerJoinListener implements Listener {
 
     private final PlayerDataManager playerDataManager;
     private final VanishManager vanishManager;
+    private final NamebarManager namebarManager;
 
     private final String joinPrefix = ChatColor.translateAlternateColorCodes('&', "&8[&a+&8] ");
 
-    public PlayerJoinListener(PlayerDataManager playerDataManager, VanishManager vanishManager) {
+    public PlayerJoinListener(PlayerDataManager playerDataManager, VanishManager vanishManager, NamebarManager namebarManager) {
         this.playerDataManager = playerDataManager;
         this.vanishManager = vanishManager;
+        this.namebarManager = namebarManager;
     }
 
     @EventHandler
@@ -78,6 +81,8 @@ public class PlayerJoinListener implements Listener {
                     .execute();
 
         }
+
+        namebarManager.updatePrefix(player);
 
     }
 
