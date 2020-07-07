@@ -17,11 +17,11 @@ public class NamebarManager {
         } else {
             boolean empty = true;
             if (StaffModeManager.getStatus(player)) {
-                newPrefix.append("&8[&bStaff&8]&r ");
+                newPrefix.append("&8[&bSM&8]&r ");
                 empty = false;
             }
             if (VanishManager.isVanished(player)) {
-                newPrefix.append("&8[&o&dVanish&8]&r ");
+                newPrefix.append("&8[&o&dV&8]&r ");
                 empty = false;
             }
 
