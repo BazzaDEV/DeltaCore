@@ -63,7 +63,7 @@ public final class DeltaCore extends JavaPlugin {
         playerDataManager.initialize();
         playerDataManager.loadData();
 
-        BukkitTask checkIfAfkTask = new CheckIfAFKTask(playerActivityManager, afkManager, playerUtil).runTaskTimer(this, 0, 20);
+        BukkitTask checkIfAfkTask = new CheckIfAFKTask(playerActivityManager, afkManager, playerUtil).runTaskTimerAsynchronously(this, 0, 20);
 
         registerCommands();
         registerEvents();

@@ -87,34 +87,6 @@ public class PlayerDataManager {
                 .asyncLast((playerData) -> col.insertOne(playerData))
                 .execute();
 
-
-        // Same task as above, but does not run async obviously.
-
-//        Document playerData = new Document("uuid", player.getUniqueId().toString())
-//                                           .append("test",
-//                                                   new Document("inventory",
-//                                                           new Document("inv", playerInventoryToBase64[0])
-//                                                                   .append("armor", playerInventoryToBase64[1])))
-//                                           .append("IGN", player.getName())
-//                                           .append("status",
-//                                                   new Document("afk", false)
-//                                                        .append("staffmode", false))
-//                                           .append("staffmode-data",
-//                                                   new Document("originallocation",
-//                                                           new Document("World", player.getLocation().getWorld().getName())
-//                                                                .append("X", player.getLocation().getBlockX())
-//                                                                .append("Y", player.getLocation().getBlockY())
-//                                                                .append("Z", player.getLocation().getBlockZ()))
-//                                                   .append("survival-inventory",
-//                                                           new Document("inv", playerInventoryToBase64[0])
-//                                                                   .append("armor", playerInventoryToBase64[1])))
-//                                           .append("last-death",
-//                                                   new Document("inventory",
-//                                                           new Document("inv", playerInventoryToBase64[0])
-//                                                                   .append("armor", playerInventoryToBase64[1])));
-//
-//        col.insertOne(playerData);
-
     }
 
     public HashMap<UUID, Boolean> getAfkMap() {
