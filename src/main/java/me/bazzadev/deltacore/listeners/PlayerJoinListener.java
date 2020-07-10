@@ -94,7 +94,7 @@ public class PlayerJoinListener implements Listener {
         // Updating player's namebar.
         // Runs on 10 tick delay to prevent issues with scoreboard and Bungeecord.
         DeltaCore.newChain()
-                .delay(10)
+                .delay(5)
                 .sync(() -> namebarManager.update(player))
                 .execute();
 
