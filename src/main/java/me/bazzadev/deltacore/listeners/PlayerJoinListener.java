@@ -36,6 +36,8 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin (PlayerJoinEvent event) {
 
+        // long startTime = System.nanoTime();
+
         Player player = event.getPlayer();
         String playerName = player.getName();
         UUID uuid = player.getUniqueId();
@@ -83,7 +85,7 @@ public class PlayerJoinListener implements Listener {
             // Wait 20 ticks, then send player message regarding vanished status.
             DeltaCore.newChain()
                     .delay(20)
-                    .sync(() -> {
+                    .current(() -> {
                         player.sendMessage(ChatUtil.color(Vars.VANISH_PREFIX + "&7Looks like you were vanished before you disconnected last time."));
                         player.sendMessage(ChatUtil.color(Vars.VANISH_PREFIX + "&7We went ahead and &d&lVANISHED &7you again."));
                     })
@@ -91,11 +93,14 @@ public class PlayerJoinListener implements Listener {
 
         }
 
+        // long endTime = System.nanoTime() - startTime;
+        // System.out.println((endTime/1000) + " micro seconds");
+
         // Updating player's namebar.
         // Runs on 10 tick delay to prevent issues with scoreboard and Bungeecord.
         DeltaCore.newChain()
                 .delay(5)
-                .sync(() -> namebarManager.update(player))
+                .current(() -> namebarManager.update(player))
                 .execute();
 
     }
