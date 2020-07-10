@@ -10,7 +10,6 @@ import me.bazzadev.deltacore.listeners.*;
 import me.bazzadev.deltacore.managers.*;
 import me.bazzadev.deltacore.tasks.CheckIfAFKTask;
 import me.bazzadev.deltacore.utilities.ChatUtil;
-import me.bazzadev.deltacore.managers.PlayerDataManager;
 import me.bazzadev.deltacore.utilities.PlayerUtil;
 import me.bazzadev.deltacore.utilities.SkullCreator;
 import net.milkbowl.vault.chat.Chat;

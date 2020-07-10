@@ -1,6 +1,5 @@
 package me.bazzadev.deltacore.listeners;
 
-import me.bazzadev.deltacore.managers.VanishManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerUtil;
 import me.bazzadev.deltacore.utilities.Vars;
