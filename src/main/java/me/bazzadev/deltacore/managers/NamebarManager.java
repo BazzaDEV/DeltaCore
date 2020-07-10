@@ -1,6 +1,7 @@
 package me.bazzadev.deltacore.managers;
 
 import com.nametagedit.plugin.NametagEdit;
+import me.bazzadev.deltacore.DeltaCore;
 import me.bazzadev.deltacore.utilities.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,7 +21,10 @@ public class NamebarManager {
 
         if (playerUtil.isAFK(player)) {
             newPrefix.append("&8[&7AFK&8] &7");
-            NametagEdit.getApi().setPrefix(player, newPrefix.toString());
+            DeltaCore.newChain()
+                    .sync(() -> NametagEdit.getApi().setPrefix(player, newPrefix.toString()))
+                    .execute();
+
 
         } else {
             boolean empty = true;
@@ -34,10 +38,14 @@ public class NamebarManager {
             }
 
             if (empty) {
-                NametagEdit.getApi().setPrefix(player, "");
+                DeltaCore.newChain()
+                        .sync(() -> NametagEdit.getApi().setPrefix(player, ""))
+                        .execute();
 
             } else {
-                NametagEdit.getApi().setPrefix(player, newPrefix.toString());
+                DeltaCore.newChain()
+                        .sync(() -> NametagEdit.getApi().setPrefix(player, newPrefix.toString()))
+                        .execute();
 
             }
 
