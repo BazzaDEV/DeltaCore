@@ -32,15 +32,21 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    public static ItemStack getHeadWithPlayerData(Player player) {
+    public final ChatUtil chatUtil;
+
+    public SkullCreator(ChatUtil chatUtil) {
+        this.chatUtil = chatUtil;
+    }
+
+    public ItemStack getHeadWithPlayerData(Player player) {
         return new ItemBuilder(SkullCreator.getPlayerHead(player))
                 .setName(ChatUtil.color(DeltaCore.getChat().getPlayerPrefix(player) + player.getName()))
                 .addLoreLine(ChatUtil.color("&7UUID: &8" + player.getUniqueId().toString()))
                 .addLoreLine(ChatUtil.color("&7Rank: " + DeltaCore.getChat().getPrimaryGroup(player)))
                 .addLoreLine("")
-                .addLoreLine(ChatUtil.color("&7AFK: " + ChatUtil.coloredAFKStatus(player)))
-                .addLoreLine(ChatUtil.color("&7Staff Mode: " + ChatUtil.coloredStaffModeStatus(player)))
-                .addLoreLine(ChatUtil.color("&7Vanished: " + ChatUtil.coloredVanishStatus(player)))
+                .addLoreLine(ChatUtil.color("&7AFK: " + chatUtil.coloredAFKStatus(player)))
+                .addLoreLine(ChatUtil.color("&7Staff Mode: " + chatUtil.coloredStaffModeStatus(player)))
+                .addLoreLine(ChatUtil.color("&7Vanished: " + chatUtil.coloredVanishStatus(player)))
                 .addLoreLine("")
                 .addLoreLine(ChatUtil.color("&7Currently in: " + ChatUtil.coloredWorld(player)))
                 .removeNBTTag(ItemFlag.HIDE_ATTRIBUTES)

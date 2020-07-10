@@ -27,7 +27,11 @@ public class PlayerActionsInventory {
 
     public static final String INV_TITLE = ChatUtil.color("&fPlayer: ");
 
-    public PlayerActionsInventory(Player player) {
+    private final SkullCreator skullCreator;
+
+    public PlayerActionsInventory(Player player, SkullCreator skullCreator) {
+
+        this.skullCreator = skullCreator;
 
         this.player = player;
         inv = Bukkit.createInventory(null, 45, ChatUtil.color(INV_TITLE + ChatUtil.playerNameWithPrefix(player)));
@@ -37,7 +41,7 @@ public class PlayerActionsInventory {
 
     private void initializeItems() {
 
-        inv.setItem(SLOT_PLAYER_HEAD, SkullCreator.getHeadWithPlayerData(player));
+        inv.setItem(SLOT_PLAYER_HEAD, skullCreator.getHeadWithPlayerData(player));
         inv.setItem(SLOT_GO_BACK, Vars.GO_BACK);
         inv.setItem(SLOT_VIEW_INVENTORY, new ItemBuilder(Material.CHEST)
                                         .setName(ChatUtil.color("&eView Inventory"))

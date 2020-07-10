@@ -21,6 +21,8 @@ public class Vars {
     public static final String LAST_DEATH_INVENTORY_PATH = "last-death.inventory";
     public static final String[] LAST_DEATH_INVENTORY_PATH_ARR = { "last-death", "inventory" };
 
+    public static final int AUTO_AFK_TIMER_MILLISECONDS = 1000 * 60 * 5;
+
     public static final ItemStack GO_BACK = new ItemBuilder(SkullCreator.getCustomHeadfromURL("http://textures.minecraft.net/texture/4c301a17c955807d89f9c72a19207d1393b8c58c4e6e420f714f696a87fdd"))
                                                 .setName(ChatUtil.color("&7Go Back"))
                                                 .removeNBTTag(ItemFlag.HIDE_ATTRIBUTES)

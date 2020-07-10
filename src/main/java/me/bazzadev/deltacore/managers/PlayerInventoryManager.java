@@ -2,7 +2,6 @@ package me.bazzadev.deltacore.managers;
 
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.DeltaCore;
-import me.bazzadev.deltacore.utilities.PlayerDataManager;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bson.Document;
 import org.bukkit.entity.Player;

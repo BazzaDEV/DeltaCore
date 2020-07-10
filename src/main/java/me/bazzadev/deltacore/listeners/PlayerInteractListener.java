@@ -1,9 +1,8 @@
 package me.bazzadev.deltacore.listeners;
 
 import me.bazzadev.deltacore.managers.StaffGUIManager;
-import me.bazzadev.deltacore.managers.StaffModeManager;
-import me.bazzadev.deltacore.managers.VanishManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
+import me.bazzadev.deltacore.utilities.PlayerUtil;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,9 +22,11 @@ import static me.bazzadev.deltacore.staffmode.StaffModeItems.viewPlayerList;
 public class PlayerInteractListener implements Listener {
 
     private final StaffGUIManager staffGUIManager;
+    private final PlayerUtil playerUtil;
 
-    public PlayerInteractListener(StaffGUIManager staffGUIManager) {
+    public PlayerInteractListener(StaffGUIManager staffGUIManager, PlayerUtil playerUtil) {
         this.staffGUIManager = staffGUIManager;
+        this.playerUtil = playerUtil;
     }
 
     @EventHandler
@@ -35,7 +36,7 @@ public class PlayerInteractListener implements Listener {
 
         // Vanish Mode listener //
 
-        if (VanishManager.isVanished(player)) {
+        if (playerUtil.isVanished(player)) {
 
             Block clickedBlock = event.getClickedBlock();
 
@@ -85,7 +86,7 @@ public class PlayerInteractListener implements Listener {
 
         // Staff Mode listener //
 
-        if (StaffModeManager.getStatus(player)) {
+        if (playerUtil.isStaffMode(player)) {
 
             ItemStack itemUsed = event.getItem();
 

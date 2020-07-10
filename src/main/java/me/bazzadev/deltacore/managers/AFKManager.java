@@ -1,79 +1,72 @@
 package me.bazzadev.deltacore.managers;
 
-import com.mongodb.client.model.Filters;
-import me.bazzadev.deltacore.DeltaCore;
 import me.bazzadev.deltacore.utilities.ChatUtil;
-import me.bazzadev.deltacore.utilities.PlayerDataManager;
+import me.bazzadev.deltacore.utilities.PlayerUtil;
 import me.bazzadev.deltacore.utilities.Vars;
-import org.bson.Document;
 import org.bukkit.entity.Player;
-
-import static com.mongodb.client.model.Updates.set;
 
 public class AFKManager {
 
     private final NamebarManager namebarManager;
+    private final PlayerDataManager playerDataManager;
+    private final PlayerUtil playerUtil;
 
-    public AFKManager(NamebarManager namebarManager) {
+    public AFKManager(NamebarManager namebarManager, PlayerDataManager playerDataManager, PlayerUtil playerUtil) {
         this.namebarManager = namebarManager;
+        this.playerDataManager = playerDataManager;
+        this.playerUtil = playerUtil;
     }
-
-    private Player player;
-    private String playerName;
-    private String playerUUIDString;
 
     public void toggle(Player player) {
 
-        this.player = player;
-        this.playerName = player.getName();
-        this.playerUUIDString = player.getUniqueId().toString();
-
-
-        if ( getStatus(player) ) {
-            disable();
+        if (playerUtil.isAFK(player)) {
+            disable(player);
         } else {
-            enable();
+            enable(player);
         }
 
     }
 
-    private void enable() {
+    private void enable(Player player) {
 
-        DeltaCore.newChain()
-                .asyncFirst(() -> PlayerDataManager.getDatabaseCollection().updateOne(
-                                        Filters.eq("uuid", playerUUIDString),
-                                        set("status.afk", true)))
-                .sync(() -> {
-                    namebarManager.update(player);
-                    player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are now AFK."));
-                })
-                .execute();
+        playerDataManager.getAfkMap().put(player.getUniqueId(), true);
+        namebarManager.update(player);
+        player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are now AFK."));
 
-    }
-
-    private void disable() {
-
-        DeltaCore.newChain()
-                .asyncFirst(() -> PlayerDataManager.getDatabaseCollection().updateOne(
-                        Filters.eq("uuid", playerUUIDString),
-                        set("status.afk", false)))
-                .sync(() -> {
-                    namebarManager.update(player);
-                    player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are no longer AFK."));
-                })
-                .execute();
+//        String playerUUIDString = player.getUniqueId().toString();
+//
+//        DeltaCore.newChain()
+//                .asyncFirst(() -> PlayerDataManager.getDatabaseCollection().updateOne(
+//                                        Filters.eq("uuid", playerUUIDString),
+//                                        set("status.afk", true)))
+//                .sync(() -> {
+//                    namebarManager.update(player);
+//                    player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are now AFK."));
+//                })
+//                .execute();
 
     }
 
-    public static boolean getStatus(Player player) {
+    private void disable(Player player) {
 
-        String playerUUIDString = player.getUniqueId().toString();
-        Document filter = new Document("uuid", playerUUIDString);
+        playerDataManager.getAfkMap().put(player.getUniqueId(), false);
+        namebarManager.update(player);
+        player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are no longer AFK."));
 
-        Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
-        Document statusData = (Document) playerData.get("status");
+//        String playerUUIDString = player.getUniqueId().toString();
+//
+//        DeltaCore.newChain()
+//                .asyncFirst(() -> PlayerDataManager.getDatabaseCollection().updateOne(
+//                        Filters.eq("uuid", playerUUIDString),
+//                        set("status.afk", false)))
+//                .sync(() -> {
+//                    namebarManager.update(player);
+//                    player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are no longer AFK."));
+//                })
+//                .execute();
 
-        return statusData.getBoolean("afk");
     }
+
+
 
 }

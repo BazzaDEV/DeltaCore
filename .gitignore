@@ -99,6 +99,7 @@ target/
 
 # Test server folder
 Test-Server/
+Test-Server-Bungee/
 
 pom.xml.tag
 pom.xml.releaseBackup

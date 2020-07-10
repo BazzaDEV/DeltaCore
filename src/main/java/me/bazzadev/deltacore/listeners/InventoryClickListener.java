@@ -1,9 +1,10 @@
 package me.bazzadev.deltacore.listeners;
 
+import me.bazzadev.deltacore.managers.StaffGUIManager;
 import me.bazzadev.deltacore.managers.VanishManager;
 import me.bazzadev.deltacore.staffmode.PlayerActionsInventory;
-import me.bazzadev.deltacore.managers.StaffGUIManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
+import me.bazzadev.deltacore.utilities.PlayerUtil;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,10 +20,12 @@ public class InventoryClickListener implements Listener {
 
     private final StaffGUIManager staffGUIManager;
     private final VanishManager vanishManager;
+    private final PlayerUtil playerUtil;
 
-    public InventoryClickListener(StaffGUIManager staffGUIManager, VanishManager vanishManager) {
+    public InventoryClickListener(StaffGUIManager staffGUIManager, VanishManager vanishManager, PlayerUtil playerUtil) {
         this.staffGUIManager = staffGUIManager;
         this.vanishManager = vanishManager;
+        this.playerUtil = playerUtil;
     }
 
     @EventHandler
@@ -63,7 +66,7 @@ public class InventoryClickListener implements Listener {
                 // Player wants to teleport to the target player
 
                 // Vanish the player if they haven't already done so
-                if ( !VanishManager.isVanished(player) ) {
+                if ( !playerUtil.isVanished(player) ) {
                     vanishManager.toggle(player);
                 }
 

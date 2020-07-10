@@ -15,25 +15,28 @@ public class StaffGUIManager {
 
     private final HashMap<UUID, PlayerActionsInventory> playerActionsMap = new HashMap<>();
 
-    private final Inventory mainGUI;
+    private Inventory mainGUI;
     private boolean isBeingViewed;
     private boolean doHardRefresh;
     public static final String MAINGUI_INV_TITLE = ChatUtil.color("&dSM &7&l>> &fOnline Players");
 
-    public StaffGUIManager() {
+    private final SkullCreator skullCreator;
 
+    public StaffGUIManager(SkullCreator skullCreator) {
+        this.skullCreator = skullCreator;
+    }
+
+    public void createGUI() {
         mainGUI = Bukkit.createInventory(null, 27, MAINGUI_INV_TITLE);
         initializePlayerHeads();
-
         isBeingViewed = false;
         doHardRefresh = false;
-
     }
 
     private void initializePlayerHeads() {
         int index = 0;
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            mainGUI.setItem(index, SkullCreator.getHeadWithPlayerData(p));
+            mainGUI.setItem(index, skullCreator.getHeadWithPlayerData(p));
             index += 1;
         }
     }
@@ -74,7 +77,7 @@ public class StaffGUIManager {
 
         if (!playerActionsMap.containsKey(uuid)) {
             // player.sendMessage("inv not in hashmap, creating now");
-            playerActionsMap.put(uuid, new PlayerActionsInventory(forPlayer));
+            playerActionsMap.put(uuid, new PlayerActionsInventory(forPlayer, skullCreator));
         }
 
         // player.sendMessage("got inv from hashmap");
@@ -88,7 +91,7 @@ public class StaffGUIManager {
 
         if (!playerActionsMap.containsKey(forUUID)) {
             // player.sendMessage("inv not in hashmap, creating now");
-            playerActionsMap.put(forUUID, new PlayerActionsInventory(forPlayer));
+            playerActionsMap.put(forUUID, new PlayerActionsInventory(forPlayer, skullCreator));
         }
 
         // player.sendMessage("got inv from hashmap");

@@ -1,14 +1,18 @@
 package me.bazzadev.deltacore.utilities;
 
 import me.bazzadev.deltacore.DeltaCore;
-import me.bazzadev.deltacore.managers.AFKManager;
-import me.bazzadev.deltacore.managers.StaffModeManager;
-import me.bazzadev.deltacore.managers.VanishManager;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class ChatUtil {
+
+    private final PlayerUtil playerUtil;
+
+    public ChatUtil(PlayerUtil playerUtil) {
+        this.playerUtil = playerUtil;
+    }
+
 
     public static String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
@@ -30,22 +34,22 @@ public class ChatUtil {
         return DeltaCore.getChat().getPlayerPrefix(player) + player.getName();
     }
 
-    public static String coloredAFKStatus(Player player) {
-        if (AFKManager.getStatus(player)) {
+    public String coloredAFKStatus(Player player) {
+        if (playerUtil.isAFK(player)) {
             return ChatUtil.color("&a&l✔");
         }
         return ChatUtil.color("&c&l✘");
     }
 
-    public static String coloredStaffModeStatus(Player player) {
-        if (StaffModeManager.getStatus(player)) {
+    public String coloredStaffModeStatus(Player player) {
+        if (playerUtil.isStaffMode(player)) {
             return ChatUtil.color("&a&l✔");
         }
         return ChatUtil.color("&c&l✘");
     }
 
-    public static String coloredVanishStatus(Player player) {
-        if (VanishManager.isVanished(player)) {
+    public String coloredVanishStatus(Player player) {
+        if (playerUtil.isVanished(player)) {
             return ChatUtil.color("&a&l✔");
         }
         return ChatUtil.color("&c&l✘");

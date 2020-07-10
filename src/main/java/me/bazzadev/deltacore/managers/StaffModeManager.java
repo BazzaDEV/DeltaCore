@@ -3,7 +3,7 @@ package me.bazzadev.deltacore.managers;
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.staffmode.StaffModeItems;
 import me.bazzadev.deltacore.utilities.ChatUtil;
-import me.bazzadev.deltacore.utilities.PlayerDataManager;
+import me.bazzadev.deltacore.utilities.PlayerUtil;
 import me.bazzadev.deltacore.utilities.Vars;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -13,6 +13,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 
@@ -20,38 +22,36 @@ public class StaffModeManager {
 
     private final PlayerInventoryManager playerInventoryManager;
     private final NamebarManager namebarManager;
+    private final PlayerDataManager playerDataManager;
+    private final PlayerUtil playerUtil;
 
     private static final String BASE_PATH = "staffmode-data.survival-inventory";
     private static final String[] BASE_PATH_ARR = { "staffmode-data", "survival-inventory" };
 
-    private Player player;
-    private String playerUUIDString;
-
-    public StaffModeManager(PlayerInventoryManager playerInventoryManager, NamebarManager namebarManager) {
+    public StaffModeManager(PlayerInventoryManager playerInventoryManager, NamebarManager namebarManager, PlayerDataManager playerDataManager, PlayerUtil playerUtil) {
         this.playerInventoryManager = playerInventoryManager;
         this.namebarManager = namebarManager;
+        this.playerDataManager = playerDataManager;
+        this.playerUtil = playerUtil;
     }
 
 
     public void toggle(Player player) {
 
-        this.player = player;
-        playerUUIDString = player.getUniqueId().toString();
-
-        if ( getStatus(player) ) {
-            disable();
+        if ( playerUtil.isStaffMode(player) ) {
+            disable(player);
         } else {
-            enable();
+            enable(player);
         }
 
     }
 
-    private void enable() {
+    private void enable(Player player) {
 
-        storeData();
+        storeData(player);
         player.getInventory().clear();
         player.setGameMode(GameMode.CREATIVE);
-        setupStaffInventory();
+        setupStaffInventory(player);
 
         namebarManager.update(player);
 
@@ -60,43 +60,29 @@ public class StaffModeManager {
 
     }
 
-    private void disable() {
+    private void disable(Player player) {
 
-        loadData();
+        loadData(player);
         player.setGameMode(GameMode.SURVIVAL);
 
         namebarManager.update(player);
 
-        sendExitOptions();
+        sendExitOptions(player);
     }
 
-    public static boolean getStatus(Player player) {
-
-        String playerUUIDString = player.getUniqueId().toString();
-
-        Document filter = new Document("uuid", playerUUIDString);
-        Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
-        Document statusData = (Document) playerData.get("status");
-
-        return statusData.getBoolean("staffmode");
-
-    }
-
-    private void setupStaffInventory() {
+    private void setupStaffInventory(Player player) {
         player.getInventory().setItem(0, StaffModeItems.viewPlayerList);
     }
 
-    private void sendExitOptions() {
+    private void sendExitOptions(Player player) {
 
         player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have &cleft &7Staff Mode."));
-
-
 
         TextComponent yes = new TextComponent(ChatUtil.color("&8[&a&l✔&8] &aYes"));
         TextComponent no = new TextComponent(ChatUtil.color("&8[&c&l✘&8] &cNo"));
 
-        String worldName = getStoredWorld();
-        String[] coords = getStoredCoords();
+        String worldName = getStoredWorld(player);
+        String[] coords = getStoredCoords(player);
 
         yes.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/staffmode tppos" + " " + player.getName() + " " + worldName + " " + coords[0] + " " + coords[1] + " " + coords[2]));
         TextComponent toSend = new TextComponent();
@@ -111,19 +97,22 @@ public class StaffModeManager {
 
     }
 
-    private void storeData() {
+    private void storeData(Player player) {
 
         Location location = player.getLocation();
+        UUID uuid = player.getUniqueId();
+        String uuidString = uuid.toString();
 
         String world = location.getWorld().getName();
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
 
+        playerDataManager.getStaffmodeMap().put(uuid, true);
+
         PlayerDataManager.getDatabaseCollection().updateOne(
-                Filters.eq("uuid", playerUUIDString),
-                combine(set("status.staffmode", true),
-                        set("staffmode-data.originallocation.World", world),
+                Filters.eq("uuid", uuidString),
+                combine(set("staffmode-data.originallocation.World", world),
                         set("staffmode-data.originallocation.X", x),
                         set("staffmode-data.originallocation.Y", y),
                         set("staffmode-data.originallocation.Z", z)));
@@ -132,18 +121,17 @@ public class StaffModeManager {
 
     }
 
-    private void loadData() {
+    private void loadData(Player player) {
 
-        PlayerDataManager.getDatabaseCollection().updateOne(
-                Filters.eq("uuid", playerUUIDString),
-                set("status.staffmode", false));
+        UUID uuid = player.getUniqueId();
+        playerDataManager.getStaffmodeMap().put(uuid, false);
 
         player.getInventory().clear();
         playerInventoryManager.loadContents(player, BASE_PATH_ARR);
 
     }
 
-    private Document getStaffModeData() {
+    private Document getStaffModeData(Player player) {
 
         String playerUUIDString = player.getUniqueId().toString();
 
@@ -153,17 +141,17 @@ public class StaffModeManager {
         return (Document) playerData.get("staffmode-data");
     }
 
-    private String getStoredWorld() {
+    private String getStoredWorld(Player player) {
 
-        Document location = (Document) getStaffModeData().get("originallocation");
+        Document location = (Document) getStaffModeData(player).get("originallocation");
 
         return location.getString("World");
 
     }
 
-    private String[] getStoredCoords() {
+    private String[] getStoredCoords(Player player) {
 
-        Document location = (Document) getStaffModeData().get("originallocation");
+        Document location = (Document) getStaffModeData(player).get("originallocation");
 
         String x = String.valueOf(location.getInteger("X"));
         String y = String.valueOf(location.getInteger("Y"));

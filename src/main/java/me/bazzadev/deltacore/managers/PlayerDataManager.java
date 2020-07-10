@@ -1,15 +1,21 @@
-package me.bazzadev.deltacore.utilities;
+package me.bazzadev.deltacore.managers;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.DeltaCore;
 import me.bazzadev.deltacore.config.MongoDBConfig;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.UUID;
+
+import static com.mongodb.client.model.Updates.set;
 import static me.bazzadev.deltacore.utilities.InventoryUtil.playerInventoryToBase64;
 
 public class PlayerDataManager {
@@ -23,6 +29,10 @@ public class PlayerDataManager {
     private MongoClient mongoClient;
     private MongoDatabase database;
     private static MongoCollection<Document> col;
+
+    private final HashMap<UUID, Boolean> afkMap = new HashMap<>();
+    private final HashMap<UUID, Boolean> vanishMap = new HashMap<>();
+    private final HashMap<UUID, Boolean> staffmodeMap = new HashMap<>();
 
     public void initialize() {
 
@@ -59,6 +69,7 @@ public class PlayerDataManager {
                                                 .append("IGN", ign)
                                                 .append("status",
                                                         new Document("afk", false)
+                                                                .append("vanish", false)
                                                                 .append("staffmode", false))
                                                 .append("staffmode-data",
                                                         new Document("originallocation",
@@ -78,7 +89,6 @@ public class PlayerDataManager {
 
 
         // Same task as above, but does not run async obviously.
-
 
 //        Document playerData = new Document("uuid", player.getUniqueId().toString())
 //                                           .append("test",
@@ -107,12 +117,116 @@ public class PlayerDataManager {
 
     }
 
-    public Document getPlayerDocument(Player player) {
+    public HashMap<UUID, Boolean> getAfkMap() {
+        return afkMap;
+    }
+    public HashMap<UUID, Boolean> getVanishMap() {
+        return vanishMap;
+    }
+    public HashMap<UUID, Boolean> getStaffmodeMap() {
+        return staffmodeMap;
+    }
 
-        String playerUUIDString = player.getUniqueId().toString();
-        Document filter = new Document("uuid", playerUUIDString);
+    public void loadPlayerData(Document document, UUID uuid) {
 
-        return col.find(filter).first();
+        Document status = (Document) document.get("status");
+
+        boolean afk = status.getBoolean("afk");
+        afkMap.put(uuid, afk);
+
+        boolean vanish = status.getBoolean("vanish");
+        vanishMap.put(uuid, vanish);
+
+        boolean staffmode = status.getBoolean("staffmode");
+        staffmodeMap.put(uuid, staffmode);
+
+        System.out.println("Loaded player data for " + Bukkit.getPlayer(uuid).getName());
+
+        System.out.println(afkMap);
+        System.out.println(vanishMap);
+        System.out.println(staffmodeMap);
+
+    }
+
+
+    public void loadData() {
+
+        col.find().forEach((document -> {
+
+            String uuidString = document.getString("uuid");
+            UUID uuid = UUID.fromString(uuidString);
+            Player player = Bukkit.getPlayer(uuid);
+
+            if (Bukkit.getOnlinePlayers().contains(player)) {
+
+                Document status = (Document) document.get("status");
+
+                boolean afk = status.getBoolean("afk");
+                afkMap.put(uuid, afk);
+
+                boolean vanish = status.getBoolean("vanish");
+                vanishMap.put(uuid, vanish);
+
+                boolean staffmode = status.getBoolean("staffmode");
+                staffmodeMap.put(uuid, staffmode);
+
+            }
+
+        }));
+
+        System.out.println("Loaded data");
+
+    }
+
+    public void saveData() {
+
+        col.find().forEach((document -> {
+
+            String uuidString = document.getString("uuid");
+            UUID uuid = UUID.fromString(uuidString);
+
+            if (afkMap.containsKey(uuid)) {
+
+                PlayerDataManager.getDatabaseCollection().updateOne(
+                        Filters.eq("uuid", uuidString),
+                        set("status.afk", afkMap.get(uuid)));
+
+            }
+
+            if (vanishMap.containsKey(uuid)) {
+
+                PlayerDataManager.getDatabaseCollection().updateOne(
+                        Filters.eq("uuid", uuidString),
+                        set("status.vanish", vanishMap.get(uuid)));
+
+            }
+
+            if (staffmodeMap.containsKey(uuid)) {
+
+                PlayerDataManager.getDatabaseCollection().updateOne(
+                        Filters.eq("uuid", uuidString),
+                        set("status.staffmode", staffmodeMap.get(uuid)));
+
+            }
+
+        }));
+
+        System.out.println("Saved data");
+
+    }
+
+    public Document[] getPlayerDocumentAndFilter(UUID uuid) {
+
+        Document filter = new Document("uuid", uuid.toString());
+        return new Document[] {filter, PlayerDataManager.getDatabaseCollection().find(filter).first()};
+
+    }
+
+    public Document getPlayerDocument(UUID uuid) {
+
+        Document filter = new Document("uuid", uuid.toString());
+        return PlayerDataManager.getDatabaseCollection().find(filter).first();
+
     }
 
 }

@@ -3,9 +3,10 @@ package me.bazzadev.deltacore.listeners;
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.DeltaCore;
 import me.bazzadev.deltacore.managers.NamebarManager;
+import me.bazzadev.deltacore.managers.PlayerDataManager;
 import me.bazzadev.deltacore.managers.VanishManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
-import me.bazzadev.deltacore.utilities.PlayerDataManager;
+import me.bazzadev.deltacore.utilities.PlayerUtil;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bson.Document;
 import org.bukkit.ChatColor;
@@ -14,6 +15,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.UUID;
+
 import static com.mongodb.client.model.Updates.set;
 
 public class PlayerJoinListener implements Listener {
@@ -21,11 +24,13 @@ public class PlayerJoinListener implements Listener {
     private final PlayerDataManager playerDataManager;
     private final VanishManager vanishManager;
     private final NamebarManager namebarManager;
+    private final PlayerUtil playerUtil;
 
-    public PlayerJoinListener(PlayerDataManager playerDataManager, VanishManager vanishManager, NamebarManager namebarManager) {
+    public PlayerJoinListener(PlayerDataManager playerDataManager, VanishManager vanishManager, NamebarManager namebarManager, PlayerUtil playerUtil) {
         this.playerDataManager = playerDataManager;
         this.vanishManager = vanishManager;
         this.namebarManager = namebarManager;
+        this.playerUtil = playerUtil;
     }
 
     @EventHandler
@@ -33,7 +38,8 @@ public class PlayerJoinListener implements Listener {
 
         Player player = event.getPlayer();
         String playerName = player.getName();
-        String playerUUIDString = player.getUniqueId().toString();
+        UUID uuid = player.getUniqueId();
+        String playerUUIDString = uuid.toString();
 
         // Custom join message
         event.setJoinMessage(Vars.SERVER_JOIN_MESSAGE_PREFIX + ChatColor.GOLD + playerName + " has joined the server.");
@@ -48,8 +54,8 @@ public class PlayerJoinListener implements Listener {
 
             // Check if player's IGN has changed since last login.
             // If true, update database IGN with new IGN.
-            Document filter = new Document("uuid", playerUUIDString);
-            Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
+            Document filter = playerDataManager.getPlayerDocumentAndFilter(uuid)[0];
+            Document playerData = playerDataManager.getPlayerDocumentAndFilter(uuid)[1];
 
             if ( !(playerData.getString("IGN").equalsIgnoreCase(playerName)) ) {
                 PlayerDataManager.getDatabaseCollection().updateOne(
@@ -59,12 +65,16 @@ public class PlayerJoinListener implements Listener {
 
         }
 
+        if (!playerDataManager.getAfkMap().containsKey(uuid)) {
+            playerDataManager.loadPlayerData(playerDataManager.getPlayerDocument(uuid), uuid);
+        }
+
         // Setup vanish statuses //
 
         // Hide vanished players from joined player
         vanishManager.vanishFromPlayer(player);
 
-        if (VanishManager.isVanished(player)) {
+        if (playerUtil.isVanished(player)) {
             // Player was vanished before they last disconnected.
             // Re-hide the player from other players.
             // Skip namebar update to prevent Bungeecord crashes. Will be set on next TaskChain.
