@@ -8,6 +8,7 @@ import me.bazzadev.deltacore.config.MongoDBConfig;
 import me.bazzadev.deltacore.config.PlayerDataConfig;
 import me.bazzadev.deltacore.listeners.*;
 import me.bazzadev.deltacore.managers.*;
+import me.bazzadev.deltacore.tasks.AsyncDatabaseTask;
 import me.bazzadev.deltacore.tasks.CheckIfAFKTask;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerUtil;
@@ -63,6 +64,7 @@ public final class DeltaCore extends JavaPlugin {
         playerDataManager.loadData();
 
         BukkitTask checkIfAfkTask = new CheckIfAFKTask(playerActivityManager, afkManager, playerUtil).runTaskTimerAsynchronously(this, 0, 20);
+        BukkitTask asyncDatabaseTask = new AsyncDatabaseTask(playerDataManager).runTaskTimerAsynchronously(this, 20 * 60 * 5, 20 * 60 * 5);
 
         registerCommands();
         registerEvents();
@@ -80,8 +82,6 @@ public final class DeltaCore extends JavaPlugin {
         playerDataManager.saveData();
         saveConfigs();
     }
-
-
 
     private void createConfigs() {
 
