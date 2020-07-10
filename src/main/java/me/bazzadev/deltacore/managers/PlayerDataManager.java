@@ -101,16 +101,7 @@ public class PlayerDataManager {
 
     public void loadPlayerData(Document document, UUID uuid) {
 
-        Document status = (Document) document.get("status");
-
-        boolean afk = status.getBoolean("afk");
-        afkMap.put(uuid, afk);
-
-        boolean vanish = status.getBoolean("vanish");
-        vanishMap.put(uuid, vanish);
-
-        boolean staffmode = status.getBoolean("staffmode");
-        staffmodeMap.put(uuid, staffmode);
+        loadStatusData(document, uuid);
 
         System.out.println("Loaded player data for " + Bukkit.getPlayer(uuid).getName());
 
@@ -131,16 +122,7 @@ public class PlayerDataManager {
 
             if (Bukkit.getOnlinePlayers().contains(player)) {
 
-                Document status = (Document) document.get("status");
-
-                boolean afk = status.getBoolean("afk");
-                afkMap.put(uuid, afk);
-
-                boolean vanish = status.getBoolean("vanish");
-                vanishMap.put(uuid, vanish);
-
-                boolean staffmode = status.getBoolean("staffmode");
-                staffmodeMap.put(uuid, staffmode);
+                loadStatusData(document, uuid);
 
             }
 
@@ -148,6 +130,20 @@ public class PlayerDataManager {
 
         System.out.println("Loaded data");
 
+    }
+
+    private void loadStatusData(Document document, UUID uuid) {
+
+        Document status = (Document) document.get("status");
+
+        boolean afk = status.getBoolean("afk");
+        afkMap.put(uuid, afk);
+
+        boolean vanish = status.getBoolean("vanish");
+        vanishMap.put(uuid, vanish);
+
+        boolean staffmode = status.getBoolean("staffmode");
+        staffmodeMap.put(uuid, staffmode);
     }
 
     public void saveData() {
