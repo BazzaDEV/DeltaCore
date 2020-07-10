@@ -84,7 +84,7 @@ public class PlayerDataManager {
                                                         new Document("inventory",
                                                                 new Document("inv", playerInventoryToBase64[0])
                                                                         .append("armor", playerInventoryToBase64[1])))))
-                .asyncLast((playerData) -> col.insertOne(playerData))
+                .current((playerData) -> col.insertOne(playerData))
                 .execute();
 
     }
@@ -102,12 +102,6 @@ public class PlayerDataManager {
     public void loadPlayerData(Document document, UUID uuid) {
 
         loadStatusData(document, uuid);
-
-        System.out.println("Loaded player data for " + Bukkit.getPlayer(uuid).getName());
-
-        System.out.println(afkMap);
-        System.out.println(vanishMap);
-        System.out.println(staffmodeMap);
 
     }
 
@@ -127,8 +121,6 @@ public class PlayerDataManager {
             }
 
         }));
-
-        System.out.println("Loaded data");
 
     }
 
@@ -178,8 +170,6 @@ public class PlayerDataManager {
             }
 
         }));
-
-        System.out.println("Saved data");
 
     }
 
