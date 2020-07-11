@@ -16,7 +16,7 @@ public class SpawnParticleTask extends BukkitRunnable {
     public SpawnParticleTask(Player player, Particle particle, Location location) {
         this.player = player;
         this.particle = particle;
-        this.location = location;
+        this.location = location.add(0.5, 1, 0.5);
 
         counter = 0;
     }
@@ -26,7 +26,7 @@ public class SpawnParticleTask extends BukkitRunnable {
 
         if (counter < 20) {
 
-            player.spawnParticle(particle, location.add(0.5, 1, 0.5), 1);
+            player.spawnParticle(particle, location, 1);
             counter++;
 
         } else {

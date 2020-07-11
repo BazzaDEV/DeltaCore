@@ -36,7 +36,7 @@ public class ItemSearchManager {
 
         results.forEach(((blockState, location) -> {
 
-            new SpawnParticleTask(player, Particle.HEART, location).runTaskTimer(plugin, 0, 10);
+            new SpawnParticleTask(player, Particle.BARRIER, location).runTaskTimer(plugin, 0, 10);
 
         }));
 
