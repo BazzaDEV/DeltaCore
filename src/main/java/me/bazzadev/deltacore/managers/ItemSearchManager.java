@@ -31,18 +31,12 @@ public class ItemSearchManager {
 
         results = new HashMap<>();
 
-        nearbyChunks = getNearbyChunks();
-
-        for (Chunk c : nearbyChunks) {
-            player.sendMessage(c.toString());
-
-        }
-
+        getNearbyChunks();
         searchContainers();
 
         results.forEach(((blockState, location) -> {
 
-            new SpawnParticleTask(player, Particle.FLASH, location).runTaskTimer(plugin, 0, 10);
+            new SpawnParticleTask(player, Particle.HEART, location).runTaskTimer(plugin, 0, 10);
 
         }));
 
@@ -50,7 +44,7 @@ public class ItemSearchManager {
 
     }
 
-    private Chunk[] getNearbyChunks() {
+    private void getNearbyChunks() {
 
         Chunk centerChunk = player.getChunk();
         World world = centerChunk.getWorld();
@@ -69,7 +63,7 @@ public class ItemSearchManager {
         Chunk bottomRightChunk = world.getChunkAt(c_x-1, c_z+1);
         Chunk bottomLeftChunk = world.getChunkAt(c_x-1, c_z-1);
 
-        return new Chunk[] { centerChunk, topChunk, bottomChunk, leftChunk, rightChunk, topRightChunk, topLeftChunk, bottomRightChunk, bottomLeftChunk };
+        nearbyChunks =  new Chunk[] { centerChunk, topChunk, bottomChunk, leftChunk, rightChunk, topRightChunk, topLeftChunk, bottomRightChunk, bottomLeftChunk };
 
     }
 
@@ -77,18 +71,11 @@ public class ItemSearchManager {
 
         for (Chunk c : nearbyChunks) {
 
-            player.sendMessage("Looking in chunk " + c.toString());
-
             BlockState[] tileEntities = c.getTileEntities(true);
-
-            player.sendMessage("Tile entities in chunk:" + tileEntities.length);
 
             for (BlockState blockState : tileEntities) {
 
-                player.sendMessage(blockState.toString());
-
                 if (blockState instanceof Chest || blockState instanceof ShulkerBox) {
-                    player.sendMessage("Found one");
                     searchContainer(blockState);
                 }
 
@@ -113,7 +100,7 @@ public class ItemSearchManager {
         if (inventory!=null) {
 
             if (inventory.contains(material)) {
-                results.put(blockState, blockState.getLocation());
+                results.put(blockState, blockState.getBlock().getLocation());
             }
 
         }
