@@ -118,6 +118,7 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("vanish").setExecutor(new VanishCMD(vanishManager));
 
         this.getCommand("portalhelper").setExecutor(new PortalHelperCMD());
+        this.getCommand("search").setExecutor(new SearchCMD(this));
     }
 
     private void registerEvents() {
