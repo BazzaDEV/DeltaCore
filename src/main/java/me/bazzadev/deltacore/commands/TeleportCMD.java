@@ -1,6 +1,10 @@
 package me.bazzadev.deltacore.commands;
 
+import io.papermc.lib.PaperLib;
+import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,9 +13,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class TeleportCMD implements CommandExecutor {
 
-    Player sender = null;
-    Player receiver = null;
-
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
@@ -19,20 +20,28 @@ public class TeleportCMD implements CommandExecutor {
 
             if (commandSender instanceof Player) {
                 // Player is executing the command
-                sender = (Player) commandSender;
+                Player sender = (Player) commandSender;
 
                 if (sender.hasPermission("deltacore.tp")) {
                     // Player has permission to run command
                     switch (args.length) {
                         case 1:
                             // Player sender is teleporting themselves to another player.
-
+                            teleportToPlayer(sender, args);
                             break;
                         case 2:
                             // Command sender is teleporting a player to another player.
+                            teleportPlayerToPlayer(sender, args);
+                            break;
+                        case 3:
+                            // Player sender is teleporting themselves to a set of coordinates.
+                            teleportToPos(sender, args);
+                            break;
                         case 4:
-                            // Command sender is teleporting themselves to a set of coordinates.
+                            // Command sender is teleporting a player to a set of coordinates.
+                            break;
                         default:
+                            return false;
 
                     }
 
@@ -54,25 +63,78 @@ public class TeleportCMD implements CommandExecutor {
         }
 
        return false;
+
     }
 
-    private void teleport() {
+    public static void teleportToPlayer(Player sender, String[] args) {
 
-        boolean isPaper = false;
-        try {
+        Player target = Bukkit.getPlayerExact(args[0]);
 
-            isPaper = Class.forName("com.destroystokyo.paper$VersionHistoryManager$VersionData") != null;
-        } catch (ClassNotFoundException ignored) {
-        }
-
-        if (isPaper) {
-            // Server is running Paper, so it's safe to teleport async.
+        if (target!=null) {
+            PaperLib.teleportAsync(sender, target.getLocation()).thenAccept(result -> {
+                if (result) {
+                    sender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to " + ChatUtil.playerNameWithPrefix(target) + "&7's location."));
+                } else {
+                    sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cSomething wrong - we couldn't teleport you to " + ChatUtil.playerNameWithPrefix(target) + "&c's location."));
+                }
+            });
 
         } else {
-            // Server is running Spiogt, teleport sync.
-
+            sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cThe specified player does not exist."));
         }
 
+
+    }
+
+    public static void teleportPlayerToPlayer(Player sender, String[] args) {
+
+        Player player1 = Bukkit.getPlayerExact(args[0]);
+        Player player2 = Bukkit.getPlayerExact(args[1]);
+
+        if (player1!=null && player2!=null) {
+            PaperLib.teleportAsync(player1, player2.getLocation()).thenAccept(result -> {
+                if (result) {
+                    sender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have teleported " + ChatUtil.playerNameWithPrefix(player1) + "&7to " + ChatUtil.playerNameWithPrefix(player2) + "&7's location."));
+                    player1.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to " + ChatUtil.playerNameWithPrefix(player2) + "&7's location."));
+                } else {
+                    sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cSomething wrong - we couldn't teleport " + ChatUtil.playerNameWithPrefix(player1) + "&cto " + ChatUtil.playerNameWithPrefix(player2) + "&c's location."));
+                }
+            });
+
+        } else {
+            sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cThe specified player(s) do not exist."));
+        }
+
+
+    }
+
+    public static void teleportToPos(Player sender, String[] args) {
+
+        double x, y, z;
+
+        try {
+            x = Double.parseDouble(args[0]);
+            y = Double.parseDouble(args[1]);
+            z = Double.parseDouble(args[2]);
+
+        } catch (NumberFormatException e) {
+            sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cYou entered an invalid set of coordinates."));
+            return;
+        }
+
+        Location location = new Location(sender.getWorld(), x, y, z);
+
+        PaperLib.teleportAsync(sender, location).thenAccept(result -> {
+            if (result) {
+                sender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to &7&nX:&r &a" + x + " &r&7Y: &a" + y + " &7&nZ:&r &a" + z));
+            } else {
+                sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cSomething wrong - we couldn't teleport you to those coordinates."));
+            }
+        });
+
+    }
+
+    public static void teleportPlayerToPos(Player sender, String[] args) {
 
 
     }
