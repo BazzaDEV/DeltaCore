@@ -39,11 +39,11 @@ public class ItemSearchManager {
 
         results.forEach(((blockState, location) -> {
 
-            try {
-                new SpawnLaserTask(plugin, player, location).runTaskTimer(plugin, 0, 10);
-            } catch (ReflectiveOperationException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                new SpawnLaserTask(plugin, player, location).runTaskTimer(plugin, 0, 10);
+//            } catch (ReflectiveOperationException e) {
+//                e.printStackTrace();
+//            }
 
             // new SpawnParticleTask(player, Particle.BARRIER, location).runTaskTimer(plugin, 0, 10);
 
