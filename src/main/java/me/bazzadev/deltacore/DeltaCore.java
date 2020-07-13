@@ -63,8 +63,7 @@ public final class DeltaCore extends JavaPlugin {
         playerDataManager.initialize();
         playerDataManager.loadData();
 
-        BukkitTask checkIfAfkTask = new CheckIfAFKTask(playerActivityManager, afkManager, playerUtil).runTaskTimerAsynchronously(this, 0, 20);
-        BukkitTask asyncDatabaseTask = new AsyncDatabaseTask(playerDataManager).runTaskTimerAsynchronously(this, 20 * 60 * 5, 20 * 60 * 5);
+        runTasks();
 
         registerCommands();
         registerEvents();
@@ -81,6 +80,11 @@ public final class DeltaCore extends JavaPlugin {
     public void onDisable() {
         playerDataManager.saveData();
         saveConfigs();
+    }
+
+    private void runTasks() {
+        BukkitTask checkIfAfkTask = new CheckIfAFKTask(playerActivityManager, afkManager, playerUtil).runTaskTimerAsynchronously(this, 0, 20);
+        BukkitTask asyncDatabaseTask = new AsyncDatabaseTask(playerDataManager).runTaskTimerAsynchronously(this, 20 * 60 * 5, 20 * 60 * 5);
     }
 
     private void createConfigs() {
