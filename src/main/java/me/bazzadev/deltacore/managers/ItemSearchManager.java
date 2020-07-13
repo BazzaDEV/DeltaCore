@@ -1,11 +1,8 @@
 package me.bazzadev.deltacore.managers;
 
 import me.bazzadev.deltacore.DeltaCore;
-import me.bazzadev.deltacore.tasks.SpawnLaserTask;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import me.bazzadev.deltacore.tasks.SpawnParticleTask;
+import org.bukkit.*;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
@@ -45,7 +42,7 @@ public class ItemSearchManager {
 //                e.printStackTrace();
 //            }
 
-            // new SpawnParticleTask(player, Particle.BARRIER, location).runTaskTimer(plugin, 0, 10);
+            new SpawnParticleTask(player, Particle.BARRIER, location).runTaskTimer(plugin, 0, 10);
 
         }));
 
