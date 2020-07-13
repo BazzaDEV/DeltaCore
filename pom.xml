@@ -155,7 +155,7 @@
                         <artifactId>maven-jar-plugin</artifactId>
                         <version>3.2.0</version>
                         <configuration>
-                            <outputDirectory>Q:\ROOT FOLDERS\Bazza\Documents\GitHub\DeltaCore\Test-Server\plugins</outputDirectory>
+                            <outputDirectory>Q:\ROOT FOLDERS\Bazza\Documents\GitHub\DeltaCore\Test-Server\plugins\update</outputDirectory>
                         </configuration>
                     </plugin>
                 </plugins>
