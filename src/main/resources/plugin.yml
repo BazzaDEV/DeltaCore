@@ -22,6 +22,10 @@ commands:
     description: Puts the player's coordinates in chat.
     usage: /coords
 
+  tp:
+    description: Teleports the player.
+    usage: /tp
+
   saveinv:
     description: Save inventory.
     usage: /saveinv [player]
