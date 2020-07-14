@@ -39,6 +39,7 @@ public class TeleportCMD implements CommandExecutor {
                             break;
                         case 4:
                             // Command sender is teleporting a player to a set of coordinates.
+                            teleportPlayerToPos(sender, args);
                             break;
                         default:
                             return false;
@@ -113,12 +114,10 @@ public class TeleportCMD implements CommandExecutor {
         double x, y, z;
 
         try {
-            x = Double.parseDouble(args[0]);
-            y = Double.parseDouble(args[1]);
-            z = Double.parseDouble(args[2]);
-
-        } catch (NumberFormatException e) {
-            sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cYou entered an invalid set of coordinates."));
+            x = getCoordinate(sender, sender, args[0], 0);
+            y = getCoordinate(sender, sender, args[1], 1);
+            z = getCoordinate(sender, sender, args[2], 2);
+        } catch(NullPointerException e) {
             return;
         }
 
@@ -126,7 +125,7 @@ public class TeleportCMD implements CommandExecutor {
 
         PaperLib.teleportAsync(sender, location).thenAccept(result -> {
             if (result) {
-                sender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to &7&nX:&r &a" + x + " &r&7Y: &a" + y + " &7&nZ:&r &a" + z));
+                sender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to &7&nX:&r &b" + Math.round(x) + " &r&7Y: &b" + Math.round(y) + " &7&nZ:&r &b" + Math.round(z)));
             } else {
                 sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cSomething wrong - we couldn't teleport you to those coordinates."));
             }
@@ -136,6 +135,62 @@ public class TeleportCMD implements CommandExecutor {
 
     public static void teleportPlayerToPos(Player sender, String[] args) {
 
+        Player target = Bukkit.getPlayerExact(args[0]);
+
+        if (target!=null) {
+
+            double x, y, z;
+
+            try {
+                x = getCoordinate(sender, target, args[1], 0);
+                y = getCoordinate(sender, target, args[2], 1);
+                z = getCoordinate(sender, target, args[3], 2);
+            } catch(NullPointerException e) {
+                return;
+            }
+
+            Location location = new Location(target.getWorld(), x, y, z);
+
+            PaperLib.teleportAsync(target, location).thenAccept(result -> {
+                if (result) {
+                    sender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have teleported " + ChatUtil.playerNameWithPrefix(target) + " &7to &7&nX:&r &b" + Math.round(x) + " &r&7Y: &b" + Math.round(y) + " &7&nZ:&r &b" + Math.round(z)));
+                    target.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to &7&nX:&r &b" + Math.round(x) + " &r&7Y: &b" + Math.round(y) + " &7&nZ:&r &b" + Math.round(z)));
+                } else {
+                    sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cSomething wrong - we couldn't teleport " + ChatUtil.playerNameWithPrefix(target) + " &cto those coordinates."));
+                }
+            });
+
+        } else {
+            sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cThe specified player(s) do not exist."));
+        }
+
+    }
+
+    private static Double getCoordinate(Player sender, Player target, String s, int i) {
+
+        if (s.equalsIgnoreCase("~")) {
+            switch (i) {
+                case 0:
+                    return target.getLocation().getX();
+                case 1:
+                    return target.getLocation().getY();
+                case 2:
+                    return target.getLocation().getZ();
+            }
+
+        } else {
+
+            try {
+                return Double.parseDouble(s);
+
+            } catch (NumberFormatException e) {
+                sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cYou entered an invalid set of coordinates."));
+                return null;
+            }
+
+        }
+
+        return null;
 
     }
 
