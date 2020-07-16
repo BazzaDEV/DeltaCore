@@ -46,6 +46,10 @@
                                     <pattern>co.aikar.taskchain</pattern>
                                     <shadedPattern>me.bazzadev.deltacore.DeltaCore.taskchain</shadedPattern> <!-- Replace this -->
                                 </relocation>
+                                <relocation>
+                                    <pattern>io.papermc.lib</pattern>
+                                    <shadedPattern>me.bazzadev.deltacore.DeltaCore.paperlib</shadedPattern> <!-- Replace this -->
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -98,6 +102,12 @@
             <artifactId>paper-api</artifactId>
             <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.4</version>
+            <scope>compile</scope>
         </dependency>
         <!--<dependency>
             <groupId>org.spigotmc</groupId>
@@ -155,7 +165,7 @@
                         <artifactId>maven-jar-plugin</artifactId>
                         <version>3.2.0</version>
                         <configuration>
-                            <outputDirectory>Q:\ROOT FOLDERS\Bazza\Documents\GitHub\DeltaCore\Test-Server\plugins</outputDirectory>
+                            <outputDirectory>Q:\ROOT FOLDERS\Bazza\Documents\GitHub\DeltaCore\Test-Server\plugins\update</outputDirectory>
                         </configuration>
                     </plugin>
                 </plugins>

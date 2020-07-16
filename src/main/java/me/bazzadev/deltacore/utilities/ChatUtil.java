@@ -31,7 +31,7 @@ public class ChatUtil {
     }
 
     public static String playerNameWithPrefix(Player player) {
-        return DeltaCore.getChat().getPlayerPrefix(player) + player.getName();
+        return getPrefix(player) + player.getName();
     }
 
     public String coloredAFKStatus(Player player) {

@@ -8,6 +8,9 @@ commands:
   portalhelper:
     description: Calculates the correct coordinates for nether placement.
     usage: /portalhelper
+  search:
+    description: Search nearby containers for a specified item.
+    usage: /search <item name>
 
   heal:
     description: Heals the player.
@@ -18,6 +21,16 @@ commands:
   coords:
     description: Puts the player's coordinates in chat.
     usage: /coords
+
+  tp:
+    description: Teleports the player.
+    usage: /tp
+  tphere:
+    description: Teleports a player to your current location.
+    usage: /tphere <player>
+  tppos:
+    description: Teleports you or a player to a set of coordinates.
+    usage: /tppos [player] <x> <y> <z>
 
   saveinv:
     description: Save inventory.

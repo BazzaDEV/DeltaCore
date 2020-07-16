@@ -63,8 +63,7 @@ public final class DeltaCore extends JavaPlugin {
         playerDataManager.initialize();
         playerDataManager.loadData();
 
-        BukkitTask checkIfAfkTask = new CheckIfAFKTask(playerActivityManager, afkManager, playerUtil).runTaskTimerAsynchronously(this, 0, 20);
-        BukkitTask asyncDatabaseTask = new AsyncDatabaseTask(playerDataManager).runTaskTimerAsynchronously(this, 20 * 60 * 5, 20 * 60 * 5);
+        runTasks();
 
         registerCommands();
         registerEvents();
@@ -81,6 +80,11 @@ public final class DeltaCore extends JavaPlugin {
     public void onDisable() {
         playerDataManager.saveData();
         saveConfigs();
+    }
+
+    private void runTasks() {
+        BukkitTask checkIfAfkTask = new CheckIfAFKTask(playerActivityManager, afkManager, playerUtil).runTaskTimerAsynchronously(this, 0, 20);
+        BukkitTask asyncDatabaseTask = new AsyncDatabaseTask(playerDataManager).runTaskTimerAsynchronously(this, 20 * 60 * 5, 20 * 60 * 5);
     }
 
     private void createConfigs() {
@@ -101,6 +105,10 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("heal").setExecutor(new HealCMD());
         this.getCommand("feed").setExecutor(new FeedCMD());
 
+        this.getCommand("tp").setExecutor(new TeleportCMD());
+        this.getCommand("tphere").setExecutor(new TeleportHereCMD());
+        this.getCommand("tppos").setExecutor(new TeleportPosCMD());
+
         this.getCommand("gms").setExecutor(new GamemodeCMD());
         this.getCommand("gmc").setExecutor(new GamemodeCMD());
         this.getCommand("gma").setExecutor(new GamemodeCMD());
@@ -118,6 +126,7 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("vanish").setExecutor(new VanishCMD(vanishManager));
 
         this.getCommand("portalhelper").setExecutor(new PortalHelperCMD());
+        this.getCommand("search").setExecutor(new SearchCMD(this));
     }
 
     private void registerEvents() {
@@ -130,7 +139,7 @@ public final class DeltaCore extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new EntityDamagebyEntityListener(playerUtil), this);
 
-        getServer().getPluginManager().registerEvents(new PlayerCommandPreProcessListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerCommandPreprocessListener(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerInteractListener(staffGUIManager, playerUtil), this);
         getServer().getPluginManager().registerEvents(new PlayerDropItemListener(playerUtil), this);

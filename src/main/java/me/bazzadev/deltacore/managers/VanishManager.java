@@ -37,10 +37,6 @@ public class VanishManager {
 
         }
 
-        System.out.println(playerDataManager.getAfkMap());
-        System.out.println(playerDataManager.getVanishMap());
-        System.out.println(playerDataManager.getStaffmodeMap());
-
     }
 
     private void vanish(Player player) {
