@@ -15,15 +15,26 @@ public class SpawnParticleTask extends BukkitRunnable {
     public SpawnParticleTask(Player player, Particle particle, Location location) {
         this.player = player;
         this.particle = particle;
-        this.location = location.add(0.5, 1, 0.5);
+        this.location = location.add(0, 0.5, 0);
         counter = 0;
+    }
+
+    private void spawnParticles() {
+
+        player.spawnParticle(particle, location.add(0.5, 0, 0), 1);
+        player.spawnParticle(particle, location.add(0.5, 0, 0.5), 1);
+        player.spawnParticle(particle, location.add(-0.5, 0, 0.5), 1);
+        player.spawnParticle(particle, location.add(-0.5, 0, -0.5), 1);
+
+        location.add(0, 0, -0.5);
+
     }
 
     @Override
     public void run() {
 
         if (counter < 20) {
-            player.spawnParticle(particle, location, 1);
+            spawnParticles();
             counter++;
 
         } else {

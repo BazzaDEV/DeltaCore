@@ -2,6 +2,8 @@ package me.bazzadev.deltacore.managers;
 
 import me.bazzadev.deltacore.DeltaCore;
 import me.bazzadev.deltacore.tasks.SpawnParticleTask;
+import me.bazzadev.deltacore.utilities.ChatUtil;
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bukkit.*;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -24,7 +26,7 @@ public class ItemSearchManager {
         this.plugin = plugin;
     }
 
-    public void newSearch(Material material, Player player) {
+    public boolean newSearch(Material material, Player player) {
 
         this.material = material;
         this.player = player;
@@ -34,19 +36,19 @@ public class ItemSearchManager {
         getNearbyChunks();
         searchContainers();
 
-        results.forEach(((blockState, location) -> {
+        if (results.size() > 0) {
 
-//            try {
-//                new SpawnLaserTask(plugin, player, location).runTaskTimer(plugin, 0, 10);
-//            } catch (ReflectiveOperationException e) {
-//                e.printStackTrace();
-//            }
+            results.forEach(((blockState, location) -> {
+                new SpawnParticleTask(player, Particle.BARRIER, location).runTaskTimer(plugin, 0, 10);
+            }));
 
-            new SpawnParticleTask(player, Particle.BARRIER, location).runTaskTimer(plugin, 0, 10);
+            player.sendMessage(ChatUtil.color(Vars.SEARCH_PREFIX + "&fSearch complete. Located &e" + results.size() + " &fcontainer(s) with &e" + material.toString() + "&f."));
+            return true;
 
-        }));
-
-        player.sendMessage("Done. Found " + results.size() + " containers with the item " + material.toString());
+        } else {
+            player.sendMessage(ChatUtil.color(Vars.SEARCH_PREFIX + "&fSearch complete. No items matching &e" + material.toString() + " &fwere found in nearby containers."));
+            return false;
+        }
 
     }
 

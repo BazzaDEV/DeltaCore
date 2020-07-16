@@ -37,7 +37,6 @@ public class SearchCMD implements CommandExecutor {
 
                         if (material!=null) {
                             // Material is acceptable.
-                            player.sendMessage(material.toString());
                             new ItemSearchManager(plugin).newSearch(material, player);
 
                         } else {

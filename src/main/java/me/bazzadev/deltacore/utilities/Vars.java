@@ -8,6 +8,7 @@ public class Vars {
     public static final String PLUGIN_PREFIX = ChatUtil.color("&8&l▍ &c&lDelta&f&lCore &8▎ &r");
     public static final String ERROR_PREFIX = ChatUtil.color("&8&l▍ &4&lERROR &8▎ &r");
     public static final String VANISH_PREFIX = ChatUtil.color("&8&l▍ &d&lVanish &8▎ &r");
+    public static final String SEARCH_PREFIX = ChatUtil.color("&8&l▍ &a&lSearch &8▎ &r");
 
     public static final String NO_PERMISSION = ChatUtil.color(PLUGIN_PREFIX + "&cNo permission, bud.");
     public static final String PLAYER_DNE = ChatUtil.color(PLUGIN_PREFIX + "The specified player does not exist. Try again.");
