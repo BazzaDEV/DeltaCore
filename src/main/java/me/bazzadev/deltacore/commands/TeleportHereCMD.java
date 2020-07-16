@@ -60,7 +60,7 @@ public class TeleportHereCMD implements CommandExecutor {
             if (target!=null) {
                 PaperLib.teleportAsync(target, sender.getLocation()).thenAccept(result -> {
                     if (result) {
-                        sender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have teleported " + ChatUtil.playerNameWithPrefix(target) + "&7to your location."));
+                        sender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have teleported " + ChatUtil.playerNameWithPrefix(target) + " &7to your location."));
                         target.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to " + ChatUtil.playerNameWithPrefix(sender) + "&7's location."));
                     } else {
                         sender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cSomething wrong - we couldn't teleport " + ChatUtil.playerNameWithPrefix(target) + "&cto your location."));

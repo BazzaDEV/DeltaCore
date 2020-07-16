@@ -106,6 +106,8 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("feed").setExecutor(new FeedCMD());
 
         this.getCommand("tp").setExecutor(new TeleportCMD());
+        this.getCommand("tphere").setExecutor(new TeleportHereCMD());
+        this.getCommand("tppos").setExecutor(new TeleportPosCMD());
 
         this.getCommand("gms").setExecutor(new GamemodeCMD());
         this.getCommand("gmc").setExecutor(new GamemodeCMD());
