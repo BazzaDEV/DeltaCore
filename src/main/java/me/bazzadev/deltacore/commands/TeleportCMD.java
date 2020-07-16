@@ -115,7 +115,7 @@ public class TeleportCMD implements CommandExecutor {
         if (player1!=null && player2!=null) {
             PaperLib.teleportAsync(player1, player2.getLocation()).thenAccept(result -> {
                 if (result) {
-                    commandSender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have teleported " + ChatUtil.playerNameWithPrefix(player1) + "&7to " + ChatUtil.playerNameWithPrefix(player2) + "&7's location."));
+                    commandSender.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have teleported " + ChatUtil.playerNameWithPrefix(player1) + " &7to " + ChatUtil.playerNameWithPrefix(player2) + "&7's location."));
                     player1.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You have been teleported to " + ChatUtil.playerNameWithPrefix(player2) + "&7's location."));
                 } else {
                     commandSender.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cSomething wrong - we couldn't teleport " + ChatUtil.playerNameWithPrefix(player1) + "&cto " + ChatUtil.playerNameWithPrefix(player2) + "&c's location."));
