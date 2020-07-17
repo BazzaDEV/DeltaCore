@@ -44,6 +44,9 @@ public class SearchCMD implements CommandExecutor {
                             // Send error message.
                             player.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cThe item specified is not a valid material."));
                         }
+
+                    } else if (args.length > 1) {
+                        player.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cMake sure you use &c&lUNDERSCORES &r&c(&7_&c) instead of spaces in the material name."));
                     }
 
                 } else {
