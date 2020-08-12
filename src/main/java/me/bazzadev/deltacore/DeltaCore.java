@@ -28,7 +28,7 @@ public final class DeltaCore extends JavaPlugin {
     private final PlayerUtil playerUtil = new PlayerUtil(playerDataManager);
     private final NamebarManager namebarManager = new NamebarManager(playerUtil);
 
-    private final PlayerInventoryManager playerInventoryManager = new PlayerInventoryManager(playerDataManager);
+    private final PlayerInventoryManager playerInventoryManager = new PlayerInventoryManager();
     private final StaffModeManager staffModeManager = new StaffModeManager(playerInventoryManager, namebarManager, playerDataManager, playerUtil);
     private final AFKManager afkManager = new AFKManager(namebarManager, playerDataManager, playerUtil);
     private final VanishManager vanishManager = new VanishManager(this, namebarManager, playerDataManager, playerUtil);
@@ -114,10 +114,10 @@ public final class DeltaCore extends JavaPlugin {
         this.getCommand("gma").setExecutor(new GamemodeCMD());
         this.getCommand("gmspec").setExecutor(new GamemodeCMD());
 
-        this.getCommand("loadinv").setExecutor(new InventoryCMD(playerInventoryManager));
-        this.getCommand("saveinv").setExecutor(new InventoryCMD(playerInventoryManager));
-        this.getCommand("clearinv").setExecutor(new InventoryCMD(playerInventoryManager));
-        this.getCommand("restoreinv").setExecutor(new InventoryCMD(playerInventoryManager));
+        this.getCommand("loadinv").setExecutor(new InventoryCMD(playerInventoryManager, playerDataManager));
+        this.getCommand("saveinv").setExecutor(new InventoryCMD(playerInventoryManager, playerDataManager));
+        this.getCommand("clearinv").setExecutor(new InventoryCMD(playerInventoryManager, playerDataManager));
+        this.getCommand("restoreinv").setExecutor(new InventoryCMD(playerInventoryManager, playerDataManager));
 
         this.getCommand("staffmode").setExecutor(new StaffModeCMD(staffModeManager));
 
@@ -135,7 +135,7 @@ public final class DeltaCore extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager, vanishManager, namebarManager, playerUtil), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(staffGUIManager, playerActivityManager), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeathListener(playerInventoryManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(playerInventoryManager, playerDataManager), this);
 
         getServer().getPluginManager().registerEvents(new EntityDamagebyEntityListener(playerUtil), this);
 

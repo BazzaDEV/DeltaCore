@@ -1,5 +1,6 @@
 package me.bazzadev.deltacore.commands;
 
+import me.bazzadev.deltacore.managers.PlayerDataManager;
 import me.bazzadev.deltacore.managers.PlayerInventoryManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
@@ -14,9 +15,11 @@ import org.jetbrains.annotations.NotNull;
 public class InventoryCMD implements CommandExecutor {
 
     private final PlayerInventoryManager playerInventoryManager;
+    private final PlayerDataManager playerDataManager;
 
-    public InventoryCMD(PlayerInventoryManager playerInventoryManager) {
+    public InventoryCMD(PlayerInventoryManager playerInventoryManager, PlayerDataManager playerDataManager) {
         this.playerInventoryManager = playerInventoryManager;
+        this.playerDataManager = playerDataManager;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class InventoryCMD implements CommandExecutor {
                 Player player = (Player) sender;
 
                 if (player.hasPermission("deltacore.saveinv")) {
-                    playerInventoryManager.saveContents(player, PlayerInventoryManager.TEST_BASE_PATH);
+                    playerInventoryManager.saveContents(player, playerDataManager.getTestInvMap());
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7Your inventory has been &bsaved&7."));
 
                 } else {
@@ -47,7 +50,7 @@ public class InventoryCMD implements CommandExecutor {
                 Player player = (Player) sender;
 
                 if (player.hasPermission("deltacore.loadinv")) {
-                    playerInventoryManager.loadContents(player, PlayerInventoryManager.TEST_BASE_PATH_ARR);
+                    playerInventoryManager.loadContents(player, playerDataManager.getTestInvMap());
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7Your inventory has been &arestored&7."));
 
                 } else {
@@ -101,7 +104,7 @@ public class InventoryCMD implements CommandExecutor {
     private void restoreDeathInventory(String targetName) {
 
         Player target = Bukkit.getPlayer(targetName);
-        playerInventoryManager.loadContents(target, Vars.LAST_DEATH_INVENTORY_PATH_ARR);
+        playerInventoryManager.loadContents(target, playerDataManager.getLastDeathInvMap());
 
         target.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7Your inventory has been &a&lRESTORED &7to its pre-death contents."));
     }

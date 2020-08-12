@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.DeltaCore;
 import me.bazzadev.deltacore.config.MongoDBConfig;
+import me.bazzadev.deltacore.utilities.Vars;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 import static me.bazzadev.deltacore.utilities.InventoryUtil.playerInventoryToBase64;
 
@@ -32,7 +34,14 @@ public class PlayerDataManager {
 
     private final HashMap<UUID, Boolean> afkMap = new HashMap<>();
     private final HashMap<UUID, Boolean> vanishMap = new HashMap<>();
+
     private final HashMap<UUID, Boolean> staffmodeMap = new HashMap<>();
+
+    private final HashMap<UUID, String[]> testInvMap = new HashMap<>();
+    private final HashMap<UUID, String[]> staffmodeInvMap = new HashMap<>();
+    private final HashMap<UUID, String[]> lastDeathInvMap = new HashMap<>();
+
+    private final HashMap<UUID, String[]> staffmodeLocationMap = new HashMap<>();
 
     public void initialize() {
 
@@ -99,6 +108,12 @@ public class PlayerDataManager {
         return staffmodeMap;
     }
 
+    public HashMap<UUID, String[]> getTestInvMap() { return testInvMap; }
+    public HashMap<UUID, String[]> getStaffmodeInvMap() { return staffmodeInvMap; }
+    public HashMap<UUID, String[]> getLastDeathInvMap() { return lastDeathInvMap; }
+
+    public HashMap<UUID, String[]> getStaffmodeLocationMap() { return staffmodeLocationMap; }
+
     public void loadPlayerData(Document document, UUID uuid) {
 
         loadStatusData(document, uuid);
@@ -117,6 +132,8 @@ public class PlayerDataManager {
             if (Bukkit.getOnlinePlayers().contains(player)) {
 
                 loadStatusData(document, uuid);
+                loadInventoryData(document, uuid);
+                loadMiscData(document, uuid);
 
             }
 
@@ -136,6 +153,38 @@ public class PlayerDataManager {
 
         boolean staffmode = status.getBoolean("staffmode");
         staffmodeMap.put(uuid, staffmode);
+    }
+
+    private void loadInventoryData(Document document, UUID uuid) {
+
+        Document invDocument = PlayerInventoryManager.fileFromPath(document, PlayerInventoryManager.TEST_BASE_PATH_ARR);
+
+        testInvMap.put(uuid, new String[] { invDocument.getString("inv"),
+                                            invDocument.getString("armor") });
+
+        invDocument = PlayerInventoryManager.fileFromPath(document, StaffModeManager.STAFFMODE_INV_BASE_PATH_ARR);
+
+        staffmodeInvMap.put(uuid, new String[] { invDocument.getString("inv"),
+                                                invDocument.getString("armor") });
+
+        invDocument = PlayerInventoryManager.fileFromPath(document, Vars.LAST_DEATH_INVENTORY_PATH_ARR);
+
+        lastDeathInvMap.put(uuid, new String[] { invDocument.getString("inv"),
+                                                invDocument.getString("armor") });
+
+    }
+
+    private void loadMiscData(Document document, UUID uuid) {
+
+        Document locationDocument = PlayerInventoryManager.fileFromPath(document, StaffModeManager.STAFFMODE_ORIGINAL_LOC_PATH_ARR);
+
+        String world = locationDocument.getString("World");
+        String x = locationDocument.getString("X");
+        String y = locationDocument.getString("Y");
+        String z = locationDocument.getString("Z");
+
+        staffmodeLocationMap.put(uuid, new String[] { world, x, y, z });
+
     }
 
     public void saveData() {
@@ -166,6 +215,51 @@ public class PlayerDataManager {
                 PlayerDataManager.getDatabaseCollection().updateOne(
                         Filters.eq("uuid", uuidString),
                         set("status.staffmode", staffmodeMap.get(uuid)));
+
+            }
+
+            if (testInvMap.containsKey(uuid)) {
+
+                PlayerDataManager.getDatabaseCollection().updateOne(
+                        Filters.eq("uuid", uuidString),
+                        combine(set(PlayerInventoryManager.TEST_BASE_PATH + ".inv", testInvMap.get(uuid)[0]),
+                                set(PlayerInventoryManager.TEST_BASE_PATH + ".armor", testInvMap.get(uuid)[1])));
+
+            }
+
+            if (staffmodeInvMap.containsKey(uuid)) {
+
+                PlayerDataManager.getDatabaseCollection().updateOne(
+                        Filters.eq("uuid", uuidString),
+                        combine(set(StaffModeManager.STAFFMODE_INV_BASE_PATH + ".inv", staffmodeInvMap.get(uuid)[0]),
+                                set(StaffModeManager.STAFFMODE_INV_BASE_PATH + ".armor", staffmodeInvMap.get(uuid)[1])));
+
+            }
+
+            if (lastDeathInvMap.containsKey(uuid)) {
+
+                PlayerDataManager.getDatabaseCollection().updateOne(
+                        Filters.eq("uuid", uuidString),
+                        combine(set(Vars.LAST_DEATH_INVENTORY_PATH + ".inv", lastDeathInvMap.get(uuid)[0]),
+                                set(Vars.LAST_DEATH_INVENTORY_PATH + ".armor", lastDeathInvMap.get(uuid)[1])));
+
+            }
+
+            if (staffmodeLocationMap.containsKey(uuid)) {
+
+                String[] locationData = staffmodeLocationMap.get(uuid);
+                String world = locationData[0];
+                String x = locationData[1];
+                String y = locationData[2];
+                String z = locationData[3];
+
+
+                PlayerDataManager.getDatabaseCollection().updateOne(
+                        Filters.eq("uuid", uuidString),
+                        combine(set("staffmode-data.originallocation.World", world),
+                                set("staffmode-data.originallocation.X", x),
+                                set("staffmode-data.originallocation.Y", y),
+                                set("staffmode-data.originallocation.Z", z)));
 
             }
 

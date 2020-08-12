@@ -1,6 +1,5 @@
 package me.bazzadev.deltacore.managers;
 
-import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.staffmode.StaffModeItems;
 import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.PlayerUtil;
@@ -15,9 +14,6 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-import static com.mongodb.client.model.Updates.combine;
-import static com.mongodb.client.model.Updates.set;
-
 public class StaffModeManager {
 
     private final PlayerInventoryManager playerInventoryManager;
@@ -25,8 +21,11 @@ public class StaffModeManager {
     private final PlayerDataManager playerDataManager;
     private final PlayerUtil playerUtil;
 
-    private static final String BASE_PATH = "staffmode-data.survival-inventory";
-    private static final String[] BASE_PATH_ARR = { "staffmode-data", "survival-inventory" };
+    public static final String STAFFMODE_INV_BASE_PATH = "staffmode-data.survival-inventory";
+    public static final String[] STAFFMODE_INV_BASE_PATH_ARR = { "staffmode-data", "survival-inventory" };
+
+    public static final String STAFFMODE_ORIGINAL_LOC_PATH = "staffmode-data.originallocation";
+    public static final String[] STAFFMODE_ORIGINAL_LOC_PATH_ARR = { "staffmode-data", "originallocation" };
 
     public StaffModeManager(PlayerInventoryManager playerInventoryManager, NamebarManager namebarManager, PlayerDataManager playerDataManager, PlayerUtil playerUtil) {
         this.playerInventoryManager = playerInventoryManager;
@@ -101,23 +100,17 @@ public class StaffModeManager {
 
         Location location = player.getLocation();
         UUID uuid = player.getUniqueId();
-        String uuidString = uuid.toString();
 
         String world = location.getWorld().getName();
-        int x = location.getBlockX();
-        int y = location.getBlockY();
-        int z = location.getBlockZ();
+        double x = location.getX();
+        double y = location.getY();
+        double z = location.getZ();
+
+        String[] locationData = new String[] { world, String.valueOf(x), String.valueOf(y), String.valueOf(z)};
 
         playerDataManager.getStaffmodeMap().put(uuid, true);
-
-        PlayerDataManager.getDatabaseCollection().updateOne(
-                Filters.eq("uuid", uuidString),
-                combine(set("staffmode-data.originallocation.World", world),
-                        set("staffmode-data.originallocation.X", x),
-                        set("staffmode-data.originallocation.Y", y),
-                        set("staffmode-data.originallocation.Z", z)));
-
-        playerInventoryManager.saveContents(player, BASE_PATH);
+        playerDataManager.getStaffmodeLocationMap().put(uuid, locationData);
+        playerInventoryManager.saveContents(player, playerDataManager.getStaffmodeInvMap());
 
     }
 
@@ -127,7 +120,24 @@ public class StaffModeManager {
         playerDataManager.getStaffmodeMap().put(uuid, false);
 
         player.getInventory().clear();
-        playerInventoryManager.loadContents(player, BASE_PATH_ARR);
+        playerInventoryManager.loadContents(player, playerDataManager.getStaffmodeInvMap());
+
+    }
+
+    private String getStoredWorld(Player player) {
+
+        UUID uuid = player.getUniqueId();
+
+        return playerDataManager.getStaffmodeLocationMap().get(uuid)[0];
+
+    }
+
+    private String[] getStoredCoords(Player player) {
+
+        UUID uuid = player.getUniqueId();
+        String[] locationData = playerDataManager.getStaffmodeLocationMap().get(uuid);
+
+        return new String[] { locationData[1], locationData[2], locationData[3] };
 
     }
 
@@ -139,26 +149,6 @@ public class StaffModeManager {
         Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
 
         return (Document) playerData.get("staffmode-data");
-    }
-
-    private String getStoredWorld(Player player) {
-
-        Document location = (Document) getStaffModeData(player).get("originallocation");
-
-        return location.getString("World");
-
-    }
-
-    private String[] getStoredCoords(Player player) {
-
-        Document location = (Document) getStaffModeData(player).get("originallocation");
-
-        String x = String.valueOf(location.getInteger("X"));
-        String y = String.valueOf(location.getInteger("Y"));
-        String z = String.valueOf(location.getInteger("Z"));
-
-        return new String[] { x, y, z };
-
     }
 
 

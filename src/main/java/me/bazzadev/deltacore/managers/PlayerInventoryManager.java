@@ -2,6 +2,7 @@ package me.bazzadev.deltacore.managers;
 
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.DeltaCore;
+import me.bazzadev.deltacore.utilities.ChatUtil;
 import me.bazzadev.deltacore.utilities.Vars;
 import org.bson.Document;
 import org.bukkit.entity.Player;
@@ -9,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.UUID;
 
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
@@ -20,13 +23,32 @@ public class PlayerInventoryManager {
     public static final String TEST_BASE_PATH = "test.inventory";
     public static final String[] TEST_BASE_PATH_ARR = { "test", "inventory" };
 
-    private final PlayerDataManager playerDataManager;
+    private void setInventoryContents(Player player, String[] playerInventoryBase64) {
+        try {
 
-    public PlayerInventoryManager(PlayerDataManager playerDataManager) {
-        this.playerDataManager = playerDataManager;
+            ItemStack[] inv = itemStackArrayFromBase64(playerInventoryBase64[0]);
+            ItemStack[] armor = itemStackArrayFromBase64(playerInventoryBase64[1]);
+
+            player.getInventory().setContents(inv);
+            player.getInventory().setArmorContents(armor);
+
+        } catch (IOException e) {
+            player.sendMessage(ChatUtil.color(Vars.ERROR_PREFIX + "&cAn error occurred while attempting to restore your inventory."));
+        }
     }
 
+    public void saveContents(Player player, HashMap<UUID, String[]> invMap) {
 
+        PlayerInventory playerInv = player.getInventory();
+        UUID uuid = player.getUniqueId();
+        String[] playerInventoryToBase64 = playerInventoryToBase64(playerInv);
+
+        invMap.put(uuid, playerInventoryToBase64);
+        System.out.println("Successfully saved inventory contents for player " + player.getName());
+
+    }
+
+    @Deprecated
     public void saveContents(Player player, String basePath) {
 
         PlayerInventory playerInv = player.getInventory();
@@ -43,6 +65,16 @@ public class PlayerInventoryManager {
 
     }
 
+    public void loadContents(Player player, HashMap<UUID, String[]> invMap) {
+
+        UUID uuid = player.getUniqueId();
+        String[] playerInventoryBase64 = invMap.get(uuid);
+
+        setInventoryContents(player, playerInventoryBase64);
+
+    }
+
+    @Deprecated
     public void loadContents(Player player, String[] basePath) {
 
         String playerUUIDString = player.getUniqueId().toString();
@@ -60,51 +92,13 @@ public class PlayerInventoryManager {
                     return new String[]{invBase64, armorBase64};
                 })
                 .syncLast((invContents) -> {
-                    try {
-
-                        ItemStack[] inv = itemStackArrayFromBase64(invContents[0]);
-                        ItemStack[] armor = itemStackArrayFromBase64(invContents[1]);
-
-                        player.getInventory().setContents(inv);
-                        player.getInventory().setArmorContents(armor);
-
-                    } catch (IOException e) {
-                        player.sendMessage(Vars.PLUGIN_PREFIX + "An error occurred.");
-                    }
+                    setInventoryContents(player, invContents);
                 })
                 .execute(() -> System.out.println("Successfully loaded inventory contents for player " + player.getName()));
 
-
-
-
-        /*Document playerData = PlayerDataManager.getDatabaseCollection().find(filter).first();
-
-        Document inventory = playerData;
-
-        for (int i=0; i < basePath.length; i++) {
-
-            inventory = (Document) inventory.get(basePath[i]);
-
-        }
-
-        String invBase64 = inventory.getString("inv");
-        String armorBase64 = inventory.getString("armor");
-
-        try {
-
-            ItemStack[] inv = itemStackArrayFromBase64(invBase64);
-            ItemStack[] armor = itemStackArrayFromBase64(armorBase64);
-
-            player.getInventory().setContents(inv);
-            player.getInventory().setArmorContents(armor);
-
-        } catch (IOException e) {
-            player.sendMessage(Vars.PLUGIN_PREFIX + "An error occurred.");
-        }*/
-
     }
 
-    public Document fileFromPath(Document playerData, String[] basePath) {
+    public static Document fileFromPath(Document playerData, String[] basePath) {
 
         Document inventory = playerData;
 
