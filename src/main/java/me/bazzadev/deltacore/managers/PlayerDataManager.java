@@ -256,10 +256,10 @@ public class PlayerDataManager {
 
                 PlayerDataManager.getDatabaseCollection().updateOne(
                         Filters.eq("uuid", uuidString),
-                        combine(set("staffmode-data.originallocation.World", world),
-                                set("staffmode-data.originallocation.X", x),
-                                set("staffmode-data.originallocation.Y", y),
-                                set("staffmode-data.originallocation.Z", z)));
+                        combine(set(StaffModeManager.STAFFMODE_ORIGINAL_LOC_PATH + ".World", world),
+                                set(StaffModeManager.STAFFMODE_ORIGINAL_LOC_PATH + ".X", x),
+                                set(StaffModeManager.STAFFMODE_ORIGINAL_LOC_PATH + ".Y", y),
+                                set(StaffModeManager.STAFFMODE_ORIGINAL_LOC_PATH + ".Z", z)));
 
             }
 
