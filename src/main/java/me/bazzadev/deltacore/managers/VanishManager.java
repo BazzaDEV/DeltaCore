@@ -12,13 +12,11 @@ import java.util.UUID;
 public class VanishManager {
 
     private final DeltaCore plugin;
-    private final NamebarManager namebarManager;
     private final PlayerDataManager playerDataManager;
     private final PlayerUtil playerUtil;
 
-    public VanishManager(DeltaCore plugin, NamebarManager namebarManager, PlayerDataManager playerDataManager, PlayerUtil playerUtil) {
+    public VanishManager(DeltaCore plugin, PlayerDataManager playerDataManager, PlayerUtil playerUtil) {
         this.plugin = plugin;
-        this.namebarManager = namebarManager;
         this.playerDataManager = playerDataManager;
         this.playerUtil = playerUtil;
     }
@@ -59,8 +57,6 @@ public class VanishManager {
 
     public void hidePlayer(Player player) {
 
-        namebarManager.update(player);
-
         for (Player p : Bukkit.getOnlinePlayers()) {
 
             if (p!=player && !(p.hasPermission("deltacore.vanish.bypass"))) {
@@ -81,14 +77,12 @@ public class VanishManager {
             }
 
         } else {
-            namebarManager.update(player);
+
         }
 
     }
 
     public void showPlayer(Player player) {
-
-        namebarManager.update(player);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 

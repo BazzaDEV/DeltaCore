@@ -2,7 +2,6 @@ package me.bazzadev.deltacore.listeners;
 
 import com.mongodb.client.model.Filters;
 import me.bazzadev.deltacore.DeltaCore;
-import me.bazzadev.deltacore.managers.NamebarManager;
 import me.bazzadev.deltacore.managers.PlayerDataManager;
 import me.bazzadev.deltacore.managers.VanishManager;
 import me.bazzadev.deltacore.utilities.ChatUtil;
@@ -23,13 +22,11 @@ public class PlayerJoinListener implements Listener {
 
     private final PlayerDataManager playerDataManager;
     private final VanishManager vanishManager;
-    private final NamebarManager namebarManager;
     private final PlayerUtil playerUtil;
 
-    public PlayerJoinListener(PlayerDataManager playerDataManager, VanishManager vanishManager, NamebarManager namebarManager, PlayerUtil playerUtil) {
+    public PlayerJoinListener(PlayerDataManager playerDataManager, VanishManager vanishManager, PlayerUtil playerUtil) {
         this.playerDataManager = playerDataManager;
         this.vanishManager = vanishManager;
-        this.namebarManager = namebarManager;
         this.playerUtil = playerUtil;
     }
 
@@ -95,13 +92,6 @@ public class PlayerJoinListener implements Listener {
 
         // long endTime = System.nanoTime() - startTime;
         // System.out.println((endTime/1000) + " micro seconds");
-
-        // Updating player's namebar.
-        // Runs on 10 tick delay to prevent issues with scoreboard and Bungeecord.
-        DeltaCore.newChain()
-                .delay(5)
-                .current(() -> namebarManager.update(player))
-                .execute();
 
     }
 

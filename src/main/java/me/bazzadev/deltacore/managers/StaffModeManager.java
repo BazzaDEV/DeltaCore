@@ -17,7 +17,6 @@ import java.util.UUID;
 public class StaffModeManager {
 
     private final PlayerInventoryManager playerInventoryManager;
-    private final NamebarManager namebarManager;
     private final PlayerDataManager playerDataManager;
     private final PlayerUtil playerUtil;
 
@@ -27,9 +26,8 @@ public class StaffModeManager {
     public static final String STAFFMODE_ORIGINAL_LOC_PATH = "staffmode-data.originallocation";
     public static final String[] STAFFMODE_ORIGINAL_LOC_PATH_ARR = { "staffmode-data", "originallocation" };
 
-    public StaffModeManager(PlayerInventoryManager playerInventoryManager, NamebarManager namebarManager, PlayerDataManager playerDataManager, PlayerUtil playerUtil) {
+    public StaffModeManager(PlayerInventoryManager playerInventoryManager, PlayerDataManager playerDataManager, PlayerUtil playerUtil) {
         this.playerInventoryManager = playerInventoryManager;
-        this.namebarManager = namebarManager;
         this.playerDataManager = playerDataManager;
         this.playerUtil = playerUtil;
     }
@@ -52,8 +50,6 @@ public class StaffModeManager {
         player.setGameMode(GameMode.CREATIVE);
         setupStaffInventory(player);
 
-        namebarManager.update(player);
-
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Vars.PLUGIN_PREFIX + "&7You have &aentered &7Staff Mode."));
 
 
@@ -63,8 +59,6 @@ public class StaffModeManager {
 
         loadData(player);
         player.setGameMode(GameMode.SURVIVAL);
-
-        namebarManager.update(player);
 
         sendExitOptions(player);
     }

@@ -26,12 +26,11 @@ public final class DeltaCore extends JavaPlugin {
     private final PlayerDataConfig playerDataConfig = new PlayerDataConfig(this);
 
     private final PlayerUtil playerUtil = new PlayerUtil(playerDataManager);
-    private final NamebarManager namebarManager = new NamebarManager(playerUtil);
 
     private final PlayerInventoryManager playerInventoryManager = new PlayerInventoryManager();
-    private final StaffModeManager staffModeManager = new StaffModeManager(playerInventoryManager, namebarManager, playerDataManager, playerUtil);
-    private final AFKManager afkManager = new AFKManager(namebarManager, playerDataManager, playerUtil);
-    private final VanishManager vanishManager = new VanishManager(this, namebarManager, playerDataManager, playerUtil);
+    private final StaffModeManager staffModeManager = new StaffModeManager(playerInventoryManager, playerDataManager, playerUtil);
+    private final AFKManager afkManager = new AFKManager(playerDataManager, playerUtil);
+    private final VanishManager vanishManager = new VanishManager(this, playerDataManager, playerUtil);
 
     private final PlayerActivityManager playerActivityManager = new PlayerActivityManager(afkManager, playerUtil);
 
@@ -71,9 +70,6 @@ public final class DeltaCore extends JavaPlugin {
         staffGUIManager.createGUI();
 
         vanishManager.fix();
-
-        namebarManager.updateAll();
-
     }
 
     @Override
@@ -133,7 +129,7 @@ public final class DeltaCore extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new AutoAFKListeners(playerActivityManager), this);
 
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager, vanishManager, namebarManager, playerUtil), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(playerDataManager, vanishManager, playerUtil), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(staffGUIManager, playerActivityManager), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(playerInventoryManager, playerDataManager), this);
 

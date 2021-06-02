@@ -1,9 +1,9 @@
 name: DeltaCore
 version: ${project.version}
 main: me.bazzadev.deltacore.DeltaCore
-api-version: 1.15
+api-version: 1.16
 authors: [BazzaDEV]
-depend: [Vault, NametagEdit]
+depend: [Vault]
 commands:
   portalhelper:
     description: Calculates the correct coordinates for nether placement.

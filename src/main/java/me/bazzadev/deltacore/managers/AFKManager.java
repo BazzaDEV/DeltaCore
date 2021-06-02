@@ -7,12 +7,10 @@ import org.bukkit.entity.Player;
 
 public class AFKManager {
 
-    private final NamebarManager namebarManager;
     private final PlayerDataManager playerDataManager;
     private final PlayerUtil playerUtil;
 
-    public AFKManager(NamebarManager namebarManager, PlayerDataManager playerDataManager, PlayerUtil playerUtil) {
-        this.namebarManager = namebarManager;
+    public AFKManager(PlayerDataManager playerDataManager, PlayerUtil playerUtil) {
         this.playerDataManager = playerDataManager;
         this.playerUtil = playerUtil;
     }
@@ -30,7 +28,6 @@ public class AFKManager {
     private void enable(Player player) {
 
         playerDataManager.getAfkMap().put(player.getUniqueId(), true);
-        namebarManager.update(player);
         player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are now AFK."));
 
 //        String playerUUIDString = player.getUniqueId().toString();
@@ -50,7 +47,6 @@ public class AFKManager {
     private void disable(Player player) {
 
         playerDataManager.getAfkMap().put(player.getUniqueId(), false);
-        namebarManager.update(player);
         player.sendMessage(ChatUtil.color(Vars.PLUGIN_PREFIX + "&7You are no longer AFK."));
 
 //        String playerUUIDString = player.getUniqueId().toString();

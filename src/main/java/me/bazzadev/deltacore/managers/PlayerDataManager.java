@@ -1,5 +1,7 @@
 package me.bazzadev.deltacore.managers;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -18,6 +20,7 @@ import java.util.UUID;
 
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static me.bazzadev.deltacore.utilities.InventoryUtil.playerInventoryToBase64;
 
 public class PlayerDataManager {
@@ -46,9 +49,23 @@ public class PlayerDataManager {
     public void initialize() {
 
         try {
-            mongoClient = MongoClients.create(mongoDBConfig.get().getString("connection-string"));
+
+            ConnectionString connString = new ConnectionString(mongoDBConfig.get().getString("connection-string"));
+
+            MongoClientSettings settings = MongoClientSettings.builder()
+                    .applyToSocketSettings(builder -> {
+                        builder.connectTimeout(30000, MILLISECONDS);
+                        builder.readTimeout(30000, MILLISECONDS);
+                    })
+                    .applyToClusterSettings( builder -> builder.serverSelectionTimeout(30000, MILLISECONDS))
+                    .applyConnectionString(connString)
+                    .retryWrites(true)
+                    .build();
+
+            mongoClient = MongoClients.create(settings);
             database = mongoClient.getDatabase(mongoDBConfig.get().getString("database"));
             col = database.getCollection(mongoDBConfig.get().getString("collections.player-data"));
+
         } catch (NullPointerException e) {
             System.out.println("You need to enter your MongoDB credentials in plugins/DeltaCore/mongodb.yml");
         }
