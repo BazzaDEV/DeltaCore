@@ -1,0 +1,23 @@
+######################################################################
+# ____           _   _              ____
+# |  _ \    ___  | | | |_    __ _   / ___|   ___    _ __    ___
+# | | | |  / _ \ | | | __|  / _` | | |      / _ \  | '__|  / _ \
+# | |_| | |  __/ | | | |_  | (_| | | |___  | (_) | | |    |  __/
+# |____/   \___| |_|  \__|  \__,_|  \____|  \___/  |_|     \___|
+#
+######################################################################
+
+data:
+  # Here you can set which database you want DeltaCore to use.
+  # You can choose between the following options:
+  #   (Local) YAML, H2
+  #   (Remote) MongoDB
+  database-type: YAML
+
+  # The credentials to login to the remote database (if you chose to use one above).
+  remote-config:
+    MongoDB:
+
+
+
+
