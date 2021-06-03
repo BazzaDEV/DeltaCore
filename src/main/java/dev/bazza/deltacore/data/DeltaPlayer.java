@@ -1,6 +1,5 @@
 package dev.bazza.deltacore.data;
 
-import dev.bazza.deltacore.utils.ColorUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,23 +9,24 @@ import java.util.UUID;
 public class DeltaPlayer {
 
     private final UUID uuid;
+
     private final String IGN;
 
     // Statuses
     private boolean afk;
 
-    public DeltaPlayer(Player player) {
-        this.uuid = player.getUniqueId();
-        this.IGN = player.getName();
+    public static DeltaPlayer newPlayer(UUID uuid) {
+        Player p = Bukkit.getPlayer(uuid);
+        return (p != null) ? ( new DeltaPlayer(uuid, p.getName(), false) ) : (null);
+
     }
 
-    public DeltaPlayer(UUID uuid) {
+    public DeltaPlayer(UUID uuid, String ign, boolean afk) {
         this.uuid = uuid;
-
-        Player player = Bukkit.getPlayer(uuid);
-        this.IGN = player.getName();
-
+        this.IGN = ign;
+        this.afk = afk;
     }
+
 
     public boolean toggleAfk() {
         afk = !afk;

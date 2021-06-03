@@ -22,10 +22,10 @@ public class PlayerJoinListener implements Listener {
         DeltaPlayer player;
 
         if (server.getDB().isPlayer(uuid)) { // Existing player
-            player = server.getDB().getPlayerFromDB(uuid);
+            player = server.getDB().createPlayerFromDB(uuid);
 
         } else { // New player
-            player = new DeltaPlayer(uuid);
+            player = DeltaPlayer.newPlayer(uuid);
             server.getDB().updatePlayer(player);
 
         }

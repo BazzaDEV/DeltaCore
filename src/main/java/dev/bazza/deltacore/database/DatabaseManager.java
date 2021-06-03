@@ -17,7 +17,7 @@ public abstract class DatabaseManager {
     public abstract void save();
 
     public abstract boolean isPlayer(UUID uuid);
-    public abstract DeltaPlayer getPlayerFromDB(UUID uuid);
+    public abstract DeltaPlayer createPlayerFromDB(UUID uuid);
     public abstract void updatePlayer(DeltaPlayer player);
 
 }
