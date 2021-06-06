@@ -1,7 +1,7 @@
 package dev.bazza.deltacore.afk;
 
+import dev.bazza.deltacore.commands.Commands;
 import dev.bazza.deltacore.utils.ChatUtil;
-import dev.bazza.deltacore.utils.CmdUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,7 +19,7 @@ public class AfkCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if (command.getName().equalsIgnoreCase(CmdUtil.AFK_CMD)) {
+        if (command.getName().equalsIgnoreCase(Commands.AFK.getName())) {
             if (commandSender instanceof Player) {
                 Player p = (Player) commandSender;
                 afkManager.toggleAFK(p, true, true);

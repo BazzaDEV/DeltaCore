@@ -32,7 +32,7 @@ public final class DeltaCore extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand(CmdUtil.AFK_CMD).setExecutor(new AfkCMD(afkManager));
+        getCommand(Commands.AFK.getName()).setExecutor(new AfkCMD(afkManager));
 
     }
 
