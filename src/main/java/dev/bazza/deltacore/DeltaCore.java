@@ -2,23 +2,26 @@ package dev.bazza.deltacore;
 
 import dev.bazza.deltacore.afk.AFKManager;
 import dev.bazza.deltacore.afk.AfkCMD;
+import dev.bazza.deltacore.commands.Commands;
+import dev.bazza.deltacore.data.config.Config;
 import dev.bazza.deltacore.data.config.ConfigManager;
 import dev.bazza.deltacore.data.Server;
 import dev.bazza.deltacore.listeners.PlayerJoinListener;
 import dev.bazza.deltacore.listeners.PlayerLeaveListener;
-import dev.bazza.deltacore.utils.CmdUtil;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class DeltaCore extends JavaPlugin {
 
     private final ConfigManager configManager = new ConfigManager(this);
-    private final Server server = new Server(this, configManager);
-
+    private final Config config = new Config(configManager);
+    private final Server server = new Server(this, config);
     private final AFKManager afkManager = new AFKManager(server);
 
     @Override
     public void onEnable() {
         configManager.initialize();
+        config.initialize();
+
         server.setupDB();
 
         registerCommands();

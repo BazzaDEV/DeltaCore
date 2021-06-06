@@ -1,7 +1,7 @@
 package dev.bazza.deltacore.data;
 
 import dev.bazza.deltacore.DeltaCore;
-import dev.bazza.deltacore.data.config.ConfigManager;
+import dev.bazza.deltacore.data.config.Config;
 import dev.bazza.deltacore.data.config.ConfigPath;
 import dev.bazza.deltacore.database.DatabaseManager;
 import dev.bazza.deltacore.database.DatabaseType;
@@ -15,13 +15,13 @@ import java.util.UUID;
 public class Server {
 
     private final DeltaCore plugin;
-    private final ConfigManager configManager;
+    private final Config config;
 
     private final HashMap<UUID, DeltaPlayer> playerMap;
 
-    public Server(DeltaCore plugin, ConfigManager configManager) {
+    public Server(DeltaCore plugin, Config config) {
         this.plugin = plugin;
-        this.configManager = configManager;
+        this.config = config;
 
         this.playerMap = new HashMap<>();
     }
@@ -29,7 +29,7 @@ public class Server {
     private DatabaseManager databaseManager;
 
     public void setupDB() {
-        DatabaseType databaseType = DatabaseType.valueOf((String) configManager.get(ConfigPath.DATABASE_TYPE));
+        DatabaseType databaseType = DatabaseType.valueOf((String) config.get(ConfigPath.DATABASE_TYPE));
 
         switch (databaseType) {
             case YAML:

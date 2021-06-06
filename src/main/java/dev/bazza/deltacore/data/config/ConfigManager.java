@@ -6,9 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 
 public class ConfigManager {
 
@@ -21,7 +19,7 @@ public class ConfigManager {
     private static final String FILE_PATH = "config.yml";
 
     private File file;
-    private FileConfiguration config;
+    private FileConfiguration fileConfiguration;
 
     public void initialize() {
         file = new File(plugin.getDataFolder(), FILE_PATH);
@@ -30,35 +28,32 @@ public class ConfigManager {
             plugin.saveResource(FILE_PATH, false);
         }
 
-        config = new YamlConfiguration();
+        fileConfiguration = new YamlConfiguration();
         try {
-            config.load(file);
+            fileConfiguration.load(file);
+
         } catch (InvalidConfigurationException | IOException e) {
+            System.out.println("Could not load configuration from file " + FILE_PATH);
             e.printStackTrace();
         }
 
 
     }
 
-    public Object get(ConfigPath path) {
-        return get(path.getPath());
-    }
-
-    public Object get(String path) {
-        return config.get(path);
-    }
-
     public void save() {
         try {
-            config.save(file);
+            fileConfiguration.save(file);
         } catch (IOException e) {
             plugin.getLogger().warning("Unable to save " + file.getName());
         }
     }
 
-    public Object read(String path) {
-        return config.get(path);
+    public Object getValueAt(ConfigPath path) {
+        return getValueAt(path.getPath());
     }
 
+    public Object getValueAt(String path) {
+        return fileConfiguration.get(path);
+    }
 
 }
