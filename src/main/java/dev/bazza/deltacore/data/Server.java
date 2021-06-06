@@ -1,12 +1,13 @@
 package dev.bazza.deltacore.data;
 
 import dev.bazza.deltacore.DeltaCore;
+import dev.bazza.deltacore.data.config.ConfigManager;
+import dev.bazza.deltacore.data.config.ConfigPath;
 import dev.bazza.deltacore.database.DatabaseManager;
+import dev.bazza.deltacore.database.DatabaseType;
 import dev.bazza.deltacore.database.local.LocalDatabaseManager;
 import dev.bazza.deltacore.database.local.YamlDBManager;
 import dev.bazza.deltacore.database.remote.RemoteDatabaseManager;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -21,13 +22,14 @@ public class Server {
     public Server(DeltaCore plugin, ConfigManager configManager) {
         this.plugin = plugin;
         this.configManager = configManager;
+
         this.playerMap = new HashMap<>();
     }
 
     private DatabaseManager databaseManager;
 
     public void setupDB() {
-        DatabaseType databaseType = DatabaseType.valueOf((String) configManager.get("data.database-type"));
+        DatabaseType databaseType = DatabaseType.valueOf((String) configManager.get(ConfigPath.DATABASE_TYPE));
 
         switch (databaseType) {
             case YAML:
