@@ -1,4 +1,4 @@
-package dev.bazza.deltacore.data;
+package dev.bazza.deltacore.data.config;
 
 import dev.bazza.deltacore.DeltaCore;
 import org.bukkit.configuration.InvalidConfigurationException;
