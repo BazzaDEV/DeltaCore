@@ -36,6 +36,12 @@ public class ConfigManager {
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    public Object get(ConfigPath path) {
+        return get(path.getPath());
     }
 
     public Object get(String path) {
