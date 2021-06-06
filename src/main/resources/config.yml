@@ -18,6 +18,14 @@ data:
   remote-config:
     MongoDB:
 
+auto-afk:
+  # Should a player be automatically made AFK after a set amount of time?
+  enabled: true
+  # How long should we wait for a player to be inactive before making them AFK?
+  # Enter an INTEGER representing the time in SECONDS.
+  # NOTE: make sure auto-afk is enabled above, otherwise this timeout is ignored.
+  timeout: 5
+
 
 
 
