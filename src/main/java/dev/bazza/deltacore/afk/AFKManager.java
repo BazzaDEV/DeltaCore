@@ -19,6 +19,10 @@ public class AFKManager {
         toggleAFK(p.getUniqueId(), notify, notifyAll);
     }
 
+    public void toggleAFK(DeltaPlayer player, boolean notify, boolean notifyAll) {
+        toggleAFK(player.getUuid(), notify, notifyAll);
+    }
+
     public void toggleAFK(UUID uuid, boolean notify, boolean notifyAll) {
         DeltaPlayer player = server.getPlayer(uuid);
         boolean isAfk = player.toggleAfk();
