@@ -2,7 +2,7 @@ package dev.bazza.deltacore;
 
 import dev.bazza.deltacore.afk.AFKManager;
 import dev.bazza.deltacore.afk.AfkCMD;
-import dev.bazza.deltacore.data.ConfigManager;
+import dev.bazza.deltacore.data.config.ConfigManager;
 import dev.bazza.deltacore.data.Server;
 import dev.bazza.deltacore.listeners.PlayerJoinListener;
 import dev.bazza.deltacore.listeners.PlayerLeaveListener;
@@ -38,6 +38,6 @@ public final class DeltaCore extends JavaPlugin {
 
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(server), this);
-        getServer().getPluginManager().registerEvents(new PlayerLeaveListener(server), this);
+        getServer().getPluginManager().registerEvents(new PlayerLeaveListener(server, afkManager), this);
     }
 }
