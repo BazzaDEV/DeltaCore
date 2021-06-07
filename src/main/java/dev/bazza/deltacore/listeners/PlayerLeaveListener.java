@@ -1,8 +1,8 @@
 package dev.bazza.deltacore.listeners;
 
 import dev.bazza.deltacore.afk.AFKManager;
-import dev.bazza.deltacore.data.DeltaPlayer;
-import dev.bazza.deltacore.data.Server;
+import dev.bazza.deltacore.system.DeltaPlayer;
+import dev.bazza.deltacore.system.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -28,7 +28,6 @@ public class PlayerLeaveListener implements Listener {
         // Set player AFK to false
         if (player.isAfk())
             afkManager.toggleAFK(player, false, false);
-
 
         server.getDB().updatePlayer(player);
         server.getPlayers().remove(uuid);

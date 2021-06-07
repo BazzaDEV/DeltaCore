@@ -1,7 +1,7 @@
-package dev.bazza.deltacore.database.local;
+package dev.bazza.deltacore.data.database.local;
 
 import dev.bazza.deltacore.DeltaCore;
-import dev.bazza.deltacore.data.DeltaPlayer;
+import dev.bazza.deltacore.system.DeltaPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,12 +27,13 @@ public class YamlDBManager extends LocalDatabaseManager{
 
     private static final String IGN_PATH = ".IGN";
     private static final String AFK_STATUS_PATH = ".status.afk";
+    private static final String NOTE_PATH = ".note";
 
     /************************************************************************/
 
 
     private File file;
-    private FileConfiguration config;
+    private FileConfiguration fileConfiguration;
 
     @Override
     public void initialize() {
@@ -41,9 +43,10 @@ public class YamlDBManager extends LocalDatabaseManager{
             plugin.saveResource(FILE_PATH, false);
         }
 
-        config = new YamlConfiguration();
+        fileConfiguration = new YamlConfiguration();
+
         try {
-            config.load(file);
+            fileConfiguration.load(file);
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
         }
@@ -57,7 +60,7 @@ public class YamlDBManager extends LocalDatabaseManager{
     @Override
     public void save() {
         try {
-            config.save(file);
+            fileConfiguration.save(file);
         } catch (IOException e) {
             plugin.getLogger().warning("Unable to save " + file.getName());
         }
@@ -65,8 +68,8 @@ public class YamlDBManager extends LocalDatabaseManager{
 
     @Override
     public boolean isPlayer(UUID uuid) {
-        if (config.getConfigurationSection("players") != null) {
-            Set<String> uuids = config.getConfigurationSection("players").getKeys(false);
+        if (fileConfiguration.getConfigurationSection("players") != null) {
+            Set<String> uuids = fileConfiguration.getConfigurationSection("players").getKeys(false);
             return uuids.contains(uuid.toString());
 
         } else {
@@ -83,8 +86,8 @@ public class YamlDBManager extends LocalDatabaseManager{
             Player p = Bukkit.getPlayer(uuid);
             String rootPath = getRootPathForPlayer(uuid);
 
-            String IGN;
-            boolean afk, random;
+            String IGN, note;
+            boolean afk;
 
             /****************************************************
              * Creating the DeltaPlayer Object
@@ -95,19 +98,25 @@ public class YamlDBManager extends LocalDatabaseManager{
              ***************************************************/
 
             // IGN
-            if (config.contains(rootPath + IGN_PATH))
-                IGN = config.getString(rootPath + IGN_PATH);
+            if (fileConfiguration.contains(rootPath + IGN_PATH))
+                IGN = fileConfiguration.getString(rootPath + IGN_PATH);
             else
                 IGN = p.getName();
 
             // AFK Status
-            if (config.contains(rootPath + AFK_STATUS_PATH))
-                afk = config.getBoolean(rootPath + AFK_STATUS_PATH);
+            if (fileConfiguration.contains(rootPath + AFK_STATUS_PATH))
+                afk = fileConfiguration.getBoolean(rootPath + AFK_STATUS_PATH);
             else
                 afk = false;
 
+            // Note
+            if (fileConfiguration.contains(rootPath + NOTE_PATH))
+                note = fileConfiguration.getString(rootPath + NOTE_PATH);
+            else
+                note = null;
+
             // All done, return DeltaPlayer object.
-            return new DeltaPlayer(uuid, IGN, afk);
+            return new DeltaPlayer(uuid, IGN, afk, new Date().getTime(), note);
 
         } else { // No entry exists for this UUID
             return null;
@@ -120,10 +129,11 @@ public class YamlDBManager extends LocalDatabaseManager{
         String rootPath = getRootPathForPlayer(player.getUuid());
 
         // IGN
-        config.set(rootPath + IGN_PATH, player.getIGN());
+        fileConfiguration.set(rootPath + IGN_PATH, player.getIGN());
         // AFK Status
-        config.set(rootPath + AFK_STATUS_PATH, player.isAfk());
-
+        fileConfiguration.set(rootPath + AFK_STATUS_PATH, player.isAfk());
+        // Note
+        fileConfiguration.set(rootPath + NOTE_PATH, player.getNote());
 
         save();
     }

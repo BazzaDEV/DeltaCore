@@ -3,8 +3,16 @@ version: ${project.version}
 main: dev.bazza.deltacore.DeltaCore
 api-version: 1.16
 authors: [ BazzaDEV ]
+description: The best plugin for all your SMP needs! Works best with Paper :)
 website: bazza.dev
 commands:
   afk:
     description: Toggles the player's AFK status.
     usage: /afk
+  reload:
+    description: Reloads the plugin config.
+    usage: /reload
+  setnote:
+    usage: /setnote
+  viewnote:
+    usage: /viewnote

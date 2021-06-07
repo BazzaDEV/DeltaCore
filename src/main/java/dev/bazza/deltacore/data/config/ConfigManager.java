@@ -25,7 +25,7 @@ public class ConfigManager {
         file = new File(plugin.getDataFolder(), FILE_PATH);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
-            plugin.saveResource(FILE_PATH, false);
+            plugin.saveDefaultConfig();
         }
 
         fileConfiguration = new YamlConfiguration();
@@ -54,6 +54,12 @@ public class ConfigManager {
 
     public Object getValueAt(String path) {
         return fileConfiguration.get(path);
+    }
+
+    public void reload() {
+        plugin.onDisable();
+        plugin.reloadConfig();
+        plugin.onEnable();
     }
 
 }

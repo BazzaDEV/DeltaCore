@@ -1,4 +1,4 @@
-package dev.bazza.deltacore.database;
+package dev.bazza.deltacore.data.database;
 
 public enum DatabaseType {
 

@@ -1,7 +1,7 @@
 package dev.bazza.deltacore.listeners;
 
-import dev.bazza.deltacore.data.DeltaPlayer;
-import dev.bazza.deltacore.data.Server;
+import dev.bazza.deltacore.system.DeltaPlayer;
+import dev.bazza.deltacore.system.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

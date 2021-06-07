@@ -1,7 +1,7 @@
-package dev.bazza.deltacore.database;
+package dev.bazza.deltacore.data.database;
 
 import dev.bazza.deltacore.DeltaCore;
-import dev.bazza.deltacore.data.DeltaPlayer;
+import dev.bazza.deltacore.system.DeltaPlayer;
 
 import java.util.UUID;
 

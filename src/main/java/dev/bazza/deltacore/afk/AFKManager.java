@@ -1,7 +1,7 @@
 package dev.bazza.deltacore.afk;
 
-import dev.bazza.deltacore.data.DeltaPlayer;
-import dev.bazza.deltacore.data.Server;
+import dev.bazza.deltacore.system.DeltaPlayer;
+import dev.bazza.deltacore.system.Server;
 import dev.bazza.deltacore.utils.ChatUtil;
 import org.bukkit.entity.Player;
 
@@ -13,6 +13,10 @@ public class AFKManager {
 
     public AFKManager(Server server) {
         this.server = server;
+    }
+
+    public void setAllFalse() {
+        server.getPlayers().forEach(((uuid, player) -> player.setAFK(false)));
     }
 
     public void toggleAFK(Player p, boolean notify, boolean notifyAll) {

@@ -1,6 +1,6 @@
 package dev.bazza.deltacore.utils;
 
-import dev.bazza.deltacore.data.DeltaPlayer;
+import dev.bazza.deltacore.system.DeltaPlayer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;

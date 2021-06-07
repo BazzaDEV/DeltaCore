@@ -1,13 +1,13 @@
-package dev.bazza.deltacore.data;
+package dev.bazza.deltacore.system;
 
 import dev.bazza.deltacore.DeltaCore;
 import dev.bazza.deltacore.data.config.Config;
 import dev.bazza.deltacore.data.config.ConfigPath;
-import dev.bazza.deltacore.database.DatabaseManager;
-import dev.bazza.deltacore.database.DatabaseType;
-import dev.bazza.deltacore.database.local.LocalDatabaseManager;
-import dev.bazza.deltacore.database.local.YamlDBManager;
-import dev.bazza.deltacore.database.remote.RemoteDatabaseManager;
+import dev.bazza.deltacore.data.database.DatabaseManager;
+import dev.bazza.deltacore.data.database.DatabaseType;
+import dev.bazza.deltacore.data.database.local.LocalDatabaseManager;
+import dev.bazza.deltacore.data.database.local.YamlDBManager;
+import dev.bazza.deltacore.data.database.remote.RemoteDatabaseManager;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -59,4 +59,12 @@ public class Server {
     public DatabaseManager getDB() {
         return databaseManager;
     }
+    public void saveToDB(boolean isReloading) {
+        playerMap.forEach(((uuid, player) -> {
+            if (!isReloading)
+                player.setAFK(false);
+            databaseManager.updatePlayer(player);
+        }));
+    }
+
 }
