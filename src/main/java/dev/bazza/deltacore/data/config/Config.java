@@ -39,8 +39,20 @@ public class Config {
         configMap.put(path, configManager.getValueAt(path));
     }
 
+    public String getString(ConfigPath path) {
+        return (String) configMap.get(path);
+    }
+
+    public Integer getInt(ConfigPath path) {
+        return (Integer) configMap.get(path);
+    }
+
+    public Boolean getBoolean(ConfigPath path) {
+        return (Boolean) configMap.get(path);
+    }
+
     public Object get(ConfigPath path) {
         return configMap.get(path);
-
     }
+
 }
