@@ -4,6 +4,7 @@ import dev.bazza.deltacore.DeltaCore;
 import dev.bazza.deltacore.afk.AFKManager;
 import dev.bazza.deltacore.afk.CheckAfkTask;
 import dev.bazza.deltacore.data.config.Config;
+import dev.bazza.deltacore.data.config.ConfigPath;
 import org.bukkit.scheduler.BukkitTask;
 
 public class TaskManager {
@@ -28,7 +29,8 @@ public class TaskManager {
         if (tasksRunning)
             cancelTasks();
 
-        checkAfkTask = new CheckAfkTask(server, config, afkManager).runTaskTimerAsynchronously(plugin, 0, 20);
+        if (config.getBoolean(ConfigPath.AUTO_AFK_ENABLED))
+            checkAfkTask = new CheckAfkTask(server, config, afkManager).runTaskTimerAsynchronously(plugin, 0, 20);
     }
 
     public void cancelTasks() {
