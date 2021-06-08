@@ -1,0 +1,31 @@
+# ############################################################## #
+# ____           _   _              ____                         #
+# |  _ \    ___  | | | |_    __ _   / ___|   ___    _ __    ___  #
+# | | | |  / _ \ | | | __|  / _` | | |      / _ \  | '__|  / _ \ #
+# | |_| | |  __/ | | | |_  | (_| | | |___  | (_) | | |    |  __/ #
+# |____/   \___| |_|  \__|  \__,_|  \____|  \___/  |_|     \___| #
+#                                                                #
+# ############################################################## #
+
+data:
+  # Here you can set which database you want DeltaCore to use.
+  # You can choose between the following options:
+  #   (Local) YAML, Json, H2
+  #   (Remote) MongoDB
+  database-type: Json
+
+  # The credentials to login to the remote database (if you chose to use one above).
+  remote-config:
+    MongoDB:
+
+auto-afk:
+  # Should a player be automatically made AFK after a set amount of time?
+  enabled: false
+  # How long should we wait for a player to be inactive before making them AFK?
+  # Enter an INTEGER representing the time in SECONDS.
+  # NOTE: make sure auto-afk is enabled above, otherwise this timeout is ignored.
+  timeout: 300
+
+
+
+
