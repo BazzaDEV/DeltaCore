@@ -10,9 +10,9 @@
 data:
   # Here you can set which database you want DeltaCore to use.
   # You can choose between the following options:
-  #   (Local) YAML, H2
+  #   (Local) YAML, Json, H2
   #   (Remote) MongoDB
-  database-type: YAML
+  database-type: Json
 
   # The credentials to login to the remote database (if you chose to use one above).
   remote-config:
@@ -20,11 +20,11 @@ data:
 
 auto-afk:
   # Should a player be automatically made AFK after a set amount of time?
-  enabled: true
+  enabled: false
   # How long should we wait for a player to be inactive before making them AFK?
   # Enter an INTEGER representing the time in SECONDS.
   # NOTE: make sure auto-afk is enabled above, otherwise this timeout is ignored.
-  timeout: 5
+  timeout: 300
 
 
 
