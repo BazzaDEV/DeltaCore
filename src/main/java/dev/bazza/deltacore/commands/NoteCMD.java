@@ -7,7 +7,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import dev.bazza.deltacore.system.DeltaPlayer;
 import dev.bazza.deltacore.system.Server;
-import dev.bazza.deltacore.utils.CommandUtil;
+import dev.bazza.deltacore.utils.Util;
 import org.bukkit.entity.Player;
 
 @CommandAlias("note")
@@ -34,7 +34,7 @@ public class NoteCMD extends BaseCommand {
     public void onSet(Player p, String[] args) {
         DeltaPlayer player = server.getPlayer(p.getUniqueId());
 
-        String note = CommandUtil.argsToString(args);
+        String note = Util.argsToString(args);
         player.setNote(note);
         player.sendMsg("&aYour note has been changed!");
     }

@@ -5,7 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 
-public class ChatUtil {
+public class Messages {
 
     public static TextComponent AFK_NOTIFY(boolean isAfk) {
         return (isAfk) ? AFK_ON_NOTIFY() : AFK_OFF_NOTIFY();

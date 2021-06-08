@@ -2,7 +2,7 @@ package dev.bazza.deltacore.afk;
 
 import dev.bazza.deltacore.system.DeltaPlayer;
 import dev.bazza.deltacore.system.Server;
-import dev.bazza.deltacore.utils.ChatUtil;
+import dev.bazza.deltacore.utils.Messages;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -32,12 +32,12 @@ public class AFKManager {
         boolean isAfk = player.toggleAfk();
 
         if (notify)
-            player.sendMsg(ChatUtil.AFK_NOTIFY(isAfk));
+            player.sendMsg(Messages.AFK_NOTIFY(isAfk));
 
         if (notifyAll) {
             server.getPlayers().forEach((uuid1, player1) -> {
                 if (!uuid.equals(uuid1))
-                    player1.sendMsg(ChatUtil.AFK_NOTIFY_ALL(isAfk, player));
+                    player1.sendMsg(Messages.AFK_NOTIFY_ALL(isAfk, player));
             });
         }
 
