@@ -40,7 +40,6 @@ public final class DeltaCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        taskManager.cancelTasks();
         server.saveToDB(false);
 
     }
