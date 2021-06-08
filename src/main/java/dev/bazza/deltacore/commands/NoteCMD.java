@@ -1,15 +1,17 @@
 package dev.bazza.deltacore.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Subcommand;
 import dev.bazza.deltacore.system.DeltaPlayer;
 import dev.bazza.deltacore.system.Server;
 import dev.bazza.deltacore.utils.CommandUtil;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
-public class NoteCMD implements CommandExecutor {
+@CommandAlias("note")
+public class NoteCMD extends BaseCommand {
 
     private final Server server;
 
@@ -17,27 +19,24 @@ public class NoteCMD implements CommandExecutor {
         this.server = server;
     }
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (command.getName().equalsIgnoreCase(Commands.SET_NOTE.getName())) {
-            if (commandSender instanceof Player) {
-                DeltaPlayer player = server.getPlayer( ((Player) commandSender).getUniqueId() );
-                String note = CommandUtil.argsToString(args);
-                player.setNote(note);
-                player.sendMsg("&aYour note has been changed!");
+    @Default
+    @Subcommand("view")
+    @Description("Shows you your personal note.")
+    public void onView(Player p) {
+        DeltaPlayer player = server.getPlayer(p.getUniqueId());
 
-                return true;
-            }
-        } else if (command.getName().equalsIgnoreCase(Commands.VIEW_NOTE.getName())) {
-            if (commandSender instanceof Player) {
-                DeltaPlayer player = server.getPlayer( ((Player) commandSender).getUniqueId() );
-                String note = player.getNote();
-                player.sendMsg("&7Your note: &r" + note);
-
-                return true;
-            }
-        }
-
-        return false;
+        String note = player.getNote();
+        player.sendMsg("&7Your note: &r" + note);
     }
+
+    @Subcommand("set")
+    @Description("Set your personal note.")
+    public void onSet(Player p, String[] args) {
+        DeltaPlayer player = server.getPlayer(p.getUniqueId());
+
+        String note = CommandUtil.argsToString(args);
+        player.setNote(note);
+        player.sendMsg("&aYour note has been changed!");
+    }
+
 }

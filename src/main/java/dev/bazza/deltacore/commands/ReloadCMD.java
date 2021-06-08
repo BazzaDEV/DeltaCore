@@ -1,13 +1,16 @@
 package dev.bazza.deltacore.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Subcommand;
 import dev.bazza.deltacore.DeltaCore;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import dev.bazza.deltacore.utils.Util;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
-public class ReloadCMD implements CommandExecutor {
+@CommandAlias("%deltacore")
+@Subcommand("reload")
+public class ReloadCMD extends BaseCommand {
 
     private final DeltaCore plugin;
 
@@ -15,22 +18,10 @@ public class ReloadCMD implements CommandExecutor {
         this.plugin = plugin;
     }
 
-
-    @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (command.getName().equalsIgnoreCase(Commands.RELOAD.getName())) {
-            if (commandSender instanceof Player) {
-                Player p = (Player) commandSender;
-                plugin.reloadPlugin();
-                p.sendMessage("The config has been reloaded.");
-
-            } else {
-                commandSender.sendMessage("The config has been reloaded.");
-            }
-
-            return true;
-        }
-
-        return false;
+    @Default
+    public void onReload(CommandSender sender) {
+        plugin.reloadPlugin();
+        Util.msg(sender,"&7The plugin has been reloaded successfully.");
     }
+
 }
