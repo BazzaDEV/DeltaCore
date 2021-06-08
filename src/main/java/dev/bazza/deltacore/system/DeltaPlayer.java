@@ -41,9 +41,8 @@ public class DeltaPlayer {
         return afk;
     }
 
-    public boolean setAFK(boolean afk) {
+    public void setAFK(boolean afk) {
         this.afk = afk;
-        return this.afk;
     }
 
     public void updateLastMovedTime(long lastMovedTime) {

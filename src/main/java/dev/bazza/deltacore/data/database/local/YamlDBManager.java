@@ -20,7 +20,7 @@ public class YamlDBManager extends LocalDatabaseManager{
         super(plugin);
     }
 
-    private static final String FILE_PATH = "db.yml";
+    private static final String FILENAME = "db.yml";
 
 
     /************************************************************************/
@@ -37,10 +37,10 @@ public class YamlDBManager extends LocalDatabaseManager{
 
     @Override
     public void initialize() {
-        file = new File(plugin.getDataFolder(), FILE_PATH);
+        file = new File(plugin.getDataFolder(), FILENAME);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
-            plugin.saveResource(FILE_PATH, false);
+            plugin.saveResource(FILENAME, false);
         }
 
         fileConfiguration = new YamlConfiguration();

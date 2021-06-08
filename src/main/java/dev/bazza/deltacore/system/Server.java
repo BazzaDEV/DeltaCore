@@ -5,6 +5,7 @@ import dev.bazza.deltacore.data.config.Config;
 import dev.bazza.deltacore.data.config.ConfigPath;
 import dev.bazza.deltacore.data.database.DatabaseManager;
 import dev.bazza.deltacore.data.database.DatabaseType;
+import dev.bazza.deltacore.data.database.local.JsonDBManager;
 import dev.bazza.deltacore.data.database.local.LocalDatabaseManager;
 import dev.bazza.deltacore.data.database.local.YamlDBManager;
 import dev.bazza.deltacore.data.database.remote.RemoteDatabaseManager;
@@ -29,11 +30,15 @@ public class Server {
     private DatabaseManager databaseManager;
 
     public void setupDB() {
-        DatabaseType databaseType = DatabaseType.valueOf((String) config.get(ConfigPath.DATABASE_TYPE));
+        String dbType = config.getString(ConfigPath.DATABASE_TYPE).toUpperCase();
+        DatabaseType databaseType = DatabaseType.valueOf(dbType);
 
         switch (databaseType) {
             case YAML:
                 databaseManager = new YamlDBManager(plugin);
+                break;
+            case JSON:
+                databaseManager = new JsonDBManager(plugin);
                 break;
             default:
                 break;

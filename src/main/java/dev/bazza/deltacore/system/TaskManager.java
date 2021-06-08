@@ -23,6 +23,8 @@ public class TaskManager {
         this.server = server;
         this.config = config;
         this.afkManager = afkManager;
+
+        checkAfkTask = null;
     }
 
     public void runTasks() {
@@ -34,7 +36,9 @@ public class TaskManager {
     }
 
     public void cancelTasks() {
-        checkAfkTask.cancel();
+        if (checkAfkTask != null)
+            checkAfkTask.cancel();
+
         tasksRunning = false;
     }
 
