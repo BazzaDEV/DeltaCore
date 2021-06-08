@@ -56,10 +56,4 @@ public class ConfigManager {
         return fileConfiguration.get(path);
     }
 
-    public void reload() {
-        plugin.onDisable();
-        plugin.reloadConfig();
-        plugin.onEnable();
-    }
-
 }
