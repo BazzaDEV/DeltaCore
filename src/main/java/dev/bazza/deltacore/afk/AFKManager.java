@@ -36,7 +36,7 @@ public class AFKManager {
 
         if (notifyAll) {
             server.getPlayers().forEach((uuid1, player1) -> {
-                if (uuid != uuid1)
+                if (!uuid.equals(uuid1))
                     player1.sendMsg(ChatUtil.AFK_NOTIFY_ALL(isAfk, player));
             });
         }
