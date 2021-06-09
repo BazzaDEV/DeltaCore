@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 @CommandAlias("%deltacore")
 @Subcommand("reload")
+@CommandPermission("deltacore.reload")
 public class ReloadCMD extends BaseCommand {
 
     private final DeltaCore plugin;
