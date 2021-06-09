@@ -1,6 +1,6 @@
 package dev.bazza.deltacore.utils;
 
-import dev.bazza.deltacore.system.DeltaPlayer;
+import dev.bazza.deltacore.system.models.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -25,7 +25,7 @@ public class Messages {
                 .build();
     }
 
-    public static TextComponent AFK_NOTIFY_ALL(boolean isAfk, DeltaPlayer player) {
+    public static TextComponent AFK_NOTIFY_ALL(boolean isAfk, User player) {
         String displayName = player.getDisplayName();
         return (isAfk) ? AFK_ON_NOTIFY_ALL(displayName) : AFK_OFF_NOTIFY_ALL(displayName);
     }

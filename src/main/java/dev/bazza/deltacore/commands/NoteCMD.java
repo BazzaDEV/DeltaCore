@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import dev.bazza.deltacore.system.DeltaPlayer;
+import dev.bazza.deltacore.system.models.User;
 import dev.bazza.deltacore.system.Server;
 import dev.bazza.deltacore.utils.Util;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ public class NoteCMD extends BaseCommand {
     @Subcommand("view")
     @Description("Shows you your personal note.")
     public void onView(Player p) {
-        DeltaPlayer player = server.getPlayer(p.getUniqueId());
+        User player = server.getOnlineUser(p.getUniqueId());
 
         String note = player.getNote();
         player.sendMsg("&7Your note: &r" + note);
@@ -32,7 +32,7 @@ public class NoteCMD extends BaseCommand {
     @Subcommand("set")
     @Description("Set your personal note.")
     public void onSet(Player p, String[] args) {
-        DeltaPlayer player = server.getPlayer(p.getUniqueId());
+        User player = server.getOnlineUser(p.getUniqueId());
 
         String note = Util.argsToString(args);
         player.setNote(note);

@@ -1,7 +1,7 @@
 package dev.bazza.deltacore.listeners;
 
 import dev.bazza.deltacore.afk.AFKManager;
-import dev.bazza.deltacore.system.DeltaPlayer;
+import dev.bazza.deltacore.system.models.User;
 import dev.bazza.deltacore.system.Server;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.Location;
@@ -22,7 +22,7 @@ public class AFKListeners implements Listener {
         this.afkManager = afkManager;
     }
 
-    private void updateAFKStatus(DeltaPlayer player) {
+    private void updateAFKStatus(User player) {
         player.updateLastMovedTime(new Date().getTime());
         if (player.isAfk())
             afkManager.toggleAFK(player, true, true);
@@ -32,7 +32,7 @@ public class AFKListeners implements Listener {
     @EventHandler
     public void onPlayerAsyncChat(AsyncChatEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        updateAFKStatus(server.getPlayer(uuid));
+        updateAFKStatus(server.getOnlineUser(uuid));
 
     }
 
@@ -43,7 +43,7 @@ public class AFKListeners implements Listener {
 
         if (from.getBlockX() != to.getBlockX() || from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ()) {
             UUID uuid = event.getPlayer().getUniqueId();
-            updateAFKStatus(server.getPlayer(uuid));
+            updateAFKStatus(server.getOnlineUser(uuid));
         }
 
     }

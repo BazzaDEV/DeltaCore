@@ -1,14 +1,17 @@
 package dev.bazza.deltacore.data.database.local;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import dev.bazza.deltacore.DeltaCore;
-import dev.bazza.deltacore.system.DeltaPlayer;
+import dev.bazza.deltacore.system.models.User;
+import dev.bazza.deltacore.system.models.roles.OfflineRole;
+import dev.bazza.deltacore.utils.Util;
 
 import java.io.*;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -19,20 +22,10 @@ public class JsonDBManager extends LocalDatabaseManager {
     }
 
     private static final String FILENAME = "db.json";
-
-    /************************************************************************/
-
-    private static final String IGN_PATH = ".IGN";
-    private static final String AFK_STATUS_PATH = ".status.afk";
-    private static final String NOTE_PATH = ".note";
-
-    /************************************************************************/
-
     private File file;
 
     @Override
     public void initialize() {
-
         file = new File(plugin.getDataFolder(), FILENAME);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
@@ -47,38 +40,15 @@ public class JsonDBManager extends LocalDatabaseManager {
     }
 
     @Override
-    public void save() {
-
-    }
-
-    @Override
-    public boolean isPlayer(UUID uuid) {
-        return getAllPlayers().containsKey(uuid);
-    }
-
-    @Override
-    public DeltaPlayer createPlayerFromDB(UUID uuid) {
-        HashMap<UUID, DeltaPlayer> playerMap = getAllPlayers();
-
-        if (playerMap.containsKey(uuid)) { // An entry for this UUID exists in the database
-            DeltaPlayer p = playerMap.get(uuid);
-            return new DeltaPlayer(p.getUuid(), p.getIGN(), p.isAfk(), new Date().getTime(), p.getNote());
-
-        } else { // No entry exists for this UUID
-            return null;
-            
-        }
-    }
-
-    @Override
-    public void updatePlayer(DeltaPlayer player) {
+    public void sync() {
         try {
-            HashMap<UUID, DeltaPlayer> playerMap = getAllPlayers();
-            playerMap.put(player.getUuid(), player);
+            HashMap<UUID, User> allDatabaseUsers = getAllUsersFromDatabase();
+            allDatabaseUsers.putAll(userCache);
 
             Writer writer = new FileWriter(file, false);
             JsonWriter jsonWriter = new JsonWriter(writer);
             jsonWriter.setIndent("  ");
+            jsonWriter.setLenient(true);
 
             jsonWriter
                     .beginObject()
@@ -86,20 +56,23 @@ public class JsonDBManager extends LocalDatabaseManager {
                     .beginArray();
 
             Gson gson = new GsonBuilder()
+                    .addSerializationExclusionStrategy(EXCLUSION_STRATEGY)
                     .setPrettyPrinting()
                     .disableHtmlEscaping()
                     .serializeNulls()
                     .create();
 
-            playerMap.forEach(((uuid, deltaPlayer) -> {
+
+
+            allDatabaseUsers.forEach(((uuid, user) -> {
+
                 try {
-                    String playerJson = gson.toJson(deltaPlayer);
-                    // System.out.println(playerJson);
+                    String serializedUser = gson.toJson(user);
 
                     jsonWriter
                             .beginObject()
                             .name(uuid.toString())
-                            .jsonValue(playerJson)
+                            .jsonValue(serializedUser)
                             .endObject();
 
                 } catch (IOException e) {
@@ -113,19 +86,71 @@ public class JsonDBManager extends LocalDatabaseManager {
 
             writer.flush();
             writer.close();
+
+            jsonWriter.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-    public HashMap<UUID, DeltaPlayer> getAllPlayers() {
-        HashMap<UUID, DeltaPlayer> playerMap = new HashMap<>();
+    @Override
+    public boolean isUser(UUID uuid) {
+        return (userCache.containsKey(uuid) || getAllUsersFromDatabase().containsKey(uuid));
+    }
+
+    @Override
+    public User getUser(UUID uuid) {
+        // Check if user is stored in cache
+        if (userCache.containsKey(uuid))
+            return userCache.get(uuid);
+
+        // User is not cached; check the database
+        else if (isUser(uuid))
+            return getAllUsersFromDatabase().get(uuid);
+
+        // User data not found, return null;
+        else
+            return null;
+
+    }
+
+    public HashMap<UUID, User> getAllUsersFromDatabase() {
+        HashMap<UUID, User> playerMap = new HashMap<>();
+
+        String testJsonStr =
+                "{\n" +
+                "  \"players\": [\n" +
+                "    {\n" +
+                "      \"2e8770bf-1478-4f75-a80b-407d2978283f\": {\n" +
+                "  \"uuid\": \"2e8770bf-1478-4f75-a80b-407d2978283f\",\n" +
+                "  \"IGN\": \"BazzaDEV\",\n" +
+                "  \"afk\": false,\n" +
+                "  \"lastActiveTime\": 1623213602909,\n" +
+                "  \"note\": null\n" +
+                "}\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"cf134715-cd67-4214-8cd2-ccbe1f5d70e5\": {\n" +
+                "  \"uuid\": \"cf134715-cd67-4214-8cd2-ccbe1f5d70e5\",\n" +
+                "  \"IGN\": \"MeatSceptre\",\n" +
+                "  \"afk\": false,\n" +
+                "  \"lastActiveTime\": 1623213333667,\n" +
+                "  \"note\": null\n" +
+                "}\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
 
         try {
+            // StringReader reader = new StringReader(
             FileReader reader = new FileReader(file);
             JsonReader jsonReader = new JsonReader(reader);
+            jsonReader.setLenient(true);
 
             Gson gson = new GsonBuilder()
+                    .addSerializationExclusionStrategy(EXCLUSION_STRATEGY)
                     .setPrettyPrinting()
                     .disableHtmlEscaping()
                     .serializeNulls()
@@ -144,8 +169,9 @@ public class JsonDBManager extends LocalDatabaseManager {
                             jsonReader.beginObject();
                             jsonReader.nextName();
 
-                            DeltaPlayer player = gson.fromJson(jsonReader, DeltaPlayer.class);
-                            playerMap.put(player.getUuid(), player);
+                            User user = gson.fromJson(jsonReader, User.class);
+                            user.setRole(new OfflineRole());
+                            playerMap.put(user.getUuid(), user);
 
                             jsonReader.endObject();
                         }
@@ -156,6 +182,9 @@ public class JsonDBManager extends LocalDatabaseManager {
                     }
                 }
             }
+
+            reader.close();
+            jsonReader.close();
 
         } catch (IOException e) {
             e.printStackTrace();

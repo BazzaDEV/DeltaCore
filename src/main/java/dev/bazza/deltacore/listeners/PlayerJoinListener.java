@@ -1,7 +1,8 @@
 package dev.bazza.deltacore.listeners;
 
-import dev.bazza.deltacore.system.DeltaPlayer;
 import dev.bazza.deltacore.system.Server;
+import dev.bazza.deltacore.system.models.User;
+import dev.bazza.deltacore.system.models.roles.OnlineRole;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,18 +20,19 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        DeltaPlayer player;
+        User user;
 
-        if (server.getDB().isPlayer(uuid)) { // Existing player
-            player = server.getDB().createPlayerFromDB(uuid);
+        if (server.getDB().isUser(uuid)) { // Existing user
+            user = server.getDB().getUser(uuid);
+            user.setRole(new OnlineRole());
 
-        } else { // New player
-            player = DeltaPlayer.newPlayer(uuid);
-            server.getDB().updatePlayer(player);
+        } else { // New user
+            user = User.newUser(uuid);
 
         }
 
-        server.getPlayers().put(uuid, player);
+        server.getOnlineUsers().put(uuid, user);
+        server.getDB().cacheUser(user);
 
     }
 }

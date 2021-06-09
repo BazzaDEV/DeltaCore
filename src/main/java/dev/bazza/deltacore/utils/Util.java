@@ -17,4 +17,11 @@ public class Util {
 
         return stringBuilder.toString().trim();
     }
+
+    public static void println(Object... args) {
+        for (Object o : args) {
+            String s = (o instanceof String) ? ( (String) o ) : ( o.toString() );
+            System.out.println(s);
+        }
+    }
 }

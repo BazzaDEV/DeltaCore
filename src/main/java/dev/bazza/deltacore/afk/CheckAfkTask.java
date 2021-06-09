@@ -27,7 +27,7 @@ public class CheckAfkTask extends BukkitRunnable {
     @Override
     public void run() {
 
-        server.getPlayers().forEach(((uuid, player) -> {
+        server.getOnlineUsers().forEach(((uuid, player) -> {
             if (!player.isAfk()) {
                 long currentTime = new Date().getTime();
                 long timeElapsed = currentTime - player.getLastActiveTime();

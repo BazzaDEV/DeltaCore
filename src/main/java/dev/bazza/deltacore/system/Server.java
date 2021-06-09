@@ -7,8 +7,9 @@ import dev.bazza.deltacore.data.database.DatabaseManager;
 import dev.bazza.deltacore.data.database.DatabaseType;
 import dev.bazza.deltacore.data.database.local.JsonDBManager;
 import dev.bazza.deltacore.data.database.local.LocalDatabaseManager;
-import dev.bazza.deltacore.data.database.local.YamlDBManager;
+// import dev.bazza.deltacore.data.database.local.YamlDBManager;
 import dev.bazza.deltacore.data.database.remote.RemoteDatabaseManager;
+import dev.bazza.deltacore.system.models.User;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -18,13 +19,13 @@ public class Server {
     private final DeltaCore plugin;
     private final Config config;
 
-    private final HashMap<UUID, DeltaPlayer> playerMap;
+    private final HashMap<UUID, User> onlineUsers;
 
     public Server(DeltaCore plugin, Config config) {
         this.plugin = plugin;
         this.config = config;
 
-        this.playerMap = new HashMap<>();
+        this.onlineUsers = new HashMap<>();
     }
 
     private DatabaseManager databaseManager;
@@ -35,7 +36,7 @@ public class Server {
 
         switch (databaseType) {
             case YAML:
-                databaseManager = new YamlDBManager(plugin);
+//                databaseManager = new YamlDBManager(plugin);
                 break;
             case JSON:
                 databaseManager = new JsonDBManager(plugin);
@@ -52,24 +53,28 @@ public class Server {
 
         databaseManager.load();
 
+        if (!onlineUsers.isEmpty()) {
+            onlineUsers.forEach(((uuid, user) -> databaseManager.cacheUser(user)));
+        }
+
     }
 
-    public HashMap<UUID, DeltaPlayer> getPlayers() {
-        return playerMap;
+    public HashMap<UUID, User> getOnlineUsers() {
+        return onlineUsers;
     }
-    public DeltaPlayer getPlayer(UUID uuid) {
-        return playerMap.getOrDefault(uuid, null);
+    public User getOnlineUser(UUID uuid) {
+        return onlineUsers.getOrDefault(uuid, null);
     }
 
     public DatabaseManager getDB() {
         return databaseManager;
     }
     public void saveToDB(boolean isReloading) {
-        playerMap.forEach(((uuid, player) -> {
+        onlineUsers.forEach(((uuid, user) -> {
             if (!isReloading)
-                player.setAFK(false);
-            databaseManager.updatePlayer(player);
+                user.setAFK(false);
         }));
+        databaseManager.sync();
     }
 
 }

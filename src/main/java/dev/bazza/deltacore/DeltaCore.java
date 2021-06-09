@@ -4,11 +4,10 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import dev.bazza.deltacore.afk.AFKManager;
 import dev.bazza.deltacore.afk.AfkCMD;
-import dev.bazza.deltacore.commands.Commands;
 import dev.bazza.deltacore.commands.DeltaCoreCMD;
 import dev.bazza.deltacore.commands.NoteCMD;
 import dev.bazza.deltacore.commands.ReloadCMD;
-import dev.bazza.deltacore.system.DeltaPlayer;
+import dev.bazza.deltacore.system.models.User;
 import dev.bazza.deltacore.system.Server;
 import dev.bazza.deltacore.data.config.Config;
 import dev.bazza.deltacore.data.config.ConfigManager;
@@ -55,7 +54,12 @@ public final class DeltaCore extends JavaPlugin {
         taskManager.cancelTasks();
         server.saveToDB(true);
 
-        onEnable();
+        configManager.initialize();
+        config.initialize();
+
+        server.setupDB();
+
+        taskManager.runTasks();
 
     }
 
@@ -67,12 +71,12 @@ public final class DeltaCore extends JavaPlugin {
                     "deltacore", "deltacore|dc"
                 );
 
-        commandManager.getCommandContexts().registerContext(DeltaPlayer.class, c -> {
-            DeltaPlayer player = null;
+        commandManager.getCommandContexts().registerContext(User.class, c -> {
+            User player = null;
             CommandSender sender = c.getSender();
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                player = server.getPlayer(p.getUniqueId());
+                player = server.getOnlineUser(p.getUniqueId());
             }
 
             if (player == null) {
@@ -84,7 +88,7 @@ public final class DeltaCore extends JavaPlugin {
         });
 
         commandManager.registerCommand(new DeltaCoreCMD());
-        commandManager.registerCommand(new ReloadCMD(this));
+        commandManager.registerCommand(new ReloadCMD(this, server));
 
         commandManager.registerCommand(new AfkCMD(afkManager));
         commandManager.registerCommand(new NoteCMD(server));

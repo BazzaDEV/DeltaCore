@@ -60,7 +60,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <outputDirectory>C:\Users\bazar\Documents\1.16.5-Test-Server\plugins</outputDirectory>
+                    <outputDirectory>C:\Users\bazar\IdeaProjects\DeltaCore\server\plugins</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
