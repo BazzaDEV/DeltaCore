@@ -51,8 +51,6 @@ public class Server {
             ((RemoteDatabaseManager) databaseManager).connect();
         }
 
-        databaseManager.load();
-
         if (!onlineUsers.isEmpty()) {
             onlineUsers.forEach(((uuid, user) -> databaseManager.cacheUser(user)));
         }

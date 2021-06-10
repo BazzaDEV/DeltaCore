@@ -32,7 +32,6 @@ public abstract class DatabaseManager {
 
     /*********************************************************************************************/
 
-    public abstract void load();
     public abstract void sync();
 
     public abstract boolean isUser(UUID uuid);

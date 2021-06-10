@@ -55,11 +55,6 @@ public class YamlDBManager extends LocalDatabaseManager{
     }
 
     @Override
-    public void load() {
-
-    }
-
-    @Override
     public void sync() {
 
         userCache.forEach(((uuid, user) -> updateUser(user)));

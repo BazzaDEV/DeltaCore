@@ -33,11 +33,6 @@ public class JsonDBManager extends LocalDatabaseManager {
     }
 
     @Override
-    public void load() {
-
-    }
-
-    @Override
     public void sync() {
         try {
             HashMap<UUID, User> allDatabaseUsers = getAllUsersFromDatabase();
