@@ -2,14 +2,12 @@ package dev.bazza.deltacore.data.database.local;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import dev.bazza.deltacore.DeltaCore;
 import dev.bazza.deltacore.system.models.User;
 import dev.bazza.deltacore.system.models.roles.OfflineRole;
-import dev.bazza.deltacore.utils.Util;
 
 import java.io.*;
 import java.util.HashMap;
@@ -119,32 +117,7 @@ public class JsonDBManager extends LocalDatabaseManager {
     public HashMap<UUID, User> getAllUsersFromDatabase() {
         HashMap<UUID, User> playerMap = new HashMap<>();
 
-        String testJsonStr =
-                "{\n" +
-                "  \"players\": [\n" +
-                "    {\n" +
-                "      \"2e8770bf-1478-4f75-a80b-407d2978283f\": {\n" +
-                "  \"uuid\": \"2e8770bf-1478-4f75-a80b-407d2978283f\",\n" +
-                "  \"IGN\": \"BazzaDEV\",\n" +
-                "  \"afk\": false,\n" +
-                "  \"lastActiveTime\": 1623213602909,\n" +
-                "  \"note\": null\n" +
-                "}\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"cf134715-cd67-4214-8cd2-ccbe1f5d70e5\": {\n" +
-                "  \"uuid\": \"cf134715-cd67-4214-8cd2-ccbe1f5d70e5\",\n" +
-                "  \"IGN\": \"MeatSceptre\",\n" +
-                "  \"afk\": false,\n" +
-                "  \"lastActiveTime\": 1623213333667,\n" +
-                "  \"note\": null\n" +
-                "}\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-
         try {
-            // StringReader reader = new StringReader(
             FileReader reader = new FileReader(file);
             JsonReader jsonReader = new JsonReader(reader);
             jsonReader.setLenient(true);
