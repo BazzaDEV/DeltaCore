@@ -7,7 +7,7 @@ import dev.bazza.deltacore.data.database.DatabaseManager;
 import dev.bazza.deltacore.data.database.DatabaseType;
 import dev.bazza.deltacore.data.database.local.JsonDBManager;
 import dev.bazza.deltacore.data.database.local.LocalDatabaseManager;
-// import dev.bazza.deltacore.data.database.local.YamlDBManager;
+import dev.bazza.deltacore.data.database.local.YamlDBManager;
 import dev.bazza.deltacore.data.database.remote.RemoteDatabaseManager;
 import dev.bazza.deltacore.system.models.User;
 
@@ -36,7 +36,7 @@ public class Server {
 
         switch (databaseType) {
             case YAML:
-//                databaseManager = new YamlDBManager(plugin);
+                databaseManager = new YamlDBManager(plugin);
                 break;
             case JSON:
                 databaseManager = new JsonDBManager(plugin);
