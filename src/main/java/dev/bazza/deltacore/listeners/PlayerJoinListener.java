@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class PlayerJoinListener implements Listener {
@@ -25,6 +26,7 @@ public class PlayerJoinListener implements Listener {
         if (server.getDB().isUser(uuid)) { // Existing user
             user = server.getDB().getUser(uuid);
             user.setRole(new OnlineRole());
+            user.updateLastMovedTime(new Date().getTime());
 
         } else { // New user
             user = User.newUser(uuid);

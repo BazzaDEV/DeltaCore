@@ -4,6 +4,7 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import dev.bazza.deltacore.afk.AFKManager;
 import dev.bazza.deltacore.afk.AfkCMD;
+import dev.bazza.deltacore.commands.CoordsCMD;
 import dev.bazza.deltacore.commands.DeltaCoreCMD;
 import dev.bazza.deltacore.commands.NoteCMD;
 import dev.bazza.deltacore.commands.ReloadCMD;
@@ -92,6 +93,7 @@ public final class DeltaCore extends JavaPlugin {
 
         commandManager.registerCommand(new AfkCMD(afkManager));
         commandManager.registerCommand(new NoteCMD(server));
+        commandManager.registerCommand(new CoordsCMD(server));
 
 
     }

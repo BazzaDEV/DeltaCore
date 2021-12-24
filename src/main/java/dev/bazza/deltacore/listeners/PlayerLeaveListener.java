@@ -30,6 +30,7 @@ public class PlayerLeaveListener implements Listener {
             afkManager.toggleAFK(user, false, false);
 
         user.setRole(new OfflineRole());
+        server.saveToDB(false);
         server.getOnlineUsers().remove(uuid);
 
     }
