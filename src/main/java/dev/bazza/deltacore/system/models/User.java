@@ -63,6 +63,10 @@ public class User {
         getBukkitPlayer().sendMessage(ColorUtil.color(msg));
     }
 
+    public void sendChat(String msg) {
+        getBukkitPlayer().chat(ColorUtil.color(msg));
+    }
+
     public Player getBukkitPlayer() {
         return Bukkit.getPlayer(uuid);
     }
