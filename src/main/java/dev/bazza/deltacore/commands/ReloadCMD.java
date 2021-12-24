@@ -26,7 +26,6 @@ public class ReloadCMD extends BaseCommand {
 
     @Default
     public void onReload(CommandSender sender) {
-        Player p = (Player) sender;
         plugin.reloadPlugin();
         Util.msg(sender,"&7The plugin has been reloaded successfully.");
     }
